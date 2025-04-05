@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { AppState, Task, TaskList, Category } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 interface AppContextType {
   state: AppState;
