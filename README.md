@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# hex-task-hive
 
-## Project info
+![experience with React](https://img.shields.io/badge/experience-react-blue.svg?style=flat)
+![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
-**URL**: https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3
+A to-do list with a difference, inspired by my "99 Projects" campaign for 2025.
 
-## How can I edit this code?
+Tasks are represented by numeric "rune tokens", and a task can be chosen at random. Each task can also be marked as complete as progress is made. 
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This project was originally created using [Lovable](https://lovable.dev), but refined by me - because AI should be used as a tool, not a weapon.
 
 ## What technologies are used for this project?
 
-This project is built with:
+Lovable built this project with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
-- Tailwind CSS
+- Tailwind CSS (although I asked for Bootstrap!).
 
-## How can I deploy this project?
+## Purposes of the project
 
-Simply open [Lovable](https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3) and click on Share -> Publish.
+- Building a tool I would find extremely useful, for motivation to complete smaller tasks/projects.
+- Demonstrating the ability to prompt Lovable to create an app.
+- Demonstrating the ability to modify the functionality of an AI-generated app, instead of using it as-is (and pretending I did the work).
+- Demonstrating the ability to work with a React app.
+- [reluctantly] Working with Tailwind CSS. (I *really* don't understand why it has become so popular, outside of perhaps developing generic/admin interfaces.)
+- Hopefully useful toward overcoming the age-old hurdle of not having enough "experience" to gain "experience".
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Objectives of the project
+- Ability to manage multiple lists of tasks (e.g. for different projects).
+- Tasks are represented as a hexagonal grid, with each task represented by a hexagonal token.
+- Tasks can be easily created, updated and removed.
+- The list of tasks can be shuffled, *provided* none have been completed yet.
+- Lists of tasks can have configurable categories.
+- An incomplete task can be picked at random.
+- Tasks can be marked as complete, with the date of completion.
+- Tasks can be categorised.
+- A progress bar displays the ratio of completed tasks.
