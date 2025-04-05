@@ -7,7 +7,7 @@ import './RuneToken.scss';
 
 function RuneToken(props) {
   return (
-    <button type="button" className="rune-token">
+    <button type="button" className="rune-token">        
       <span className="rune-token-number">{props.taskId}</span>
     </button>
   );

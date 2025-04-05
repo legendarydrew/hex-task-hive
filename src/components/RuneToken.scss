@@ -14,26 +14,50 @@
 .rune-token {
     --rune-size: 6em;
     --rune-text-size: 1.5rem;
+    --rune-border-width: 0.25em;
 
     /* Our tokens are a vertical hexagon shape. */
-    @include vertical-hexagon();
-
-    background: #CCC;
     border: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     height: var(--rune-size);
     width: var(--rune-size);
-}
 
-.rune-token:focus,
-.rune-token:hover {
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    // Pseudo-elements for the hexagon shape.
+    &::before,
+    &::after {
+        @include vertical-hexagon();
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    &::before {
+        // Represents the border colour.
+        background: #999;
+        z-index: 0;
+    }
+
+    &::after {
+        // Represents the background colour.
+        background: #CCC;
+        top: var(--rune-border-width);
+        bottom: var(--rune-border-width);
+        left: var(--rune-border-width);
+        right: var(--rune-border-width);
+        z-index: 1;
+    }
 }
 
 .rune-token-number {
     font-size: var(--rune-text-size);
     font-weight: bold;
     text-align: center;
+    z-index: 2;
 }
