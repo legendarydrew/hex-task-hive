@@ -1,0 +1,31 @@
+.task-list {
+    border-collapse: collapse;
+    border-spacing: 0.5em;
+    margin: 0.5rem 0;
+    width: 100%;
+}
+
+.task-list-item {
+    display: flex;
+    gap: 0.5em;
+
+    &:hover {
+        background: #DDD;
+    }
+}
+
+.task-list-item-number {
+    font-weight: bold;
+    min-width: 3em;
+    text-align: right;
+}
+
+.task-list-item-text {
+    flex-grow: 1;
+}
+
+.task-list-item-actions {
+    display: flex;
+    gap: 0.2em;
+    justify-content: flex-end;
+}
