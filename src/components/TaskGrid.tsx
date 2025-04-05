@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import RuneToken from "./RuneToken";
+import TaskList from "./TaskList";
 
 const TaskGrid = () => {
   const { state, toggleTaskCompletion } = useApp();
@@ -114,6 +115,8 @@ const TaskGrid = () => {
               <RuneToken key={task.id} taskId={index} task={task} onClick={taskClickHandler}></RuneToken>
             ))}
           </div>
+
+          <TaskList />
         </>
       )}
 
