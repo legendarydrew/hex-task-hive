@@ -1,13 +1,18 @@
 .task-list {
-    border-collapse: collapse;
-    border-spacing: 0.5em;
+    // Divide the list of tasks into two columns.
+    column-count: 2;
+    column-width: 50%;
+    
+    font-size: 80%;
     margin: 0.5rem 0;
     width: 100%;
 }
 
 .task-list-item {
+    column-span: 1;
     display: flex;
     gap: 0.5em;
+    padding: 0.2rem;
 
     &:hover {
         background: #DDD;
