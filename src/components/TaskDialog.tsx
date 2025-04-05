@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -12,26 +13,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useApp } from '@/context/AppContext';
-import { Category } from '@/types';
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { CategoryManager } from './CategoryManager';
 
 interface TaskDialogProps {
   open: boolean;
@@ -39,38 +35,34 @@ interface TaskDialogProps {
   taskId: string | null;
 }
 
-export const TaskDialog: React.FC<TaskDialogProps> = ({ 
-  open, 
-  onOpenChange,
-  taskId 
-}) => {
-  const { state, addTask, updateTask, deleteTask, toggleTaskCompletion } = useApp();
+export const TaskDialog: React.FC<TaskDialogProps> = ({ open, onOpenChange, taskId }) => {
+  const { state, addTask, updateTask, deleteTask, getListCategories } = useApp();
   const isEditing = taskId !== null;
   
-  const existingTask = taskId 
+  const existingTask = isEditing 
     ? state.tasks.find(task => task.id === taskId) 
     : null;
   
-  const [description, setDescription] = React.useState('');
-  const [category, setCategory] = React.useState<Category>('work');
-  const [dueDate, setDueDate] = React.useState('');
-  const [completed, setCompleted] = React.useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = React.useState(false);
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
+  // Get categories for the active list
+  const categories = state.activeListId ? getListCategories(state.activeListId) : [];
 
   // Reset form when dialog opens/closes or task changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (existingTask) {
       setDescription(existingTask.description);
       setCategory(existingTask.category);
-      setDueDate(existingTask.dueDate || '');
-      setCompleted(existingTask.completed);
+      setDueDate(existingTask.dueDate ? new Date(existingTask.dueDate) : undefined);
     } else {
       setDescription('');
-      setCategory('work');
-      setDueDate('');
-      setCompleted(false);
+      setCategory(categories.length > 0 ? categories[0] : '');
+      setDueDate(undefined);
     }
-  }, [existingTask, open]);
+  }, [existingTask, open, categories]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,11 +71,14 @@ export const TaskDialog: React.FC<TaskDialogProps> = ({
       updateTask(existingTask.id, {
         description,
         category,
-        dueDate: dueDate || undefined,
-        completed,
+        dueDate: dueDate ? dueDate.toISOString() : undefined,
       });
     } else {
-      addTask(description, category, dueDate || undefined);
+      addTask(
+        description,
+        category,
+        dueDate ? dueDate.toISOString() : undefined
+      );
     }
     
     onOpenChange(false);
@@ -92,162 +87,106 @@ export const TaskDialog: React.FC<TaskDialogProps> = ({
   const handleDelete = () => {
     if (isEditing && existingTask) {
       deleteTask(existingTask.id);
-      setShowDeleteAlert(false);
       onOpenChange(false);
     }
   };
 
-  const handleToggleCompletion = () => {
-    setCompleted(!completed);
-    if (isEditing && existingTask) {
-      toggleTaskCompletion(existingTask.id);
-    }
-  };
-
-  const categoryColors = {
-    work: 'bg-hexagon-blue',
-    personal: 'bg-hexagon-purple',
-    health: 'bg-hexagon-green',
-    finance: 'bg-hexagon-yellow',
-    education: 'bg-hexagon-orange',
-    other: 'bg-gray-400',
-  };
-
   return (
-    <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <div className="flex justify-between items-center">
             <DialogTitle>{isEditing ? 'Edit Task' : 'Create New Task'}</DialogTitle>
-            <DialogDescription>
-              {isEditing 
-                ? 'Make changes to your task here.' 
-                : 'Fill out the details for your new task.'}
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 py-4">
-              <div className="flex items-center gap-4">
-                <Checkbox 
-                  id="completed" 
-                  checked={completed} 
-                  onCheckedChange={() => handleToggleCompletion()}
-                />
-                <Label htmlFor="completed" className="text-sm font-medium">
-                  Mark as completed
-                </Label>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What needs to be done?"
-                  required
-                />
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="category">Category</Label>
-                <Select 
-                  value={category} 
-                  onValueChange={(value) => setCategory(value as Category)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="work">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.work}`} />
-                        Work
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="personal">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.personal}`} />
-                        Personal
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="health">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.health}`} />
-                        Health
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="finance">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.finance}`} />
-                        Finance
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="education">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.education}`} />
-                        Education
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="other">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-2 ${categoryColors.other}`} />
-                        Other
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="dueDate">Due Date (Optional)</Label>
-                <Input
-                  id="dueDate"
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                />
-              </div>
-            </div>
-            
-            <DialogFooter className="gap-2">
-              {isEditing && (
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => setShowDeleteAlert(true)}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                >
-                  Delete
-                </Button>
-              )}
-              <Button type="submit">
-                {isEditing ? 'Save Changes' : 'Create Task'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
+            {state.activeListId && <CategoryManager />}
+          </div>
+          <DialogDescription>
+            {isEditing 
+              ? 'Update your task details below.' 
+              : 'Fill in the details for your new task.'}
+          </DialogDescription>
+        </DialogHeader>
 
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this task.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="What needs to be done?"
+              required
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={category}
+              onValueChange={setCategory}
+              required
             >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+              <SelectTrigger id="category">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="justify-start text-left font-normal"
+                  id="dueDate"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {dueDate ? format(dueDate, "PPP") : "Pick a date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={dueDate}
+                  onSelect={(date) => {
+                    setDueDate(date);
+                    setDatePickerOpen(false);
+                  }}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            {dueDate && (
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setDueDate(undefined)}
+              >
+                Clear Date
+              </Button>
+            )}
+          </div>
+          
+          <DialogFooter className="flex justify-between">
+            {isEditing && (
+              <Button type="button" variant="destructive" onClick={handleDelete}>
+                Delete
+              </Button>
+            )}
+            <Button type="submit">
+              {isEditing ? 'Update Task' : 'Create Task'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };

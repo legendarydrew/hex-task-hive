@@ -46,7 +46,7 @@ export const ListDialog: React.FC<ListDialogProps> = ({
     e.preventDefault();
     
     if (isEditing && existingList) {
-      updateList(existingList.id, name);
+      updateList(existingList.id, { name });
     } else {
       addList(name);
     }

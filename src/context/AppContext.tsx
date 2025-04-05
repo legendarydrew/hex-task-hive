@@ -1,21 +1,27 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AppState, Task, TaskList, Category } from '@/types';
+import { AppState, Task, TaskList } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from "sonner";
 
 interface AppContextType {
   state: AppState;
   addList: (name: string) => void;
-  updateList: (id: string, name: string) => void;
+  updateList: (id: string, data: Partial<Omit<TaskList, 'id' | 'createdAt'>>) => void;
   deleteList: (id: string) => void;
   setActiveList: (id: string) => void;
-  addTask: (description: string, category: Category, dueDate?: string) => void;
+  addTask: (description: string, category: string, dueDate?: string) => void;
   updateTask: (id: string, data: Partial<Omit<Task, 'id' | 'listId' | 'createdAt'>>) => void;
   deleteTask: (id: string) => void;
   toggleTaskCompletion: (id: string) => void;
   selectRandomTask: () => Task | null;
+  addCategory: (listId: string, category: string) => void;
+  removeCategory: (listId: string, category: string) => void;
+  getListCategories: (listId: string) => string[];
 }
+
+// Default categories to use when creating a new list
+const DEFAULT_CATEGORIES = ['work', 'personal', 'health', 'finance', 'education', 'other'];
 
 const initialState: AppState = {
   lists: [],
@@ -33,7 +39,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
       try {
-        return JSON.parse(savedData);
+        const parsedData = JSON.parse(savedData);
+        
+        // Handle migration for existing lists without categories
+        if (parsedData.lists && parsedData.lists.length > 0) {
+          parsedData.lists = parsedData.lists.map((list: any) => ({
+            ...list,
+            categories: list.categories || [...DEFAULT_CATEGORIES],
+          }));
+        }
+        
+        return parsedData;
       } catch (error) {
         console.error('Failed to parse saved data:', error);
         return initialState;
@@ -51,6 +67,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const newList: TaskList = {
       id: uuidv4(),
       name,
+      categories: [...DEFAULT_CATEGORIES], // Initialize with default categories
       createdAt: new Date().toISOString(),
     };
     
@@ -65,10 +82,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const updateList = (id: string, name: string) => {
+  const updateList = (id: string, data: Partial<Omit<TaskList, 'id' | 'createdAt'>>) => {
     setState((prev) => ({
       ...prev,
-      lists: prev.lists.map((list) => (list.id === id ? { ...list, name } : list)),
+      lists: prev.lists.map((list) => (list.id === id ? { ...list, ...data } : list)),
     }));
     toast.success(`List updated`);
   };
@@ -96,7 +113,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const addTask = (description: string, category: Category, dueDate?: string) => {
+  const addTask = (description: string, category: string, dueDate?: string) => {
     if (!state.activeListId) {
       toast.error("No active list selected");
       return;
@@ -163,6 +180,54 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return randomTask;
   };
 
+  // New functions for managing categories
+  const addCategory = (listId: string, category: string) => {
+    setState((prev) => ({
+      ...prev,
+      lists: prev.lists.map((list) => {
+        if (list.id === listId && !list.categories.includes(category)) {
+          return {
+            ...list,
+            categories: [...list.categories, category],
+          };
+        }
+        return list;
+      }),
+    }));
+    toast.success(`Category "${category}" added`);
+  };
+
+  const removeCategory = (listId: string, category: string) => {
+    // First check if any tasks are using this category
+    const tasksUsingCategory = state.tasks.some(
+      task => task.listId === listId && task.category === category
+    );
+
+    if (tasksUsingCategory) {
+      toast.error(`Cannot remove category "${category}" because tasks are using it`);
+      return;
+    }
+
+    setState((prev) => ({
+      ...prev,
+      lists: prev.lists.map((list) => {
+        if (list.id === listId) {
+          return {
+            ...list,
+            categories: list.categories.filter((cat) => cat !== category),
+          };
+        }
+        return list;
+      }),
+    }));
+    toast.success(`Category "${category}" removed`);
+  };
+
+  const getListCategories = (listId: string) => {
+    const list = state.lists.find((list) => list.id === listId);
+    return list ? list.categories : [];
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -176,6 +241,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         deleteTask,
         toggleTaskCompletion,
         selectRandomTask,
+        addCategory,
+        removeCategory,
+        getListCategories,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Check, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
@@ -18,9 +18,16 @@ const TaskGrid = () => {
     ? state.tasks.filter((task) => task.listId === state.activeListId)
     : [];
 
+  // Get active list
+  const activeList = state.activeListId 
+    ? state.lists.find(list => list.id === state.activeListId)
+    : null;
+
   // Get category color class
   const getCategoryColorClass = (category: string) => {
-    switch (category) {
+    const normalizedCategory = category.toLowerCase();
+    
+    switch (normalizedCategory) {
       case 'work':
         return 'bg-hexagon-blue';
       case 'personal':
@@ -32,7 +39,10 @@ const TaskGrid = () => {
       case 'education':
         return 'bg-hexagon-orange';
       default:
-        return 'bg-gray-400';
+        // Generate a deterministic color based on category name
+        const hash = normalizedCategory.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const colors = ['bg-sky-600', 'bg-emerald-600', 'bg-amber-600', 'bg-rose-600', 'bg-violet-600', 'bg-teal-600'];
+        return colors[hash % colors.length];
     }
   };
 
@@ -47,7 +57,7 @@ const TaskGrid = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Find the task that was selected randomly
     const randomlySelectedTask = activeTasks.find(task => task.id === highlightedId);
     if (randomlySelectedTask) {
@@ -79,7 +89,7 @@ const TaskGrid = () => {
         <>
           <div className="mb-4">
             <h2 className="text-2xl font-bold">
-              {state.lists.find(list => list.id === state.activeListId)?.name || 'Tasks'}
+              {activeList?.name || 'Tasks'}
             </h2>
           </div>
           
@@ -141,6 +151,21 @@ const TaskGrid = () => {
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>{task.completed ? 'Mark as incomplete' : 'Mark as complete'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  
+                  <div className="absolute bottom-2 right-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Badge variant="outline" className="bg-white/20 text-white text-xs">
+                            {task.category}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Category: {task.category}</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
