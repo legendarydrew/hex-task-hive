@@ -1,0 +1,39 @@
+@use 'sass:math';
+
+@mixin vertical-hexagon {
+    clip-path: polygon(
+        #{math.sin(0) * 50 + 50%} #{math.cos(0) * 50 + 50%},
+        #{math.sin(60deg) * 50 + 50%} #{math.cos(60deg) * 50 + 50%},
+        #{math.sin(120deg) * 50 + 50%} #{math.cos(120deg) * 50 + 50%},
+        #{math.sin(180deg) * 50 + 50%} #{math.cos(180deg) * 50 + 50%},
+        #{math.sin(240deg) * 50 + 50%} #{math.cos(240deg) * 50 + 50%},
+        #{math.sin(300deg) * 50 + 50%} #{math.cos(300deg) * 50 + 50%},
+    );
+}
+
+.rune-token {
+    --rune-size: 6em;
+    --rune-text-size: 1.5rem;
+
+    /* Our tokens are a vertical hexagon shape. */
+    @include vertical-hexagon();
+
+    background: #CCC;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--rune-size);
+    width: var(--rune-size);
+}
+
+.rune-token:focus,
+.rune-token:hover {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.rune-token-number {
+    font-size: var(--rune-text-size);
+    font-weight: bold;
+    text-align: center;
+}
