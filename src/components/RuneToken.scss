@@ -53,6 +53,11 @@
         right: var(--rune-border-width);
         z-index: 1;
     }
+
+    &:focus,
+    &:hover {
+        filter: brightness(110%);
+    }
 }
 
 .rune-token-number {

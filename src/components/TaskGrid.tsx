@@ -18,6 +18,10 @@ const TaskGrid = () => {
     ? state.lists.find((list) => list.id === state.activeListId)
     : null;
 
+  function taskClickHandler(e) {
+    console.log('taskClickHandler', e);
+  }
+
   // Get category color class
   const getCategoryColorClass = (category: string) => {
     const normalizedCategory = category.toLowerCase();
@@ -107,7 +111,7 @@ const TaskGrid = () => {
 
           <div className="hexagon-grid">
             {activeTasks.map((task, index) => (
-              <RuneToken key={task.id} taskId={index} task={task}></RuneToken>
+              <RuneToken key={task.id} taskId={index} task={task} onClick={taskClickHandler}></RuneToken>
             ))}
           </div>
         </>
