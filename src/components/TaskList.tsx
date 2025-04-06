@@ -41,7 +41,7 @@ export default function TaskList(props) {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold lh-1 py-1 px-2 rounded"
               title="Change description"
             >
-              {/* TODO ability to change the task description. */}
+              {/* TODO ability to change the task description and category. */}
               <Edit className="h-3 w-3" />
             </button>
             {task.completedAt ? (
