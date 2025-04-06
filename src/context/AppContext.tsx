@@ -124,8 +124,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       listId: state.activeListId,
       description,
       category,
-      completed: false,
-      dueDate,
+      completedAt: undefined,
+      pickedAt: undefined,
       createdAt: new Date().toISOString(),
     };
 
@@ -156,7 +156,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setState((prev) => ({
       ...prev,
       tasks: prev.tasks.map((task) => 
-        task.id === id ? { ...task, completed: !task.completed } : task
+        task.id === id ? { ...task, completedAt: task.completedAt ? undefined : new Date().toISOString() } : task
       ),
     }));
   };
@@ -165,7 +165,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (!state.activeListId) return null;
     
     const listTasks = state.tasks.filter(
-      (task) => task.listId === state.activeListId && !task.completed
+      (task) => task.listId === state.activeListId && !task.completedAt
     );
     
     if (listTasks.length === 0) {

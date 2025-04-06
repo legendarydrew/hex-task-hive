@@ -1,6 +1,6 @@
 import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
-import { Check, Trash, Edit } from "lucide-react";
+import { Check, Undo, Trash, Edit } from "lucide-react";
 import "./TaskList.scss";
 /**
  * A component simply displaying the list of tasks in the currently selected list.
@@ -24,8 +24,7 @@ export default function TaskList(props) {
   };
 
   const toggleCompleteHandler = (task: Task) => {
-    console.log("toggleCompleteHandler", task);
-    props.removeHandler && props.removeHandler(task);
+    toggleTaskCompletion(task.id);
   };
 
   return (
@@ -45,15 +44,25 @@ export default function TaskList(props) {
               {/* TODO ability to change the task description. */}
               <Edit className="h-3 w-3" />
             </button>
-            <button
-              type="button"
-              onClick={() => toggleCompleteHandler(task)}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold lh-1 py-1 px-2 rounded"
-              title="Mark as complete"
-            >
-              {/* TODO complete/incomplete state based on the task. */}
-              <Check className="h-3 w-3" />
-            </button>
+            {task.completedAt ? (
+              <button
+                type="button"
+                onClick={() => toggleCompleteHandler(task)}
+                className="bg-orange-500 hover:bg-orange-700 text-white font-bold lh-1 py-1 px-2 rounded"
+                title="Unmark as complete"
+              >
+                <Undo className="h-3 w-3" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => toggleCompleteHandler(task)}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold lh-1 py-1 px-2 rounded"
+                title="Mark as complete"
+              >
+                <Check className="h-3 w-3" />
+              </button>
+            )}
             <button
               type="button"
               onClick={() => removeTaskHandler(task)}
