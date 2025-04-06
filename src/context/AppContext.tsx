@@ -218,17 +218,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (!state.activeListId) return null;
 
     const listTasks = state.tasks.filter(
-      (task) => task.listId === state.activeListId && !task.completedAt
+      (task) => task.listId === state.activeListId && !(task.pickedAt || task.completedAt)
     );
 
     if (listTasks.length === 0) {
-      toast.info("No incomplete tasks found in this list");
+      toast.info("No incomplete tasks found in this list.");
       return null;
     }
 
     const randomIndex = Math.floor(Math.random() * listTasks.length);
     const randomTask = listTasks[randomIndex];
 
+    // Mark the task as picked.
+    setState((prev) => ({
+      ...prev,
+      tasks: state.tasks.map((task) => task.id === randomTask.id ? ({...task, pickedAt: new Date().toISOString() }) : task)
+    }));
     toast.success(`Random task selected: ${randomTask.description}`);
     return randomTask;
   };
