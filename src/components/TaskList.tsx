@@ -2,14 +2,13 @@ import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
 import { Check, Trash, Edit } from "lucide-react";
 import "./TaskList.scss";
-
 /**
  * A component simply displaying the list of tasks in the currently selected list.
  * From here we should be able to update or remove the tasks.
  */
 
 export default function TaskList(props) {
-  const { state, toggleTaskCompletion } = useApp();
+  const { state, deleteTask, toggleTaskCompletion } = useApp();
 
   const activeTasks: Task[] = state.activeListId
     ? state.tasks.filter((task) => task.listId === state.activeListId)
@@ -20,8 +19,8 @@ export default function TaskList(props) {
   };
 
   const removeTaskHandler = (task: Task) => {
-    console.log("removeTaskHandler", task);
-    props.removeHandler && props.removeHandler(task);
+    // Purely for convenience, we won't bother confirming the removal of the task.
+    deleteTask(task.id);
   };
 
   const toggleCompleteHandler = (task: Task) => {
