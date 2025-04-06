@@ -3,6 +3,7 @@ import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import RuneToken from "./RuneToken";
 import TaskList from "./TaskList";
+import TaskAdd from "./TaskAdd";
 
 const TaskGrid = () => {
   const { state, toggleTaskCompletion } = useApp();
@@ -117,6 +118,7 @@ const TaskGrid = () => {
           </div>
 
           <TaskList />
+          <TaskAdd />
         </>
       )}
 
