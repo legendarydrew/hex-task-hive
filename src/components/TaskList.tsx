@@ -3,6 +3,7 @@ import { Task } from "@/types";
 import { Check, Undo, Trash, Edit } from "lucide-react";
 import TaskListUpdate from "./TaskListUpdate";
 import { useState } from "react";
+import { Button } from "./ui/button";
 /**
  * A component simply displaying the list of tasks in the currently selected list.
  * From here we should be able to update or remove the tasks.
@@ -60,41 +61,46 @@ export default function TaskList(props) {
               <span className="flex-grow">{task.description}</span>
               <menu className="flex gap-1 justify-end">
                 {/* TODO see https://v1.tailwindcss.com/components/buttons for implementing button styles. */}
-                <button
+                <Button
                   type="button"
+                  variant="default"
+                  size="icon"
                   onClick={() => beginTaskUpdateHandler(task)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
                   title="Change description"
                 >
                   <Edit className="h-3 w-3" />
-                </button>
+                </Button>
                 {task.completedAt ? (
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="icon"
                     onClick={() => toggleCompleteHandler(task)}
-                    className="bg-orange-500 hover:bg-orange-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
                     title="Unmark as complete"
                   >
                     <Undo className="h-3 w-3" />
-                  </button>
+                  </Button>
                 ) : (
-                  <button
+                  <Button
                     type="button"
+                    variant="confirm"
+                    size="icon"
                     onClick={() => toggleCompleteHandler(task)}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
                     title="Mark as complete"
                   >
                     <Check className="h-3 w-3" />
-                  </button>
+                  </Button>
                 )}
-                <button
+                <Button
                   type="button"
+                  variant="destructive"
+                  size="icon"
                   onClick={() => removeTaskHandler(task)}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold lh-1 py-1 px-2 rounded"
                   title="Remove"
                 >
                   <Trash className="h-3 w-3" />
-                </button>
+                </Button>
               </menu>
             </>
           )}
