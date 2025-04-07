@@ -1,27 +1,3 @@
-.task-list {
-    // // Divide the list of tasks into two columns.
-    // column-count: 3;
-
-    // max-height: 10rem;
-    // overflow-y: auto;
-}
-
-.task-list-item {
-    column-span: 1;
-    display: flex;
-    gap: 0.5em;
-    padding: 0.2rem;
-}
-
-.task-list-item-number {
-    font-weight: bold;
-    min-width: 3em;
-    text-align: right;
-}
-
-.task-list-item-text {
-    flex-grow: 1;
-}
 
 .task-list-item-actions {
     display: flex;
