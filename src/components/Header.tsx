@@ -36,16 +36,6 @@ export const Header = () => {
           </Button>
           
           <Button
-            variant="outline"
-            onClick={() => setIsTaskDialogOpen(true)}
-            className="flex items-center gap-1"
-            disabled={!state.activeListId}
-          >
-            <PlusCircle className="h-4 w-4" />
-            <span>New Task</span>
-          </Button>
-          
-          <Button
             variant="secondary"
             onClick={shuffleTasks}
             disabled={!state.activeListId}
@@ -68,7 +58,7 @@ export const Header = () => {
       </div>
       
       <TaskDialog 
-        open={isTaskDialogOpen || selectedTask !== null} 
+        open={isTaskDialogOpen} 
         onOpenChange={(open) => {
           setIsTaskDialogOpen(open);
           if (!open) setSelectedTask(null);
