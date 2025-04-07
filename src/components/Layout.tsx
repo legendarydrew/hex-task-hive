@@ -16,7 +16,7 @@ export const Layout = () => {
       <Header />
 
       {/* TODO why is this height bigger then intended? */}
-      <main className="flex flex-col sm:flex-row h-full items-stretch">
+      <main className="container mx-auto my-2 flex flex-col sm:flex-row h-full items-stretch">
         <div className="flex-grow overflow-y-auto">
           <TaskGrid />
         </div>
