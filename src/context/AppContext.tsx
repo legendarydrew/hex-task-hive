@@ -199,26 +199,48 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  /**
+   * Shuffle the list of tasks.
+   * We want to keep any picked and complete tasks in place, so their numbers are preserved.
+   */
   const shuffleTasks = () => {
-    let tasks = state.tasks;
+    let allTasks = state.tasks;
+    let availableTasks = allTasks.filter(
+      (task) => !(task.pickedAt || task.completedAt)
+    );
 
-    // TODO only shuffle incomplete tasks, leave completed ones in place.
+    if (availableTasks.length) {
+      // Shuffle the available tasks.
+      // https://stackoverflow.com/a/12646864/4073160
+      for (let i = availableTasks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [availableTasks[i], availableTasks[j]] = [
+          availableTasks[j],
+          availableTasks[i],
+        ];
+      }
 
-    // https://stackoverflow.com/a/12646864/4073160
-    for (let i = tasks.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [tasks[i], tasks[j]] = [tasks[j], tasks[i]];
+      // Rebuild the list of tasks.
+      for (let i = 0; i < allTasks.length; i++) {
+        if (!(allTasks[i].pickedAt || allTasks[i].completedAt)) {
+          allTasks[i] = availableTasks.shift();
+        }
+      }
+
+      setState((prev) => ({ ...prev, allTasks }));
+      toast.info("Tasks have been shuffled.");
+    } else {
+      toast.info("No tasks to shuffle.");
     }
-
-    setState((prev) => ({ ...prev, tasks }));
-    toast.info("Tasks have been shuffled.");
   };
 
   const selectRandomTask = () => {
     if (!state.activeListId) return null;
 
     const listTasks = state.tasks.filter(
-      (task) => task.listId === state.activeListId && !(task.pickedAt || task.completedAt)
+      (task) =>
+        task.listId === state.activeListId &&
+        !(task.pickedAt || task.completedAt)
     );
 
     if (listTasks.length === 0) {
@@ -232,7 +254,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Mark the task as picked.
     setState((prev) => ({
       ...prev,
-      tasks: state.tasks.map((task) => task.id === randomTask.id ? ({...task, pickedAt: new Date().toISOString() }) : task)
+      tasks: state.tasks.map((task) =>
+        task.id === randomTask.id
+          ? { ...task, pickedAt: new Date().toISOString() }
+          : task
+      ),
     }));
     toast.success(`Random task selected: ${randomTask.description}`);
     return randomTask;
