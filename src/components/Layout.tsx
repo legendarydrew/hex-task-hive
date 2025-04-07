@@ -3,6 +3,7 @@ import { Footer } from "./Footer";
 import TaskGrid from "./TaskGrid";
 import TaskList from "./TaskList";
 import TaskAdd from "./TaskAdd";
+import TaskListProgress from "./TaskListProgress";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -14,6 +15,8 @@ export const Layout = () => {
   return (
     <div className="h-screen flex flex-col bg-background">
       <Header />
+
+      <TaskListProgress />
 
       {/* TODO why is this height bigger then intended? */}
       <main className="container mx-auto my-2 flex flex-col sm:flex-row h-full items-stretch">
