@@ -63,13 +63,22 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				hexagon: {
-					blue: '#0EA5E9',
-					purple: '#9b87f5',
-					orange: '#F97316',
-					green: '#22C55E',
-					red: '#EF4444',
-					yellow: '#EAB308',
+				task: {
+					base: {
+						DEFAULT: '#CCC',
+						border: '#AAA',
+						text: '#111'
+					},
+					picked: {
+						DEFAULT: '#91CDFF',
+						border: '#70ABDD',
+						text: '#5089BB'
+					},
+					completed: {
+						DEFAULT: '#22C55E',
+						border: '#00A33C',
+						text: '#EFE'
+					},
 				}
 			},
 			borderRadius: {

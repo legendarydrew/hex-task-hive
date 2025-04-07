@@ -23,8 +23,8 @@ export default function TaskList(props) {
   };
 
   const closeUpdateHandler = (): void => {
-    setTaskForEdit(undefined); 
-  }
+    setTaskForEdit(undefined);
+  };
 
   const removeTaskHandler = (task: Task) => {
     // Purely for convenience, we won't bother confirming the removal of the task.
@@ -35,56 +35,70 @@ export default function TaskList(props) {
     toggleTaskCompletion(task.id);
   };
 
+  const taskClass = (task: Task) => {
+    if (task.completedAt) {
+      return "text-task-completed";
+    } else if (task.pickedAt) {
+      return "text-task-picked-border";
+    }
+  };
+
   return (
-    <ol className="w-full p-1 text-sm">
+    <ol className="bg-white w-full p-1 text-sm">
       {activeTasks.map((task: Task, index) => (
-        <li className="task-list-item items-center hover:bg-blue-200 select-none" key={index}>
-          { taskForEdit === task ? (
+        <li
+          className={
+            "flex gap-2 p-1 items-center hover:bg-blue-200 select-none " +
+            taskClass(task)
+          }
+          key={index}
+        >
+          {taskForEdit === task ? (
             <TaskListUpdate task={task} onClose={closeUpdateHandler} />
           ) : (
             <>
-          <b className="text-right w-6">{index}</b>
-          <span className="task-list-item-text">{task.description}</span>
-          <menu className="task-list-item-actions">
-            {/* TODO see https://v1.tailwindcss.com/components/buttons for implementing button styles. */}
-            <button
-              type="button"
-              onClick={() => beginTaskUpdateHandler(task)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
-              title="Change description"
-            >
-              {/* TODO ability to change the task description and category. */}
-              <Edit className="h-3 w-3" />
-            </button>
-            {task.completedAt ? (
-              <button
-                type="button"
-                onClick={() => toggleCompleteHandler(task)}
-                className="bg-orange-500 hover:bg-orange-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
-                title="Unmark as complete"
-              >
-                <Undo className="h-3 w-3" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => toggleCompleteHandler(task)}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
-                title="Mark as complete"
-              >
-                <Check className="h-3 w-3" />
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => removeTaskHandler(task)}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold lh-1 py-1 px-2 rounded"
-              title="Remove"
-            >
-              <Trash className="h-3 w-3" />
-            </button>
-          </menu>
-          </>)}
+              <b className="text-right w-6">{index}</b>
+              <span className="flex-grow">{task.description}</span>
+              <menu className="flex gap-1 justify-end">
+                {/* TODO see https://v1.tailwindcss.com/components/buttons for implementing button styles. */}
+                <button
+                  type="button"
+                  onClick={() => beginTaskUpdateHandler(task)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
+                  title="Change description"
+                >
+                  <Edit className="h-3 w-3" />
+                </button>
+                {task.completedAt ? (
+                  <button
+                    type="button"
+                    onClick={() => toggleCompleteHandler(task)}
+                    className="bg-orange-500 hover:bg-orange-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
+                    title="Unmark as complete"
+                  >
+                    <Undo className="h-3 w-3" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => toggleCompleteHandler(task)}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold h-6 lh-1 py-1 px-2 rounded"
+                    title="Mark as complete"
+                  >
+                    <Check className="h-3 w-3" />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeTaskHandler(task)}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold lh-1 py-1 px-2 rounded"
+                  title="Remove"
+                >
+                  <Trash className="h-3 w-3" />
+                </button>
+              </menu>
+            </>
+          )}
         </li>
       ))}
     </ol>
