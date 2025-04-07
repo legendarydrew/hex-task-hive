@@ -1,18 +1,30 @@
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AppState, Task, TaskList } from '@/types';
-import { v4 as uuidv4 } from 'uuid';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { AppState, Task, TaskList } from "@/types";
+import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 
 interface AppContextType {
   state: AppState;
   addList: (name: string) => void;
-  updateList: (id: string, data: Partial<Omit<TaskList, 'id' | 'createdAt'>>) => void;
+  updateList: (
+    id: string,
+    data: Partial<Omit<TaskList, "id" | "createdAt">>
+  ) => void;
   deleteList: (id: string) => void;
   setActiveList: (id: string) => void;
   addTask: (description: string, category: string, dueDate?: string) => void;
-  updateTask: (id: string, data: Partial<Omit<Task, 'id' | 'listId' | 'createdAt'>>) => void;
+  updateTask: (
+    id: string,
+    data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
+  ) => void;
   deleteTask: (id: string) => void;
+  shuffleTasks: () => void;
   toggleTaskCompletion: (id: string) => void;
   selectRandomTask: () => Task | null;
   addCategory: (listId: string, category: string) => void;
@@ -21,7 +33,14 @@ interface AppContextType {
 }
 
 // Default categories to use when creating a new list
-const DEFAULT_CATEGORIES = ['work', 'personal', 'health', 'finance', 'education', 'other'];
+const DEFAULT_CATEGORIES = [
+  "work",
+  "personal",
+  "health",
+  "finance",
+  "education",
+  "other",
+];
 
 const initialState: AppState = {
   lists: [],
@@ -29,7 +48,7 @@ const initialState: AppState = {
   activeListId: null,
 };
 
-const LOCAL_STORAGE_KEY = 'hex-task-hive-data';
+const LOCAL_STORAGE_KEY = "hex-task-hive-data";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -40,7 +59,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        
+
         // Handle migration for existing lists without categories
         if (parsedData.lists && parsedData.lists.length > 0) {
           parsedData.lists = parsedData.lists.map((list: any) => ({
@@ -48,10 +67,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             categories: list.categories || [...DEFAULT_CATEGORIES],
           }));
         }
-        
+
         return parsedData;
       } catch (error) {
-        console.error('Failed to parse saved data:', error);
+        console.error("Failed to parse saved data:", error);
         return initialState;
       }
     }
@@ -70,7 +89,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       categories: [...DEFAULT_CATEGORIES], // Initialize with default categories
       createdAt: new Date().toISOString(),
     };
-    
+
     setState((prev) => {
       const newState = {
         ...prev,
@@ -82,25 +101,32 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const updateList = (id: string, data: Partial<Omit<TaskList, 'id' | 'createdAt'>>) => {
+  const updateList = (
+    id: string,
+    data: Partial<Omit<TaskList, "id" | "createdAt">>
+  ) => {
     setState((prev) => ({
       ...prev,
-      lists: prev.lists.map((list) => (list.id === id ? { ...list, ...data } : list)),
+      lists: prev.lists.map((list) =>
+        list.id === id ? { ...list, ...data } : list
+      ),
     }));
     toast.success(`List updated`);
   };
 
   const deleteList = (id: string) => {
     setState((prev) => {
-      const nextActiveListId = prev.lists.length > 1 
-        ? prev.lists.find(list => list.id !== id)?.id || null 
-        : null;
-      
+      const nextActiveListId =
+        prev.lists.length > 1
+          ? prev.lists.find((list) => list.id !== id)?.id || null
+          : null;
+
       return {
         ...prev,
         lists: prev.lists.filter((list) => list.id !== id),
         tasks: prev.tasks.filter((task) => task.listId !== id),
-        activeListId: prev.activeListId === id ? nextActiveListId : prev.activeListId,
+        activeListId:
+          prev.activeListId === id ? nextActiveListId : prev.activeListId,
       };
     });
     toast.success(`List deleted`);
@@ -124,8 +150,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       listId: state.activeListId,
       description,
       category,
-      completed: false,
-      dueDate,
+      completedAt: undefined,
+      pickedAt: undefined,
       createdAt: new Date().toISOString(),
     };
 
@@ -136,10 +162,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     toast.success(`Task added`);
   };
 
-  const updateTask = (id: string, data: Partial<Omit<Task, 'id' | 'listId' | 'createdAt'>>) => {
+  const updateTask = (
+    id: string,
+    data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
+  ) => {
     setState((prev) => ({
       ...prev,
-      tasks: prev.tasks.map((task) => (task.id === id ? { ...task, ...data } : task)),
+      tasks: prev.tasks.map((task) =>
+        task.id === id ? { ...task, ...data } : task
+      ),
     }));
     toast.success(`Task updated`);
   };
@@ -155,27 +186,54 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const toggleTaskCompletion = (id: string) => {
     setState((prev) => ({
       ...prev,
-      tasks: prev.tasks.map((task) => 
-        task.id === id ? { ...task, completed: !task.completed } : task
+      tasks: prev.tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              completedAt: task.completedAt
+                ? undefined
+                : new Date().toISOString(),
+            }
+          : task
       ),
     }));
   };
 
+  const shuffleTasks = () => {
+    let tasks = state.tasks;
+
+    // TODO only shuffle incomplete tasks, leave completed ones in place.
+
+    // https://stackoverflow.com/a/12646864/4073160
+    for (let i = tasks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [tasks[i], tasks[j]] = [tasks[j], tasks[i]];
+    }
+
+    setState((prev) => ({ ...prev, tasks }));
+    toast.info("Tasks have been shuffled.");
+  };
+
   const selectRandomTask = () => {
     if (!state.activeListId) return null;
-    
+
     const listTasks = state.tasks.filter(
-      (task) => task.listId === state.activeListId && !task.completed
+      (task) => task.listId === state.activeListId && !(task.pickedAt || task.completedAt)
     );
-    
+
     if (listTasks.length === 0) {
-      toast.info("No incomplete tasks found in this list");
+      toast.info("No incomplete tasks found in this list.");
       return null;
     }
-    
+
     const randomIndex = Math.floor(Math.random() * listTasks.length);
     const randomTask = listTasks[randomIndex];
-    
+
+    // Mark the task as picked.
+    setState((prev) => ({
+      ...prev,
+      tasks: state.tasks.map((task) => task.id === randomTask.id ? ({...task, pickedAt: new Date().toISOString() }) : task)
+    }));
     toast.success(`Random task selected: ${randomTask.description}`);
     return randomTask;
   };
@@ -200,11 +258,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const removeCategory = (listId: string, category: string) => {
     // First check if any tasks are using this category
     const tasksUsingCategory = state.tasks.some(
-      task => task.listId === listId && task.category === category
+      (task) => task.listId === listId && task.category === category
     );
 
     if (tasksUsingCategory) {
-      toast.error(`Cannot remove category "${category}" because tasks are using it`);
+      toast.error(
+        `Cannot remove category "${category}" because tasks are using it`
+      );
       return;
     }
 
@@ -240,6 +300,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateTask,
         deleteTask,
         toggleTaskCompletion,
+        shuffleTasks,
         selectRandomTask,
         addCategory,
         removeCategory,
@@ -254,7 +315,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 export const useApp = () => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error('useApp must be used within an AppProvider');
+    throw new Error("useApp must be used within an AppProvider");
   }
   return context;
 };

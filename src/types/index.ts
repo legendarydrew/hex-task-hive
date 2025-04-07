@@ -6,9 +6,9 @@ export interface Task {
   listId: string;
   description: string;
   category: string; // Changed from Category type to string to support custom categories
-  completed: boolean;
-  dueDate?: string; // ISO date string
   createdAt: string; // ISO date string
+  pickedAt?: string; // ISO date string
+  completedAt?: string; // ISO date string
 }
 
 export interface TaskList {

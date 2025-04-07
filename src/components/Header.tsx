@@ -2,12 +2,12 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useApp } from '@/context/AppContext';
-import { PlusCircle, Shuffle } from 'lucide-react';
+import { PlusCircle, Shuffle, StickyNote } from 'lucide-react';
 import { TaskDialog } from './TaskDialog';
 import { ListDialog } from './ListDialog';
 
 export const Header = () => {
-  const { state, selectRandomTask } = useApp();
+  const { state, selectRandomTask, shuffleTasks } = useApp();
   const [isListDialogOpen, setIsListDialogOpen] = React.useState(false);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
@@ -36,13 +36,13 @@ export const Header = () => {
           </Button>
           
           <Button
-            variant="outline"
-            onClick={() => setIsTaskDialogOpen(true)}
-            className="flex items-center gap-1"
+            variant="secondary"
+            onClick={shuffleTasks}
             disabled={!state.activeListId}
+            className="flex items-center gap-1"
           >
-            <PlusCircle className="h-4 w-4" />
-            <span>New Task</span>
+            <Shuffle className="h-4 w-4" />
+            <span>Shuffle Tasks</span>
           </Button>
           
           <Button
@@ -51,14 +51,14 @@ export const Header = () => {
             disabled={!state.activeListId}
             className="flex items-center gap-1"
           >
-            <Shuffle className="h-4 w-4" />
+            <StickyNote className="h-4 w-4" />
             <span>Random Task</span>
           </Button>
         </div>
       </div>
       
       <TaskDialog 
-        open={isTaskDialogOpen || selectedTask !== null} 
+        open={isTaskDialogOpen} 
         onOpenChange={(open) => {
           setIsTaskDialogOpen(open);
           if (!open) setSelectedTask(null);
