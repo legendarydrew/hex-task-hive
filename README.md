@@ -32,9 +32,28 @@ Lovable built this project with:
 - Ability to manage multiple lists of tasks (e.g. for different projects).
 - Tasks are represented as a hexagonal grid, with each task represented by a hexagonal token.
 - Tasks can be easily created, updated and removed.
-- The list of tasks can be shuffled, *provided* none have been completed yet.
+- The list of tasks can be shuffled, *provided* the tasks have not been completed or picked yet.
 - Lists of tasks can have configurable categories.
 - An incomplete task can be picked at random.
 - Tasks can be marked as complete, with the date of completion.
 - Tasks can be categorised.
 - A progress bar displays the ratio of completed tasks.
+
+## Bonus tasks
+- [Function] A reset button, which clears picked and completed statuses. (Useful for starting over.)
+- [Function] A dialog for displaying the picked/completed dates for the active task list.
+- [Function] Perhaps display a line chart on said dialog.
+- [Function] Export information as text.
+- [Function] Ability to edit task lists (including categories).
+- [Function] Ability to remove task lists.
+- [Function] Click on a rune token to mark as complete.
+- [Function] Display the task description when hovering over a rune token.
+- [Style] Arrange the rune tokens as a hexagonal grid.
+- [Style] Use the Cooper Hewitt fount for the rune tokens.
+- [Style] Change the colour of rune tokens based on the associated task's category.
+- [Style] Fix the height of the interface to prevent vertical scrolling if unnecessary.
+- [Style] Watch out for colour contrasts.
+- [Style] Set Tailwind theme colours.
+- [Style] Create your own button variants.
+- [Style] Add a favicon!
+- [Style] Progress bar turns green on completion.
