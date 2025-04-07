@@ -1,7 +1,6 @@
 import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
 import { Check, Undo, Trash, Edit } from "lucide-react";
-import "./TaskList.scss";
 import TaskListUpdate from "./TaskListUpdate";
 import { useState } from "react";
 /**
