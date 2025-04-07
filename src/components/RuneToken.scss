@@ -25,6 +25,10 @@
     height: var(--rune-size);
     width: var(--rune-size);
 
+    &:not(.complete,.picked) {
+        opacity: 0.4;
+    }
+
     // Pseudo-elements for the hexagon shape.
     &::before,
     &::after {
@@ -54,9 +58,23 @@
         z-index: 1;
     }
 
-    &:focus,
-    &:hover {
-        filter: brightness(110%);
+    &:not(.complete) {
+        &:focus,
+        &:hover {
+            filter: brightness(110%);
+        }
+    }
+
+    &.picked {
+        &::before {
+            background-color: chocolate;
+        }
+    }
+
+    &.complete {
+        &::before {
+            background-color: green;
+        }
     }
 }
 

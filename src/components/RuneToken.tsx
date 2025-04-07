@@ -10,8 +10,26 @@ export default function RuneToken(props) {
     props.onClick && props.onClick(props.task);
   }
 
+  function wasPicked(): boolean {
+    return !!props.task.pickedAt;
+  }
+
+  function isComplete(): boolean {
+    return !!props.task.completedAt;
+  }
+
+  function runeClasses(): string {
+    const classes = ['rune-token'];
+    if (isComplete()) {
+      classes.push('complete');
+    } else if (wasPicked()) {
+      classes.push('picked');
+    }
+    return classes.join(' ');
+  }
+
   return (
-    <button type="button" className="rune-token" onClick={clickHandler}>
+    <button type="button" className={runeClasses()} onClick={clickHandler}>
       <span className="rune-token-number">{props.taskId}</span>
     </button>
   );
