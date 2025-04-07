@@ -40,10 +40,10 @@ export default function TaskAdd() {
   }
 
   return (
-    <form onSubmit={createTaskHandler} className="flex -mx-1">
-      <div className="w-1/4 px-1">
+    <form onSubmit={createTaskHandler} className="flex align-items-center p-1 gap-1">
+      <div className="w-1/4">
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger id="category">
+          <SelectTrigger className="h-8 text-sm" id="category">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -56,8 +56,9 @@ export default function TaskAdd() {
         </Select>
       </div>
 
-      <div className="flex-1 px-1">
+      <div className="flex-1">
         <Input
+         className="h-8 text-sm"
           ref={inputField}
           type="text"
           value={description}
@@ -67,11 +68,9 @@ export default function TaskAdd() {
         />
       </div>
 
-      <div className="px-1">
-        <Button type="submit" variant="default" size="sm">
-          Add
-        </Button>
-      </div>
+      <Button className="h-8" type="submit" variant="default" size="sm">
+        Add
+      </Button>
     </form>
   );
 }

@@ -36,14 +36,14 @@ export default function TaskList(props) {
   };
 
   return (
-    <ol className="task-list">
+    <ol className="w-full p-1 text-sm">
       {activeTasks.map((task: Task, index) => (
-        <li className="task-list-item items-center" key={index}>
+        <li className="task-list-item items-center hover:bg-blue-200 select-none" key={index}>
           { taskForEdit === task ? (
             <TaskListUpdate task={task} onClose={closeUpdateHandler} />
           ) : (
             <>
-          <b className="task-list-item-number">{index}</b>
+          <b className="text-right w-6">{index}</b>
           <span className="task-list-item-text">{task.description}</span>
           <menu className="task-list-item-actions">
             {/* TODO see https://v1.tailwindcss.com/components/buttons for implementing button styles. */}

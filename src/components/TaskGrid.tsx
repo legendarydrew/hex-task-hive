@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import RuneToken from "./RuneToken";
-import TaskList from "./TaskList";
-import TaskAdd from "./TaskAdd";
 
 const TaskGrid = () => {
-  const { state, toggleTaskCompletion } = useApp();
+  const { state } = useApp();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
@@ -21,7 +19,7 @@ const TaskGrid = () => {
     : null;
 
   function taskClickHandler(e) {
-    console.log('taskClickHandler', e);
+    console.log("taskClickHandler", e);
   }
 
   // Get category color class
@@ -84,11 +82,11 @@ const TaskGrid = () => {
   }, [highlightedId, activeTasks]);
 
   return (
-    <div className="flex-1 p-6 overflow-auto">
+    <div className="flex p-3 overflow-auto">
       {!state.activeListId ? (
         <div className="flex flex-col items-center justify-center h-full text-center">
           <h2 className="text-2xl font-bold text-muted-foreground mb-2">
-            Welcome to Hex Task Hive
+            Welcome to Task Hive!
           </h2>
           <p className="text-muted-foreground max-w-md">
             Select a list from the sidebar or create a new list to get started.
@@ -104,22 +102,16 @@ const TaskGrid = () => {
           </p>
         </div>
       ) : (
-        <>
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold">
-              {activeList?.name || "Tasks"}
-            </h2>
-          </div>
-
-          <div className="hexagon-grid">
-            {activeTasks.map((task, index) => (
-              <RuneToken key={task.id} taskId={index} task={task} onClick={taskClickHandler}></RuneToken>
-            ))}
-          </div>
-
-          <TaskList />
-          <TaskAdd />
-        </>
+        <div className="flex justify-center flex-wrap gap-2">
+          {activeTasks.map((task, index) => (
+            <RuneToken
+              key={task.id}
+              taskId={index}
+              task={task}
+              onClick={taskClickHandler}
+            ></RuneToken>
+          ))}
+        </div>
       )}
 
       <TaskDialog
