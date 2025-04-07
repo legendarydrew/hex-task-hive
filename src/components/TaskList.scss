@@ -1,12 +1,9 @@
 .task-list {
-    // Divide the list of tasks into two columns.
-    column-count: 3;
-    font-size: 80%;
-    margin: 0.5rem 0;
-    width: 100%;
+    // // Divide the list of tasks into two columns.
+    // column-count: 3;
 
-    max-height: 10rem;
-    overflow-y: auto;
+    // max-height: 10rem;
+    // overflow-y: auto;
 }
 
 .task-list-item {
@@ -14,10 +11,6 @@
     display: flex;
     gap: 0.5em;
     padding: 0.2rem;
-
-    &:hover {
-        background: #DDD;
-    }
 }
 
 .task-list-item-number {
