@@ -130,7 +130,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           prev.activeListId === id ? nextActiveListId : prev.activeListId,
       };
     });
-    toast.success(`List deleted`);
+    toast.success(`List deleted.`);
   };
 
   const setActiveList = (id: string) => {

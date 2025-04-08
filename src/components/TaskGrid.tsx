@@ -13,11 +13,6 @@ const TaskGrid = () => {
     ? state.tasks.filter((task) => task.listId === state.activeListId)
     : [];
 
-  // Get active list
-  const activeList = state.activeListId
-    ? state.lists.find((list) => list.id === state.activeListId)
-    : null;
-
   function taskClickHandler(e) {
     console.log("taskClickHandler", e);
   }
