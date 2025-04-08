@@ -23,9 +23,9 @@ interface ListDialogProps {
 
 export const ListResetDialog: React.FC<ListDialogProps> = ({
   open,
-  onOpenChange
+  onOpenChange,
 }) => {
-  const { state } = useApp();
+  const { state, resetTasks } = useApp();
 
   const activeListId = state.activeListId;
 
@@ -41,7 +41,7 @@ export const ListResetDialog: React.FC<ListDialogProps> = ({
 
   const confirmHandler = () => {
     if (activeListId) {
-
+      resetTasks(activeListId);
     }
     onOpenChange(false);
   };
