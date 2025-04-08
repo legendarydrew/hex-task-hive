@@ -90,19 +90,17 @@ export default function TaskListUpdate(props: {
 
       <div className="flex gap-1">
         <Button
-          className="h-6 w-6"
           type="submit"
           variant="default"
-          size="sm"
+          size="icon"
           title="Confirm edit"
         >
           <Check className="h-2 w-2" />
         </Button>
         <Button
-          className="h-6 w-6"
           type="reset"
           variant="destructive"
-          size="sm"
+          size="icon"
           title="Cancel edit"
         >
           <X className="h-2 w-2" />
