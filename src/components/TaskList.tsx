@@ -44,7 +44,7 @@ export default function TaskList(props) {
   };
 
   return (
-    <ol className="bg-white w-full p-1 text-sm">
+    <ol className="w-full p-1 text-sm">
       {activeTasks.map((task: Task, index) => (
         <li
           className={
