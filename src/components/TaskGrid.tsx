@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  createRef,
+} from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import RuneToken from "./RuneToken";
 
 const TaskGrid = () => {
   const { state } = useApp();
+  const [maxTokensAcross, setMaxTokensAcross] = useState<number>(1);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const [gridBreakpoints, setGridBreakpoints] = useState<number[]>([]);
+  const [gridIsEvenWidth, setGridIsEvenWidth] = useState<boolean>(false);
 
   // Filter tasks for the active list
   const activeTasks = state.activeListId
@@ -16,38 +23,6 @@ const TaskGrid = () => {
   function taskClickHandler(e) {
     console.log("taskClickHandler", e);
   }
-
-  // Get category color class
-  const getCategoryColorClass = (category: string) => {
-    const normalizedCategory = category.toLowerCase();
-
-    switch (normalizedCategory) {
-      case "work":
-        return "bg-hexagon-blue";
-      case "personal":
-        return "bg-hexagon-purple";
-      case "health":
-        return "bg-hexagon-green";
-      case "finance":
-        return "bg-hexagon-yellow";
-      case "education":
-        return "bg-hexagon-orange";
-      default:
-        // Generate a deterministic color based on category name
-        const hash = normalizedCategory
-          .split("")
-          .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const colors = [
-          "bg-sky-600",
-          "bg-emerald-600",
-          "bg-amber-600",
-          "bg-rose-600",
-          "bg-violet-600",
-          "bg-teal-600",
-        ];
-        return colors[hash % colors.length];
-    }
-  };
 
   const handleHighlight = (id: string | null) => {
     setHighlightedId(id);
@@ -76,8 +51,56 @@ const TaskGrid = () => {
     }
   }, [highlightedId, activeTasks]);
 
+  /**
+   * To arrange the tokens as a hexagonal grid, we will need:
+   * - the width of the container;
+   * - the width of a token.
+   * This should work because the grid is only visible when there's at least one task.
+   * http://stackoverflow.com/questions/58222004/ddg#58222325
+   */
+  const tokenGrid = createRef();
+
+  // This effect is called when we have a reference to the token grid element.
+  useEffect(() => {
+      if (tokenGrid.current !== null) {
+        // Observe resize changes to the token grid container. (What a headache to find an answer for.)
+        // https://www.reddit.com/r/reactjs/comments/lz3o9t/comment/gqgf486/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+        // https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API
+        const node: HTMLDivElement = (tokenGrid.current as HTMLDivElement);
+        const observer = new ResizeObserver(() => {
+          const gridWidth = node.getBoundingClientRect().width;
+          const tokenWidth = node.children
+            .item(0)
+            .getBoundingClientRect().width;
+          const tokensAcross = Math.floor(gridWidth / tokenWidth);
+          setMaxTokensAcross(tokensAcross);
+          setGridIsEvenWidth(tokensAcross % 2 === 0);
+        });
+        observer.observe(node);
+        return () => {
+          observer.disconnect();
+        };
+      }
+    },
+    [tokenGrid]
+  );
+
+  // This effect is called when the maximum number of tokens across changes.
+  useEffect(() => {
+    const breakpoints = [];
+    const increment = maxTokensAcross * 2 - 1;
+    for (let i = -1; i < activeTasks.length; i += increment) {
+      if (i >= 0) {
+        breakpoints.push(i);
+      }
+    }
+    // "Stray" tokens at the end of the list are handled in the stylesheet.
+
+    setGridBreakpoints(breakpoints);
+  }, [maxTokensAcross]);
+
   return (
-    <div className="flex p-3 overflow-auto h-full">
+    <div className="flex p-3 overflow-auto">
       {!state.activeListId ? (
         <div className="flex flex-col items-center justify-center w-full h-full text-center">
           <h2 className="text-2xl font-bold text-muted-foreground mb-2">
@@ -97,14 +120,21 @@ const TaskGrid = () => {
           </p>
         </div>
       ) : (
-        <div className="flex justify-center flex-wrap gap-2">
-          {activeTasks.map((task, index) => (
-            <RuneToken
-              key={task.id}
-              taskId={index}
-              task={task}
-              onClick={taskClickHandler}
-            ></RuneToken>
+        <div
+          ref={tokenGrid}
+          className={"flex justify-center flex-wrap w-full h-auto " + (gridIsEvenWidth ? 'even-width' : 'odd-width')}
+        >
+          {activeTasks.map((task, index: number) => (
+            <>
+              <RuneToken
+                taskId={index}
+                task={task}
+                onClick={taskClickHandler}
+              ></RuneToken>
+              {gridBreakpoints.includes(index) ? (
+                <span className="block w-full h-0" />
+              ) : null}
+            </>
           ))}
         </div>
       )}
