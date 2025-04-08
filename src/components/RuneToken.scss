@@ -5,6 +5,8 @@
 @tailwind components;
 @tailwind utilities;
 
+$rune-size: 6em;
+
 @mixin vertical-hexagon {
   clip-path: polygon(
     #{math.sin(0) * 50 + 50%} #{math.cos(0) * 50 + 50%},
@@ -17,9 +19,10 @@
 }
 
 .rune-token {
-  --rune-size: 6em;
   --rune-text-size: 1.5rem;
   --rune-border-width: 0.25em;
+  
+  $rune-spacing: $rune-size - math.sin(60deg) * $rune-size;
 
   @apply text-task-base-text;
 
@@ -29,8 +32,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  height: var(--rune-size);
-  width: var(--rune-size);
+  height: $rune-size;
+  width: $rune-size;
+  margin: math.div(-$rune-spacing, 2) 0;
 
   &:not(.complete, .picked) {
     opacity: 0.4;
@@ -98,4 +102,10 @@
   font-weight: bold;
   text-align: center;
   z-index: 2;
+}
+
+// This takes care of positioning the bottom row of runes to match the grid.
+.odd-width .rune-token:last-child:nth-child(even),
+.even-width .rune-token:last-child:nth-child(odd) {
+  margin-right: $rune-size;
 }
