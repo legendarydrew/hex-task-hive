@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import RuneToken from "./RuneToken";
 
 const TaskGrid = () => {
   const { state } = useApp();
+  const [maxTokensAcross, setMaxTokensAcross] = useState<number>(1);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
@@ -16,38 +17,6 @@ const TaskGrid = () => {
   function taskClickHandler(e) {
     console.log("taskClickHandler", e);
   }
-
-  // Get category color class
-  const getCategoryColorClass = (category: string) => {
-    const normalizedCategory = category.toLowerCase();
-
-    switch (normalizedCategory) {
-      case "work":
-        return "bg-hexagon-blue";
-      case "personal":
-        return "bg-hexagon-purple";
-      case "health":
-        return "bg-hexagon-green";
-      case "finance":
-        return "bg-hexagon-yellow";
-      case "education":
-        return "bg-hexagon-orange";
-      default:
-        // Generate a deterministic color based on category name
-        const hash = normalizedCategory
-          .split("")
-          .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const colors = [
-          "bg-sky-600",
-          "bg-emerald-600",
-          "bg-amber-600",
-          "bg-rose-600",
-          "bg-violet-600",
-          "bg-teal-600",
-        ];
-        return colors[hash % colors.length];
-    }
-  };
 
   const handleHighlight = (id: string | null) => {
     setHighlightedId(id);
@@ -76,8 +45,22 @@ const TaskGrid = () => {
     }
   }, [highlightedId, activeTasks]);
 
+  /**
+   * To arrange the tokens as a hexagonal grid, we will need:
+   * - the width of the container;
+   * - the width of a token.
+   */
+  const tokenGrid = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      const gridWidth = node.getBoundingClientRect().width;
+      const tokenWidth = node.children.item(0).getBoundingClientRect().width;
+      setMaxTokensAcross(Math.floor(gridWidth / tokenWidth));
+      console.log('max. number of tokens across', maxTokensAcross);
+    }
+  }, []);
+
   return (
-    <div className="flex p-3 overflow-auto h-full">
+    <div className="flex p-3 overflow-auto">
       {!state.activeListId ? (
         <div className="flex flex-col items-center justify-center w-full h-full text-center">
           <h2 className="text-2xl font-bold text-muted-foreground mb-2">
@@ -97,7 +80,7 @@ const TaskGrid = () => {
           </p>
         </div>
       ) : (
-        <div className="flex justify-center flex-wrap gap-2">
+        <div ref={tokenGrid} className="flex justify-center flex-wrap h-auto">
           {activeTasks.map((task, index) => (
             <RuneToken
               key={task.id}
