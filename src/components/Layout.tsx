@@ -4,6 +4,7 @@ import TaskGrid from "./TaskGrid";
 import TaskList from "./TaskList";
 import TaskAdd from "./TaskAdd";
 import TaskListProgress from "./TaskListProgress";
+import { useApp } from "@/context/AppContext";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -12,6 +13,8 @@ import TaskListProgress from "./TaskListProgress";
  * a dropdown list in the header.
  */
 export const Layout = () => {
+  const { state } = useApp();
+
   return (
     <div className="h-screen flex flex-col bg-background">
       <Header />
@@ -24,12 +27,14 @@ export const Layout = () => {
           <TaskGrid />
         </div>
 
-        <aside className="sm:w-1/3 flex-shrink-0 flex flex-col">
-          <div className="flex-grow overflow-y-auto">
-            <TaskList />
-          </div>
-          <TaskAdd />
-        </aside>
+        {state.activeListId && (
+          <aside className="bg-white sm:w-1/3 flex-shrink-0 flex flex-col">
+            <div className="flex-grow overflow-y-auto">
+              <TaskList />
+            </div>
+            <TaskAdd />
+          </aside>
+        )}
       </main>
 
       <Footer />

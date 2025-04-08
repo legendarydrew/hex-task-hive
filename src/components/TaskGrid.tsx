@@ -77,23 +77,23 @@ const TaskGrid = () => {
   }, [highlightedId, activeTasks]);
 
   return (
-    <div className="flex p-3 overflow-auto">
+    <div className="flex p-3 overflow-auto h-full">
       {!state.activeListId ? (
-        <div className="flex flex-col items-center justify-center h-full text-center">
+        <div className="flex flex-col items-center justify-center w-full h-full text-center">
           <h2 className="text-2xl font-bold text-muted-foreground mb-2">
             Welcome to Task Hive!
           </h2>
           <p className="text-muted-foreground max-w-md">
-            Select a list from the sidebar or create a new list to get started.
+            Select a list from the header, or create a new list to get started.
           </p>
         </div>
       ) : activeTasks.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full text-center">
+        <div className="flex flex-col items-center justify-center w-full h-full text-center">
           <h2 className="text-xl font-bold text-muted-foreground mb-2">
-            No tasks in this list
+            No tasks in this list...
           </h2>
           <p className="text-muted-foreground max-w-md">
-            Create your first task by clicking the "New Task" button above.
+            Create your first task in the list to your right.
           </p>
         </div>
       ) : (
