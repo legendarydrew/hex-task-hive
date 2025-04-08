@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
-import { Hexagon, PlusCircle, Shuffle, StickyNote } from "lucide-react";
+import { Hexagon, PlusCircle, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { TaskDialog } from "./TaskDialog";
 import { ListDialog } from "./ListDialog";
 import {
@@ -66,6 +66,14 @@ export const Header = () => {
         </div>
 
         <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
+          <Button
+            variant="destructive"
+            disabled={!state.activeListId}
+            title="Reset Tasks"
+          >
+            <UndoDot className="h-4 w-4" />
+          </Button>
+
           <Button
             variant="secondary"
             onClick={shuffleTasks}
