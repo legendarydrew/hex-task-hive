@@ -96,7 +96,6 @@ export default function TaskList(props) {
                   variant="destructive"
                   size="icon"
                   onClick={() => removeTaskHandler(task)}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold lh-1 py-1 px-2 rounded"
                   title="Remove"
                 >
                   <Trash className="h-3 w-3" />
