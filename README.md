@@ -53,7 +53,5 @@ Lovable built this project with:
 - [Style] Change the colour of rune tokens based on the associated task's category.
 - [Style] Fix the height of the interface to prevent vertical scrolling if unnecessary.
 - [Style] Watch out for colour contrasts.
-- [Style] Set Tailwind theme colours.
-- [Style] Create your own button variants.
 - [Style] Add a favicon!
 - [Style] Progress bar turns green on completion.

@@ -25,6 +25,7 @@ interface AppContextType {
   ) => void;
   deleteTask: (id: string) => void;
   shuffleTasks: () => void;
+  resetTasks: (listId: string) => void;
   toggleTaskCompletion: (id: string) => void;
   selectRandomTask: () => Task | null;
   addCategory: (listId: string, category: string) => void;
@@ -264,6 +265,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return randomTask;
   };
 
+  /**
+   * Reset the picked and completed state of all tasks for the specified list.
+   */
+  const resetTasks = (listId: string) => {
+    setState((prev) => ({
+      ...prev,
+      tasks: state.tasks
+        .filter((task) => task.listId === listId)
+        .map((task) => ({
+          ...task,
+          pickedAt: undefined,
+          completedAt: undefined,
+        })),
+    }));
+    toast.info("Tasks were reset.");
+  };
+
   // New functions for managing categories
   const addCategory = (listId: string, category: string) => {
     setState((prev) => ({
@@ -327,6 +345,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         deleteTask,
         toggleTaskCompletion,
         shuffleTasks,
+        resetTasks,
         selectRandomTask,
         addCategory,
         removeCategory,

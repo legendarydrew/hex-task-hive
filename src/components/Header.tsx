@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
-import { Hexagon, PlusCircle, Shuffle, StickyNote } from "lucide-react";
+import { Hexagon, PlusCircle, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { TaskDialog } from "./TaskDialog";
 import { ListDialog } from "./ListDialog";
 import {
@@ -11,10 +11,12 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { ListResetDialog } from "./ListResetDialog";
 
 export const Header = () => {
   const { state, setActiveList, selectRandomTask, shuffleTasks } = useApp();
   const [isListDialogOpen, setIsListDialogOpen] = React.useState(false);
+  const [isListResetDialogOpen, setIsListResetDialogOpen] = React.useState(false);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
 
@@ -67,6 +69,15 @@ export const Header = () => {
 
         <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
           <Button
+            variant="destructive"
+            disabled={!state.activeListId}
+            onClick={() => setIsListResetDialogOpen(true)}
+            title="Reset Tasks"
+          >
+            <UndoDot className="h-4 w-4" />
+          </Button>
+
+          <Button
             variant="secondary"
             onClick={shuffleTasks}
             disabled={!state.activeListId}
@@ -98,6 +109,7 @@ export const Header = () => {
       />
 
       <ListDialog open={isListDialogOpen} onOpenChange={setIsListDialogOpen} />
+      <ListResetDialog open={isListResetDialogOpen} onOpenChange={setIsListResetDialogOpen} />
     </header>
   );
 };
