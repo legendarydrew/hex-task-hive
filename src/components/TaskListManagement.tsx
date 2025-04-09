@@ -15,7 +15,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { List, MoreHorizontal, Trash2 } from "lucide-react";
+import { List, ListCheckIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ListDialog } from "./ListDialog";
 import { ListDeleteDialog } from "./ListDeleteDialog";
@@ -30,6 +30,7 @@ export default function TaskListManagement() {
   const [isListDialogOpen, setIsListDialogOpen] = useState(false);
   const [isListDeleteDialogOpen, setIsListDeleteDialogOpen] = useState(false);
   const [listToDelete, setListToDelete] = useState<string | null>(null);
+  const [listToDisplay, setListToDisplay] = useState<string | null>(null);
 
   const taskLists = state.lists;
 
@@ -66,6 +67,10 @@ export default function TaskListManagement() {
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
               </DropdownMenuItem> */}
+              <DropdownMenuItem onClick={() => setListToDisplay(state.activeListId)}>
+                <ListCheckIcon className="h-4 w-4 mr-2" />
+                Display Stats
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={deleteListHandler}>
                 <Trash2 className="h-4 w-4 mr-2" />
                 Delete
