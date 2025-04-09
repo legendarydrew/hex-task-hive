@@ -97,7 +97,6 @@ $rune-size: 6em;
 }
 
 // This takes care of positioning the bottom row of runes to match the grid.
-.odd-width .rune-token:last-child:nth-child(even),
-.even-width .rune-token:last-child:nth-child(odd) {
+.offset-last-row .rune-token:last-child {
   margin-right: $rune-size;
 }
