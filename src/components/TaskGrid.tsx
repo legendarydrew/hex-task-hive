@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef } from "react";
+import { useState, useEffect, createRef, Fragment } from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
 import { RuneToken } from "./RuneToken";
@@ -116,12 +116,15 @@ const TaskGrid = () => {
           }
         >
           {activeTasks.map((task, index: number) => (
-            <>
+            <Fragment key={index}>  
               <RuneToken taskNumber={index} task={task}></RuneToken>
               {gridBreakpoints.includes(index) ? (
                 <span className="block w-full h-0" />
               ) : null}
-            </>
+            </Fragment>
+            // <Fragment />, <React.Fragment /> and <> are the equivalent of Angular's <ng-template>.
+            // We have to use <Fragment /> here so we can use the key property.
+            // https://www.designcise.com/web/tutorial/how-to-add-a-key-to-an-empty-tag-in-react
           ))}
         </div>
       )}
