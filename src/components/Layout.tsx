@@ -3,7 +3,7 @@ import { Footer } from "./Footer";
 import TaskGrid from "./TaskGrid";
 import TaskList from "./TaskList";
 import TaskAdd from "./TaskAdd";
-import TaskListProgress from "./TaskListProgress";
+import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 
 /**
@@ -19,17 +19,17 @@ export const Layout = () => {
     <div className="h-screen flex flex-col bg-background">
       <Header />
 
-      <TaskListProgress />
+      <TaskListProgressBar />
 
       {/* TODO why is this height bigger then intended? */}
-      <main className="container mx-auto my-2 flex flex-col sm:flex-row h-full items-stretch">
+      <main className="container mx-auto mb-2 flex flex-col sm:flex-row h-full items-stretch">
         <div className="flex-grow overflow-y-auto">
           <TaskGrid />
         </div>
 
         {state.activeListId && (
           <aside className="bg-white sm:w-1/3 flex-shrink-0 flex flex-col">
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex-grow overflow-y-auto h-full">
               <TaskList />
             </div>
             <TaskAdd />

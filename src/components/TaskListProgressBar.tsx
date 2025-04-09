@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
  * A simple component for displaying a task completion progress bar.
  */
 
-export default function TaskListProgress() {
+export default function TaskListProgressBar() {
   const { state } = useApp();
 
   const activeTasks: Task[] = state.activeListId
