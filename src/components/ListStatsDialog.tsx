@@ -37,24 +37,28 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px]">
+      <DialogContent className="sm:max-w-[700px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Statistics for {activeList?.name}</DialogTitle>
         </DialogHeader>
 
         <div className="max-h-[60vh] overflow-y-auto">
-          <table className="table table.fixed w-full">
-            <thead className="text-xs">
-              <tr className="border-b-2">
-                <th className="text-left" scope="col">Task</th>
+          <table className="table w-full">
+            <thead>
+              <tr className="text-xs sticky top-0 bg-background border-b-2">
+                <th className="text-right px-1 w-4" scope="col">#</th>
+                <th className="text-left px-1" scope="col">Task</th>
                 <th className="w-[10em]" scope="col">picked on</th>
                 <th className="w-[10em]" scope="col">completed at</th>
               </tr>
             </thead>
             <tbody className="text-sm">
-              {activeListTasks.map((task) => (
-                <tr className="hover:bg-gray-200">
-                  <th className="text-left font-bold" scope="row">
+              {activeListTasks.map((task, index) => (
+                <tr className="hover:bg-gray-200" key={index}>
+                  <th className="text-right font-bold px-1 w-4" scope="row">
+                    {index}
+                  </th>
+                  <th className="text-left font-bold px-1" scope="row">
                     {task.description}
                   </th>
                   <td className="text-center">{task.pickedAt ? formatDate(task.pickedAt) : "-"}</td>
