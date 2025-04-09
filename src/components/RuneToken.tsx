@@ -1,36 +1,44 @@
+import React from "react";
+import { Task } from "@/types";
+import { useApp } from "@/context/AppContext";
+import "./RuneToken.scss";
+
+interface RuneTokenProps {
+  taskNumber: number | string;
+  task: Task;
+}
+
 /**
  * A component representing a task as a "rune token".
  * The colour of the token (background or text?) will be determined by the task list's palette.
  */
 
-import "./RuneToken.scss";
+export const RuneToken: React.FC<RuneTokenProps> = ({ task, taskNumber }) => {
+  const { toggleTaskCompletion } = useApp();
 
-export default function RuneToken(props) {
-  function clickHandler() {
-    props.onClick && props.onClick(props.task);
-  }
+  const wasPicked = (): boolean => {
+    return !!task.pickedAt;
+  };
 
-  function wasPicked(): boolean {
-    return !!props.task.pickedAt;
-  }
+  const isComplete = (): boolean => {
+    return !!task.completedAt;
+  };
 
-  function isComplete(): boolean {
-    return !!props.task.completedAt;
-  }
+  const runeClasses = (): string => {
+    // I prefer the array method, but was told (read: beaten over the head with an AI-generated solution)
+    // that this string method was "better". Do you agree?
+    return `rune-token${wasPicked() ? " picked" : ""}${
+      isComplete() ? " complete" : ""
+    }`;
+  };
 
-  function runeClasses(): string {
-    const classes = ['rune-token'];
-    if (isComplete()) {
-      classes.push('complete');
-    } else if (wasPicked()) {
-      classes.push('picked');
-    }
-    return classes.join(' ');
-  }
+  const clickHandler = (): void => {
+    toggleTaskCompletion(task.id);
+  };
 
   return (
     <button type="button" className={runeClasses()} onClick={clickHandler}>
-      <span className="rune-token-number">{props.taskId}</span>
+      <span className="rune-token-number">{taskNumber}</span>
     </button>
   );
-}
+};

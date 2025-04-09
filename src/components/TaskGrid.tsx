@@ -1,11 +1,7 @@
-import {
-  useState,
-  useEffect,
-  createRef,
-} from "react";
+import { useState, useEffect, createRef } from "react";
 import { useApp } from "@/context/AppContext";
 import { TaskDialog } from "./TaskDialog";
-import RuneToken from "./RuneToken";
+import { RuneToken } from "./RuneToken";
 
 const TaskGrid = () => {
   const { state } = useApp();
@@ -19,10 +15,6 @@ const TaskGrid = () => {
   const activeTasks = state.activeListId
     ? state.tasks.filter((task) => task.listId === state.activeListId)
     : [];
-
-  function taskClickHandler(e) {
-    console.log("taskClickHandler", e);
-  }
 
   const handleHighlight = (id: string | null) => {
     setHighlightedId(id);
@@ -62,28 +54,24 @@ const TaskGrid = () => {
 
   // This effect is called when we have a reference to the token grid element.
   useEffect(() => {
-      if (tokenGrid.current !== null) {
-        // Observe resize changes to the token grid container. (What a headache to find an answer for.)
-        // https://www.reddit.com/r/reactjs/comments/lz3o9t/comment/gqgf486/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-        // https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API
-        const node: HTMLDivElement = (tokenGrid.current as HTMLDivElement);
-        const observer = new ResizeObserver(() => {
-          const gridWidth = node.getBoundingClientRect().width;
-          const tokenWidth = node.children
-            .item(0)
-            .getBoundingClientRect().width;
-          const tokensAcross = Math.floor(gridWidth / tokenWidth);
-          setMaxTokensAcross(tokensAcross);
-          setGridIsEvenWidth(tokensAcross % 2 === 0);
-        });
-        observer.observe(node);
-        return () => {
-          observer.disconnect();
-        };
-      }
-    },
-    [tokenGrid]
-  );
+    if (tokenGrid.current !== null) {
+      // Observe resize changes to the token grid container. (What a headache to find an answer for.)
+      // https://www.reddit.com/r/reactjs/comments/lz3o9t/comment/gqgf486/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+      // https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API
+      const node: HTMLDivElement = tokenGrid.current as HTMLDivElement;
+      const observer = new ResizeObserver(() => {
+        const gridWidth = node.getBoundingClientRect().width;
+        const tokenWidth = node.children.item(0).getBoundingClientRect().width;
+        const tokensAcross = Math.floor(gridWidth / tokenWidth);
+        setMaxTokensAcross(tokensAcross);
+        setGridIsEvenWidth(tokensAcross % 2 === 0);
+      });
+      observer.observe(node);
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [tokenGrid]);
 
   // This effect is called when the maximum number of tokens across changes.
   useEffect(() => {
@@ -122,15 +110,14 @@ const TaskGrid = () => {
       ) : (
         <div
           ref={tokenGrid}
-          className={"flex justify-center flex-wrap w-full h-auto " + (gridIsEvenWidth ? 'even-width' : 'odd-width')}
+          className={
+            "flex justify-center flex-wrap w-full h-auto " +
+            (gridIsEvenWidth ? "even-width" : "odd-width")
+          }
         >
           {activeTasks.map((task, index: number) => (
             <>
-              <RuneToken
-                taskId={index}
-                task={task}
-                onClick={taskClickHandler}
-              ></RuneToken>
+              <RuneToken taskNumber={index} task={task}></RuneToken>
               {gridBreakpoints.includes(index) ? (
                 <span className="block w-full h-0" />
               ) : null}

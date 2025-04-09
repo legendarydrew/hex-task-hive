@@ -40,15 +40,11 @@ Lovable built this project with:
 - A progress bar displays the ratio of completed tasks.
 
 ## Bonus tasks
-- [Function] A reset button, which clears picked and completed statuses. (Useful for starting over.)
-- [Function] A dialog for displaying the picked/completed dates for the active task list.
 - [Function] Perhaps display a line chart on said dialog.
 - [Function] Export information as text.
 - [Function] Ability to edit task lists (including categories).
-- [Function] Ability to remove task lists.
 - [Function] Click on a rune token to mark as complete.
 - [Function] Display the task description when hovering over a rune token.
-- [Style] Arrange the rune tokens as a hexagonal grid.
 - [Style] Use the Cooper Hewitt fount for the rune tokens.
 - [Style] Change the colour of rune tokens based on the associated task's category.
 - [Style] Fix the height of the interface to prevent vertical scrolling if unnecessary.
