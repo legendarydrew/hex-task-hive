@@ -116,6 +116,9 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-scale': 'pulse-scale 1s ease-in-out infinite',
+			},
+			fontFamily: {
+				'display': ['"CH Modified"']
 			}
 		}
 	},

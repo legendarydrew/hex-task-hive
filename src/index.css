@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: #F4F4F6;
+    --background: #f4f4f6;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -14,22 +13,22 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: #5E2BFF;
-    --primary-foreground: #F8F8F8;
+    --primary: #5e2bff;
+    --primary-foreground: #f8f8f8;
 
-    --secondary: #2F2F2F;
-    --secondary-foreground: #F8F8F8;
+    --secondary: #2f2f2f;
+    --secondary-foreground: #f8f8f8;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: #58A4B0;
+    --accent: #58a4b0;
     --accent-foreground: #111;
 
-    --destructive: #EE4266;
-    --destructive-foreground: #F8F8F8;
+    --destructive: #ee4266;
+    --destructive-foreground: #f8f8f8;
 
-    --confirm: #73AB84;
+    --confirm: #73ab84;
     --confirm-foreground: #111;
 
     --border: 214.3 31.8% 91.4%;
@@ -76,7 +75,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 199 89% 48%;
-    
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -89,6 +88,14 @@
 }
 
 @layer base {
+  @font-face {
+    font-family: "CH Modified";
+    src: url(./founts/CHModified-Heavy.woff) format("woff"),
+      url(./founts/CHModified-Heavy.woff2) format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   * {
     @apply border-border;
   }
@@ -97,4 +104,3 @@
     @apply bg-background text-foreground;
   }
 }
-
