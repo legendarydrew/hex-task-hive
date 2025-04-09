@@ -40,7 +40,7 @@ export default function TaskAdd() {
   }
 
   return (
-    <form onSubmit={createTaskHandler} className="flex align-items-center p-1 gap-1">
+    <form onSubmit={createTaskHandler} className="flex align-items-center p-1 pb-3 gap-1">
       <div className="w-1/4">
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger className="h-8 text-sm" id="category">

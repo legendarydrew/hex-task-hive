@@ -22,8 +22,8 @@ export const Layout = () => {
       <TaskListProgressBar />
 
       {/* TODO why is this height bigger then intended? */}
-      <main className="container mx-auto mb-2 flex flex-col sm:flex-row h-full items-stretch">
-        <div className="flex-grow overflow-y-auto">
+      <main className="container mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden">
+        <div className="flex-grow overflow-y-auto min-h-full">
           <TaskGrid />
         </div>
 
