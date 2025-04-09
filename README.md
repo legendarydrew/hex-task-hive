@@ -44,7 +44,6 @@ Lovable built this project with:
 - [Function] Export information as text.
 - [Function] Ability to edit task lists (including categories).
 - [Function] Display the task description when hovering over a rune token.
-- [Style] Use the Cooper Hewitt fount for the rune tokens.
 - [Style] Change the colour of rune tokens based on the associated task's category.
 - [Style] Watch out for colour contrasts.
 - [Style] Add a favicon!
