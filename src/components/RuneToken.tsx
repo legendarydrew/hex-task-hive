@@ -38,7 +38,7 @@ export const RuneToken: React.FC<RuneTokenProps> = ({ task, taskNumber }) => {
 
   return (
     <button type="button" className={runeClasses()} onClick={clickHandler}>
-      <span className="rune-token-number">{taskNumber}</span>
+      <span className="font-display text-2xl font-bold text-center z-10">{taskNumber}</span>
     </button>
   );
 };

@@ -19,7 +19,6 @@ $rune-size: 6em;
 }
 
 .rune-token {
-  --rune-text-size: 1.5rem;
   --rune-border-width: 0.25em;
   
   $rune-spacing: $rune-size - math.sin(60deg) * $rune-size;
@@ -95,13 +94,6 @@ $rune-size: 6em;
       @apply bg-task-completed;
     }
   }
-}
-
-.rune-token-number {
-  font-size: var(--rune-text-size);
-  font-weight: bold;
-  text-align: center;
-  z-index: 2;
 }
 
 // This takes care of positioning the bottom row of runes to match the grid.
