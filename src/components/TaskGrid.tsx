@@ -9,12 +9,16 @@ const TaskGrid = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [gridBreakpoints, setGridBreakpoints] = useState<number[]>([]);
-  const [gridIsEvenWidth, setGridIsEvenWidth] = useState<boolean>(false);
+  const [gridOffsetLastRow, setGridOffsetLastRow] = useState<boolean>(false);
 
   // Filter tasks for the active list
   const activeTasks = state.activeListId
     ? state.tasks.filter((task) => task.listId === state.activeListId)
     : [];
+
+  const isOdd = (value: number): boolean => {
+    return value % 2 === 1;
+  };
 
   const handleHighlight = (id: string | null) => {
     setHighlightedId(id);
@@ -64,7 +68,6 @@ const TaskGrid = () => {
         const tokenWidth = node.children.item(0).getBoundingClientRect().width;
         const tokensAcross = Math.floor(gridWidth / tokenWidth);
         setMaxTokensAcross(tokensAcross);
-        setGridIsEvenWidth(tokensAcross % 2 === 0);
       });
       observer.observe(node);
       return () => {
@@ -82,10 +85,22 @@ const TaskGrid = () => {
         breakpoints.push(i);
       }
     }
-    // "Stray" tokens at the end of the list are handled in the stylesheet.
+    // Handle "stray" tokens at the end of the list.
+    const tokenGroupSize = maxTokensAcross * 2 - 1;
+    if (activeTasks.length > tokenGroupSize) {
+      // We want to "offset" the last row of tokens to visually align them with the previous row.
+      let remainderTokens = (activeTasks.length % tokenGroupSize);
+      if (remainderTokens > maxTokensAcross) {
+        setGridOffsetLastRow(isOdd(maxTokensAcross) === isOdd(remainderTokens));
+      } else {
+        setGridOffsetLastRow(isOdd(maxTokensAcross) !== isOdd(remainderTokens));
+      }
+    } else {
+      setGridOffsetLastRow(false);
+    }
 
     setGridBreakpoints(breakpoints);
-  }, [maxTokensAcross]);
+  }, [maxTokensAcross, activeTasks.length]);
 
   return (
     <div className="flex p-3 overflow-auto">
@@ -110,10 +125,9 @@ const TaskGrid = () => {
       ) : (
         <div
           ref={tokenGrid}
-          className={
-            "flex justify-center flex-wrap w-full h-auto " +
-            (gridIsEvenWidth ? "even-width" : "odd-width")
-          }
+          className={`flex justify-center flex-wrap w-full h-auto${
+            gridOffsetLastRow && " offset-last-row"
+          }`}
         >
           {activeTasks.map((task, index: number) => (
             <Fragment key={index}>  
