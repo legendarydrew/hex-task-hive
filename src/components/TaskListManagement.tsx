@@ -19,6 +19,7 @@ import { List, ListCheckIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ListDialog } from "./ListDialog";
 import { ListDeleteDialog } from "./ListDeleteDialog";
+import { ListStatsDialog } from "./ListStatsDialog";
 
 /**
  * Decided to move this section of the header into its own component, because it made sense
@@ -29,13 +30,22 @@ export default function TaskListManagement() {
 
   const [isListDialogOpen, setIsListDialogOpen] = useState(false);
   const [isListDeleteDialogOpen, setIsListDeleteDialogOpen] = useState(false);
-  const [listToDelete, setListToDelete] = useState<string | null>(null);
-  const [listToDisplay, setListToDisplay] = useState<string | null>(null);
+  const [isListStatsDialogOpen, setIsListStatsDialogOpen] = useState(false);
+  const [listIdToUse, setListIdToUse] = useState<string | null>(null);
 
   const taskLists = state.lists;
 
+  const newListHandler = () => {
+    setIsListDialogOpen(true);
+  }
+  
+  const listStatsHandler = () => {
+    setListIdToUse(state.activeListId);
+    setIsListStatsDialogOpen(true);
+  };
+
   const deleteListHandler = () => {
-    setListToDelete(state.activeListId);
+    setListIdToUse(state.activeListId);
     setIsListDeleteDialogOpen(true);
   };
 
@@ -67,7 +77,7 @@ export default function TaskListManagement() {
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
               </DropdownMenuItem> */}
-              <DropdownMenuItem onClick={() => setListToDisplay(state.activeListId)}>
+              <DropdownMenuItem onClick={listStatsHandler}>
                 <ListCheckIcon className="h-4 w-4 mr-2" />
                 Display Stats
               </DropdownMenuItem>
@@ -78,16 +88,22 @@ export default function TaskListManagement() {
               <DropdownMenuSeparator />
             </>
           )}
-          <DropdownMenuItem onClick={() => setIsListDialogOpen(true)}>
+          <DropdownMenuItem onClick={newListHandler}>
             <List className="h-4 w-4 mr-2" />
             New List
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Dialogs. */}
       <ListDialog open={isListDialogOpen} onOpenChange={setIsListDialogOpen} />
+      <ListStatsDialog
+        listId={listIdToUse}
+        open={isListStatsDialogOpen}
+        onOpenChange={setIsListStatsDialogOpen}
+      />
       <ListDeleteDialog
-        listId={listToDelete}
+        listId={listIdToUse}
         open={isListDeleteDialogOpen}
         onOpenChange={setIsListDeleteDialogOpen}
       />
