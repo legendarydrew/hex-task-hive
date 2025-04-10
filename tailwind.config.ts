@@ -69,17 +69,17 @@ export default {
 				},
 				task: {
 					base: {
-						DEFAULT: 'hsl(var(--base-token-background))',
+						DEFAULT: 'hsl(var(--base-token-background), var(--tw-bg-opacity, 1))',
 						border: 'hsl(var(--base-token-border))',
 						text: 'hsl(var(--base-token-foreground))'
 					},
 					picked: {
-						DEFAULT: 'hsl(var(--picked-token-background))',
+						DEFAULT: 'hsl(var(--picked-token-background), var(--tw-bg-opacity, 1))',
 						border: 'hsl(var(--picked-token-border))',
 						text: 'hsl(var(--picked-token-foreground))'
 					},
 					completed: {
-						DEFAULT: 'hsl(var(--completed-token-background))',
+						DEFAULT: 'hsl(var(--completed-token-background), var(--tw-bg-opacity, 1))',
 						border: 'hsl(var(--completed-token-border))',
 						text: 'hsl(var(--completed-token-foreground))'
 					},

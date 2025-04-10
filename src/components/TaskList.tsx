@@ -37,9 +37,11 @@ export default function TaskList(props) {
 
   const taskClass = (task: Task) => {
     if (task.completedAt) {
-      return "text-task-completed";
+      return "bg-task-completed bg-opacity-25 hover:bg-opacity-50";
     } else if (task.pickedAt) {
-      return "text-task-picked-border";
+      return "bg-task-picked hover:bg-opacity-50";
+    } else {
+      return "hover:bg-task-base hover:bg-opacity-50"
     }
   };
 
@@ -48,7 +50,7 @@ export default function TaskList(props) {
       {activeTasks.map((task: Task, index) => (
         <li
           className={
-            "flex gap-2 p-1 items-center hover:bg-blue-200 select-none " +
+            "flex gap-2 p-1 items-center select-none bg-opacity-25 " +
             taskClass(task)
           }
           key={index}
