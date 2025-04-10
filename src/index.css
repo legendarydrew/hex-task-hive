@@ -4,7 +4,10 @@
 
 @layer base {
   /* https://www.readyjs.dev/tools/shadcn-ui-theme-generator?primaryColor=%23554ce7&chartColorScheme=square */
-  /* Why hsl values?! */
+  /*
+    Why hsl values?!
+    It could be that they are easier to manipulate than hex codes, e.g. to make colours darker/lighter.
+   */
   :root {
     --background: 243.5 50% 95%;
     --foreground: 243.5 2.5% 7.5%;
@@ -43,6 +46,18 @@
     --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 244, 25%, 63%;
     --sidebar-ring: 234, 98%, 45%;
+
+    --base-token-background: 240, 17%, 92%;
+    --base-token-border: 240, 17%, 82%;
+    --base-token-foreground: 240, 17%, 46%;
+
+    --picked-token-background: 219, 100%, 68%;
+    --picked-token-border: 219, 100%, 58%;
+    --picked-token-foreground: 219, 100%, 34%;
+
+    --completed-token-background: 88, 60%, 50%;
+    --completed-token-border: 88, 60%, 40%;
+    --completed-token-foreground: 88, 60%, 25%;
   }
 
   .dark {
