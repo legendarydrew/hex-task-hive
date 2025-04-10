@@ -1,13 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
-import { Hexagon, PlusCircle, Shuffle, StickyNote, UndoDot } from "lucide-react";
+import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { TaskDialog } from "./TaskDialog";
-import { ListDialog } from "./ListDialog";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
 
-export const Header = () => {
+export const LayoutHeader = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
   const [isListResetDialogOpen, setIsListResetDialogOpen] = React.useState(false);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
