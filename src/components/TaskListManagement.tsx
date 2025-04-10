@@ -34,14 +34,19 @@ export default function TaskListManagement() {
   const [listIdToUse, setListIdToUse] = useState<string | null>(null);
 
   const taskLists = state.lists;
+  const hasTasks = state.tasks.find(
+    (task) => task.listId === state.activeListId
+  );
 
   const newListHandler = () => {
     setIsListDialogOpen(true);
-  }
-  
+  };
+
   const listStatsHandler = () => {
-    setListIdToUse(state.activeListId);
-    setIsListStatsDialogOpen(true);
+    if (hasTasks) {
+      setListIdToUse(state.activeListId);
+      setIsListStatsDialogOpen(true);
+    }
   };
 
   const deleteListHandler = () => {
@@ -77,7 +82,7 @@ export default function TaskListManagement() {
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
               </DropdownMenuItem> */}
-              <DropdownMenuItem onClick={listStatsHandler}>
+              <DropdownMenuItem onClick={listStatsHandler} disabled={!hasTasks}>
                 <ListCheckIcon className="h-4 w-4 mr-2" />
                 Display Stats
               </DropdownMenuItem>

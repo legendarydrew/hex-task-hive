@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { useApp } from "@/context/AppContext";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { toast } from "sonner";
 
 /**
  * This component is for a dialog that displays a list of Tasks in a list, with their picked and completed dates.
@@ -38,23 +39,35 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
   };
 
   useEffect(() => {
-    // Build chart data from the list of tasks.
-    const chartData = [];
-    const completedTasks = activeListTasks
-      .filter((task) => task.completedAt)
-      .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1));
-    completedTasks.forEach((task) => {
-      const taskDate = dateValue(task.completedAt);
-      chartData[taskDate] = chartData[taskDate] ? chartData[taskDate] + 1 : 1;
-    });
-    Object.keys(chartData).forEach((date) => {
-      chartData.push({ date, count: chartData[date] });
-    });
-    setChartData(chartData);
-    setChartLimits({
-      min: dateValue(activeList.createdAt),
-      max: dateValue(),
-    });
+    if (open && !activeListTasks.length) {
+      onOpenChange(false);
+      toast.info("No tasks in this list.");
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (activeList) {
+
+      // Build chart data from the list of tasks.
+      const chartData = [];
+      const completedTasks = activeListTasks
+        .filter((task) => task.completedAt)
+        .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1));
+      completedTasks.forEach((task) => {
+        const taskDate = dateValue(task.completedAt);
+        chartData[taskDate] = chartData[taskDate] ? chartData[taskDate] + 1 : 1;
+      });
+      Object.keys(chartData).forEach((date) => {
+        chartData.push({ date, count: chartData[date] });
+      });
+      setChartData(chartData);
+      setChartLimits({
+        min: dateValue(activeList.createdAt),
+        max: dateValue(),
+      });
+    } else {
+      setChartData([]);
+    }
   }, [activeList]);
 
   return (
