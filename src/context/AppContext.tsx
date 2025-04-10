@@ -205,14 +205,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
    * We want to keep any picked and complete tasks in place, so their numbers are preserved.
    */
   const shuffleTasks = () => {
-    let allTasks = state.tasks;
+    let allTasks = state.tasks.filter((task) => task.listId === state.activeListId);
     let availableTasks = allTasks.filter(
       (task) => !(task.pickedAt || task.completedAt)
     );
-
+    
     if (availableTasks.length) {
       // Shuffle the available tasks.
       // https://stackoverflow.com/a/12646864/4073160
+      const shuffledTasks: Task[] = [];
       for (let i = availableTasks.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [availableTasks[i], availableTasks[j]] = [
@@ -224,11 +225,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       // Rebuild the list of tasks.
       for (let i = 0; i < allTasks.length; i++) {
         if (!(allTasks[i].pickedAt || allTasks[i].completedAt)) {
-          allTasks[i] = availableTasks.shift();
+          shuffledTasks.push(availableTasks.shift());
+        } else {
+          shuffledTasks.push(allTasks[i]);
         }
       }
 
-      setState((prev) => ({ ...prev, allTasks }));
+      setState((prev) => ({ ...prev, tasks: shuffledTasks }));
       toast.info("Tasks have been shuffled.");
     } else {
       toast.info("No tasks to shuffle.");
