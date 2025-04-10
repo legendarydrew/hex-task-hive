@@ -2,14 +2,12 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
 import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
-import { TaskDialog } from "./TaskDialog";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
 
-export const LayoutHeader = () => {
+export const LayoutHeader: React.FC = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
   const [isListResetDialogOpen, setIsListResetDialogOpen] = React.useState(false);
-  const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
 
   const handleRandomTask = () => {
@@ -64,15 +62,6 @@ export const LayoutHeader = () => {
           </Button>
         </div>
       </div>
-
-      <TaskDialog
-        open={isTaskDialogOpen}
-        onOpenChange={(open) => {
-          setIsTaskDialogOpen(open);
-          if (!open) setSelectedTask(null);
-        }}
-        taskId={selectedTask}
-      />
 
       <ListResetDialog open={isListResetDialogOpen} onOpenChange={setIsListResetDialogOpen} />
     </header>
