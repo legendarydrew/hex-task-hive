@@ -69,19 +69,19 @@ export default {
 				},
 				task: {
 					base: {
-						DEFAULT: '#CCC',
-						border: '#AAA',
-						text: '#111'
+						DEFAULT: 'hsl(var(--base-token-background), var(--tw-bg-opacity, 1))',
+						border: 'hsl(var(--base-token-border))',
+						text: 'hsl(var(--base-token-foreground))'
 					},
 					picked: {
-						DEFAULT: '#91CDFF',
-						border: '#70ABDD',
-						text: '#5089BB'
+						DEFAULT: 'hsl(var(--picked-token-background), var(--tw-bg-opacity, 1))',
+						border: 'hsl(var(--picked-token-border))',
+						text: 'hsl(var(--picked-token-foreground))'
 					},
 					completed: {
-						DEFAULT: '#22C55E',
-						border: '#00A33C',
-						text: '#EFE'
+						DEFAULT: 'hsl(var(--completed-token-background), var(--tw-bg-opacity, 1))',
+						border: 'hsl(var(--completed-token-border))',
+						text: 'hsl(var(--completed-token-foreground))'
 					},
 				}
 			},

@@ -20,7 +20,7 @@ $rune-size: 6em;
 
 .rune-token {
   --rune-border-width: 0.25em;
-  
+
   $rune-spacing: $rune-size - math.sin(60deg) * $rune-size;
 
   @apply text-task-base-text;
@@ -34,10 +34,6 @@ $rune-size: 6em;
   height: $rune-size;
   width: $rune-size;
   margin: math.div(-$rune-spacing, 2) 0;
-
-  &:not(.complete, .picked) {
-    opacity: 0.4;
-  }
 
   // Pseudo-elements for the hexagon shape.
   &::before,
@@ -68,11 +64,9 @@ $rune-size: 6em;
     z-index: 1;
   }
 
-  &:not(.complete) {
-    &:focus,
-    &:hover {
-      filter: brightness(110%);
-    }
+  &:focus,
+  &:hover {
+    filter: brightness(110%);
   }
 
   &.picked {
