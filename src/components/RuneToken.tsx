@@ -2,6 +2,7 @@ import React from "react";
 import { Task } from "@/types";
 import { useApp } from "@/context/AppContext";
 import "./RuneToken.scss";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface RuneTokenProps {
   taskNumber: number | string;
@@ -37,8 +38,13 @@ export const RuneToken: React.FC<RuneTokenProps> = ({ task, taskNumber }) => {
   };
 
   return (
-    <button type="button" className={runeClasses()} onClick={clickHandler}>
-      <span className="font-display text-2xl font-bold text-center z-10">{taskNumber}</span>
-    </button>
+    <Tooltip>
+      <TooltipTrigger type="button" className={runeClasses()} onClick={clickHandler}>
+        <span className="font-display text-2xl font-bold text-center z-10">{taskNumber}</span>
+      </TooltipTrigger>
+      <TooltipContent sideOffset={1} className="font-bold">
+        {task.description}
+      </TooltipContent>
+    </Tooltip>
   );
 };

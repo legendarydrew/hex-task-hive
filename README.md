@@ -42,6 +42,5 @@ Lovable built this project with:
 ## Bonus tasks
 - [Function] Export information as text.
 - [Function] Ability to edit task lists (including categories).
-- [Function] Display the task description when hovering over a rune token.
 - [Style] Change the colour of rune tokens based on the associated task's category.
 - [Style] Add a favicon!

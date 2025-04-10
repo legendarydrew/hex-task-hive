@@ -6,6 +6,7 @@
 @tailwind utilities;
 
 $rune-size: 6em;
+$rune-border-width: 0.25em;
 
 @mixin vertical-hexagon {
   clip-path: polygon(
@@ -19,7 +20,6 @@ $rune-size: 6em;
 }
 
 .rune-token {
-  --rune-border-width: 0.25em;
 
   $rune-spacing: $rune-size - math.sin(60deg) * $rune-size;
 
@@ -57,10 +57,10 @@ $rune-size: 6em;
   &::after {
     // Represents the background colour.
     @apply bg-task-base;
-    top: var(--rune-border-width);
-    bottom: var(--rune-border-width);
-    left: var(--rune-border-width);
-    right: var(--rune-border-width);
+    top: $rune-border-width;
+    bottom: $rune-border-width;
+    left: $rune-border-width;
+    right: $rune-border-width;
     z-index: 1;
   }
 
@@ -91,6 +91,6 @@ $rune-size: 6em;
 }
 
 // This takes care of positioning the bottom row of runes to match the grid.
-.offset-last-row .rune-token:last-child {
+.offset-last-row .rune-token:last-of-type {
   margin-right: $rune-size;
 }
