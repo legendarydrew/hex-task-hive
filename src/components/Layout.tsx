@@ -2,7 +2,7 @@ import { LayoutHeader } from "./LayoutHeader";
 import { LayoutFooter } from "./LayoutFooter";
 import TaskGrid from "./TaskGrid";
 import TaskList from "./TaskList";
-import TaskAdd from "./TaskAdd";
+import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 
@@ -32,7 +32,7 @@ export const Layout: React.FC<void> = () => {
             <div className="flex-grow overflow-y-auto h-full">
               <TaskList />
             </div>
-            <TaskAdd />
+            <TaskAddForm />
           </aside>
         )}
       </main>

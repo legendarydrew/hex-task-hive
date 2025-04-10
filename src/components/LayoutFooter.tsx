@@ -1,4 +1,4 @@
-export const LayoutFooter: React.FC<void> = () => {
+export const LayoutFooter: React.FC = () => {
   return (
     <footer className="bg-gray-200 text-xs p-2 text-center">
       <p>Copyright &copy; Drew Maughan, all rights reserved.</p>

@@ -1,7 +1,7 @@
 import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
 import { Check, Undo, Trash, Edit } from "lucide-react";
-import TaskListUpdate from "./TaskListUpdate";
+import TaskListUpdateForm from "./TaskListUpdateForm";
 import { useState } from "react";
 import { Button } from "./ui/button";
 /**
@@ -56,7 +56,7 @@ export default function TaskList(props) {
           key={index}
         >
           {taskForEdit === task ? (
-            <TaskListUpdate task={task} onClose={closeUpdateHandler} />
+            <TaskListUpdateForm task={task} onClose={closeUpdateHandler} />
           ) : (
             <>
               <b className="text-right w-6">{index}</b>

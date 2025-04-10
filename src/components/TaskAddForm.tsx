@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useApp } from "@/context/AppContext";
 
-export default function TaskAdd() {
+export default function TaskAddForm() {
   const { state, addTask, getListCategories } = useApp();
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
