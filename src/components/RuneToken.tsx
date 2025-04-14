@@ -39,11 +39,17 @@ export const RuneToken: React.FC<RuneTokenProps> = ({ task, taskNumber }) => {
 
   return (
     <Tooltip>
-      <TooltipTrigger type="button" className={runeClasses()} onClick={clickHandler}>
-        <span className="font-display text-2xl font-bold text-center z-10">{taskNumber}</span>
+      <TooltipTrigger
+        type="button"
+        className={runeClasses()}
+        onClick={clickHandler}
+      >
+        <span className="font-display text-2xl font-bold text-center z-10">
+          {taskNumber}
+        </span>
       </TooltipTrigger>
       <TooltipContent sideOffset={1} className="font-bold">
-        {task.description}
+        {taskNumber}: {task.description}
       </TooltipContent>
     </Tooltip>
   );

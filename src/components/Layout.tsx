@@ -1,8 +1,8 @@
-import { Header } from "./Header";
-import { Footer } from "./Footer";
+import { LayoutHeader } from "./LayoutHeader";
+import { LayoutFooter } from "./LayoutFooter";
 import TaskGrid from "./TaskGrid";
 import TaskList from "./TaskList";
-import TaskAdd from "./TaskAdd";
+import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 
@@ -12,12 +12,12 @@ import { useApp } from "@/context/AppContext";
  * The AI-generated version had a sidebar containing the list of TaskLists. Instead, this will become
  * a dropdown list in the header.
  */
-export const Layout = () => {
+export const Layout: React.FC<void> = () => {
   const { state } = useApp();
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      <Header />
+      <LayoutHeader />
 
       <TaskListProgressBar />
 
@@ -32,12 +32,12 @@ export const Layout = () => {
             <div className="flex-grow overflow-y-auto h-full">
               <TaskList />
             </div>
-            <TaskAdd />
+            <TaskAddForm />
           </aside>
         )}
       </main>
 
-      <Footer />
+      <LayoutFooter />
     </div>
   );
 };

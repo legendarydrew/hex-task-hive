@@ -1,12 +1,10 @@
 import { useState, useEffect, createRef, Fragment } from "react";
 import { useApp } from "@/context/AppContext";
-import { TaskDialog } from "./TaskDialog";
 import { RuneToken } from "./RuneToken";
 
 const TaskGrid = () => {
   const { state } = useApp();
   const [maxTokensAcross, setMaxTokensAcross] = useState<number>(1);
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [gridBreakpoints, setGridBreakpoints] = useState<number[]>([]);
   const [gridOffsetLastRow, setGridOffsetLastRow] = useState<boolean>(false);
@@ -143,11 +141,6 @@ const TaskGrid = () => {
         </div>
       )}
 
-      <TaskDialog
-        open={selectedTaskId !== null}
-        onOpenChange={(open) => !open && setSelectedTaskId(null)}
-        taskId={selectedTaskId}
-      />
     </div>
   );
 };

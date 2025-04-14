@@ -1,16 +1,15 @@
 import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
-import { Check, Undo, Trash, Edit } from "lucide-react";
-import TaskListUpdate from "./TaskListUpdate";
+import TaskListUpdateForm from "./TaskListUpdateForm";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { TaskListItem } from "./TaskListItem";
 /**
  * A component simply displaying the list of tasks in the currently selected list.
  * From here we should be able to update or remove the tasks.
  */
 
 export default function TaskList(props) {
-  const { state, deleteTask, toggleTaskCompletion } = useApp();
+  const { state } = useApp();
 
   const [taskForEdit, setTaskForEdit] = useState<Task>();
 
@@ -18,21 +17,12 @@ export default function TaskList(props) {
     ? state.tasks.filter((task) => task.listId === state.activeListId)
     : [];
 
-  const beginTaskUpdateHandler = (task: Task) => {
+  const editHandler = (task: Task): void => {
     setTaskForEdit(task);
   };
 
   const closeUpdateHandler = (): void => {
     setTaskForEdit(undefined);
-  };
-
-  const removeTaskHandler = (task: Task) => {
-    // Purely for convenience, we won't bother confirming the removal of the task.
-    deleteTask(task.id);
-  };
-
-  const toggleCompleteHandler = (task: Task) => {
-    toggleTaskCompletion(task.id);
   };
 
   const taskClass = (task: Task) => {
@@ -41,7 +31,7 @@ export default function TaskList(props) {
     } else if (task.pickedAt) {
       return "bg-task-picked hover:bg-opacity-50";
     } else {
-      return "hover:bg-task-base hover:bg-opacity-50"
+      return "hover:bg-task-base hover:bg-opacity-50";
     }
   };
 
@@ -56,54 +46,9 @@ export default function TaskList(props) {
           key={index}
         >
           {taskForEdit === task ? (
-            <TaskListUpdate task={task} onClose={closeUpdateHandler} />
+            <TaskListUpdateForm task={task} onClose={closeUpdateHandler} />
           ) : (
-            <>
-              <b className="text-right w-6">{index}</b>
-              <span className="flex-grow">{task.description}</span>
-              <menu className="flex gap-1 justify-end">
-                {/* TODO see https://v1.tailwindcss.com/components/buttons for implementing button styles. */}
-                <Button
-                  type="button"
-                  variant="default"
-                  size="icon"
-                  onClick={() => beginTaskUpdateHandler(task)}
-                  title="Change description"
-                >
-                  <Edit className="h-3 w-3" />
-                </Button>
-                {task.completedAt ? (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => toggleCompleteHandler(task)}
-                    title="Unmark as complete"
-                  >
-                    <Undo className="h-3 w-3" />
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    variant="confirm"
-                    size="icon"
-                    onClick={() => toggleCompleteHandler(task)}
-                    title="Mark as complete"
-                  >
-                    <Check className="h-3 w-3" />
-                  </Button>
-                )}
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => removeTaskHandler(task)}
-                  title="Remove"
-                >
-                  <Trash className="h-3 w-3" />
-                </Button>
-              </menu>
-            </>
+            <TaskListItem task={task} taskNumber={index} onEdit={editHandler} />
           )}
         </li>
       ))}

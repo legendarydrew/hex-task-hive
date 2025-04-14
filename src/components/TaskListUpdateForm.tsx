@@ -15,7 +15,7 @@ import { Task } from "@/types";
  * This component is used for updating a Task within the Task List.
  */
 
-export default function TaskListUpdate(props: {
+export default function TaskListUpdateForm(props: {
   task: Task;
   onClose: Function;
 }) {
