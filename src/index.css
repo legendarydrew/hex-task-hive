@@ -1,9 +1,22 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
+@custom-variant dark (&:is(.dark *), [data-mode="dark"]);
+
 @theme {
     --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --heading-fount: 'CH Modified', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    --color-background: var(--color-white);
+    --color-foreground: var(--color-slate-800);
+
+    --color-popover: var(--color-background);
+
+    --color-muted: var(--color-indigo-200);
+    --color-muted-foreground: var(--color-slate-500);
+
+    --color-accent: var(--color-slate-200);
+    --color-accent-foreground: var(--color-slate-700);
 
     --color-primary: var(--color-slate-600);
     --color-primary-foreground: var(--color-white);
