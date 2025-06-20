@@ -84,10 +84,10 @@ const TaskGrid = () => {
       }
     }
     // Handle "stray" tokens at the end of the list.
-    const tokenGroupSize = maxTokensAcross * 2 - 1;
+    const tokenGroupSize = maxTokensAcross - 1;
     if (activeTasks.length > tokenGroupSize) {
       // We want to "offset" the last row of tokens to visually align them with the previous row.
-      let remainderTokens = (activeTasks.length % tokenGroupSize);
+      const remainderTokens = (activeTasks.length % tokenGroupSize);
       if (remainderTokens > maxTokensAcross) {
         setGridOffsetLastRow(isOdd(maxTokensAcross) === isOdd(remainderTokens));
       } else {
@@ -128,7 +128,7 @@ const TaskGrid = () => {
           }`}
         >
           {activeTasks.map((task, index: number) => (
-            <Fragment key={index}>  
+            <Fragment key={task.id}>
               <RuneToken taskNumber={index} task={task}></RuneToken>
               {gridBreakpoints.includes(index) ? (
                 <span className="block w-full h-0" />
