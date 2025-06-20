@@ -1,9 +1,9 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
 import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
+import React from 'react';
 
 export const LayoutHeader: React.FC = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
@@ -21,7 +21,7 @@ export const LayoutHeader: React.FC = () => {
     <header className="w-full bg-white shadow-sm p-3">
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex sm:w-2/3 items-center justify-between">
-          <h1 className="flex gap-2 items-center text-xl font-bold font-display uppercase text-primary w-2/5">
+          <h1 className="heading-text flex gap-2 items-center text-xl text-primary w-2/5 select-none">
             <Hexagon />
             Task Hive
           </h1>
