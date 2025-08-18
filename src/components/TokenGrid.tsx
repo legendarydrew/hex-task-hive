@@ -1,4 +1,11 @@
-import { useState, useEffect, createRef, Fragment, RefObject, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  createRef,
+  Fragment,
+  RefObject,
+  useRef,
+} from "react";
 import { useApp } from "@/context/AppContext";
 import { RuneToken } from "./RuneToken";
 import TokenGridNoTasks from "./TokenGridNoTasks";
@@ -11,7 +18,6 @@ const TokenGrid = () => {
   const [gridWidth, setGridWidth] = useState<number>(0);
   const [tokenRadius, setTokenRadius] = useState<number>(0);
   const [tokenPositions, setTokenPositions] = useState([]);
-
 
   // Filter tasks for the active list
   const activeTasks = state.activeListId
@@ -63,7 +69,9 @@ const TokenGrid = () => {
       const node: HTMLDivElement = tokenGrid.current as HTMLDivElement;
       const observer = new ResizeObserver(() => {
         setGridWidth(node.getBoundingClientRect().width);
-        setTokenRadius((node.children.item(0)?.getBoundingClientRect().height ?? 0) / 2);
+        setTokenRadius(
+          (node.children.item(0)?.getBoundingClientRect().height ?? 0) / 2
+        );
       });
       observer.observe(node);
       return () => {
@@ -74,7 +82,9 @@ const TokenGrid = () => {
 
   // This effect is called when the maximum number of tokens across changes.
   useEffect(() => {
-    setTokenPositions(calculateHexPositions(activeTasks, gridWidth, tokenRadius));
+    setTokenPositions(
+      calculateHexPositions(activeTasks, gridWidth, tokenRadius)
+    );
   }, [gridWidth, tokenRadius, activeTasks.length]);
 
   return (
@@ -85,8 +95,15 @@ const TokenGrid = () => {
         <TokenGridNoTasks />
       ) : (
         <div ref={tokenGrid} className="relative h-full w-full">
-          {tokenPositions.map(({x, y, item }, index: number) => (
-            <RuneToken key={item.id} taskNumber={index} task={item} className='absolute origin-center' x={x} y={y} ></RuneToken>
+          {tokenPositions.map(({ x, y }, index: number) => (
+            <RuneToken
+              key={activeTasks[index].id}
+              taskNumber={index}
+              task={activeTasks[index]}
+              className="absolute origin-center"
+              x={x}
+              y={y}
+            ></RuneToken>
           ))}
         </div>
       )}

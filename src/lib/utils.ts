@@ -1,6 +1,5 @@
 import { Task } from "@/types";
 import { clsx, type ClassValue } from "clsx";
-import { max } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -8,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Originally created by ChatGPT.
- * We want to arrange the items in a hexagonal gid, going from left to right and then downwards.
+ * Originally created by ChatGPT, entirely rewritten by me (once I understood).
+ * We want to arrange the items in a hexagonal grid, going from left to right and then downwards.
  * We're going by the assumption that the hexagons are vertical (i.e. has vertical sides).
  */
 export function calculateHexPositions(
@@ -31,7 +30,6 @@ export function calculateHexPositions(
   const itemsInGroup = (maxColumnsPerRow * 2 - 1);
   const groupHeight = (hexHeight + hexSpacing - hexRadius / 2);
   const rowOffset = (containerWidth - (hexWidth + hexSpacing) * maxColumnsPerRow) / 2;
-
 
   return items.map((item, i) => {
     // We want to treat the items as follows:
@@ -55,6 +53,6 @@ export function calculateHexPositions(
     // Account for the width of the container, to horizontally centre the rows.
     x += rowOffset;
 
-    return { x, y, item };
+    return { x, y };
   });
 }

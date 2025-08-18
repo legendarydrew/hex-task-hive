@@ -13,7 +13,7 @@
 - [x] Ability to add tasks in bulk.
 - [ ] Toggle between single and bulk task creation.
 - [ ] Ability to set categories for the current list.
-- [ ] Fix the algorithm for displaying tokens in a hexagonal grid.
+- [x] Fix the algorithm for displaying tokens in a hexagonal grid.
 
 ## Miscellaneous
 - [ ] An about page/dialogue.
