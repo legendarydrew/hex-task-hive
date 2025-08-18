@@ -101,7 +101,7 @@ const TaskGrid = () => {
   }, [maxTokensAcross, activeTasks.length]);
 
   return (
-    <div className="flex p-3 overflow-auto">
+    <div className="flex px-3 py-6 overflow-auto">
       {!state.activeListId ? (
         <div className="flex flex-col items-center justify-center w-full h-full text-center">
           <h2 className="text-2xl font-bold text-muted-foreground mb-2">

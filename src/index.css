@@ -1,123 +1,152 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
-@layer base {
-  /* https://www.readyjs.dev/tools/shadcn-ui-theme-generator?primaryColor=%23554ce7&chartColorScheme=square */
-  /*
-    Why hsl values?!
-    It could be that they are easier to manipulate than hex codes, e.g. to make colours darker/lighter.
-   */
-  :root {
-    --background: 243.5 50% 95%;
-    --foreground: 243.5 2.5% 7.5%;
-    --card: 243.5 25% 95%;
-    --card-foreground: 243.5 2.5% 12.5%;
-    --popover: 243.5 50% 97.5%;
-    --popover-foreground: 243.5 97.5% 5%;
-    --primary: 243.5 76.4% 60.2%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 243.5 20% 80%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 281.5 20% 90%;
-    --muted-foreground: 243.5 2.5% 37.5%;
-    --accent: 281.5 20% 85%;
-    --accent-foreground: 243.5 2.5% 12.5%;
-    --destructive: 0 75% 40%;
-    --destructive-foreground: 243.5 2.5% 95%;
-    --confirm: 130 91.5% 46.3%;
-    --confirm-foreground: 0, 0%, 0%;
-    --border: 243.5 25% 66%;
-    --input: 243.5 25% 34%;
-    --ring: 243.5 88.7% 45.3%;
-    --radius: 0.5rem;
+@custom-variant dark (&:is(.dark *), [data-mode="dark"]);
 
-    --chart-1: 195.9 72% 53%;
-    --chart-2: 285.9 72% 53%;
-    --chart-3: 15.9 72% 53%;
-    --chart-4: 105.9 72% 53%;
-    --chart-5: 240.9 65% 58%;
+@theme {
+    --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-fount: 'CH Modified', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    --sidebar-background: 244, 50%, 90%;
-    --sidebar-foreground: 244, 3%, 7%;
-    --sidebar-primary: 244, 76%, 54%;
-    --sidebar-primary-foreground: 0, 0%, 100%;
-    --sidebar-accent: 282, 20%, 81%;
-    --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 244, 25%, 63%;
-    --sidebar-ring: 234, 98%, 45%;
+    --color-background: var(--color-white);
+    --color-foreground: var(--color-slate-800);
 
-    --base-token-background: 240, 17%, 92%;
-    --base-token-border: 240, 17%, 82%;
-    --base-token-foreground: 240, 17%, 46%;
+    --color-popover: var(--color-background);
 
-    --picked-token-background: 219, 100%, 68%;
-    --picked-token-border: 219, 100%, 58%;
-    --picked-token-foreground: 219, 100%, 34%;
+    --color-muted: var(--color-indigo-200);
+    --color-muted-foreground: var(--color-slate-500);
 
-    --completed-token-background: 88, 60%, 50%;
-    --completed-token-border: 88, 60%, 40%;
-    --completed-token-foreground: 88, 60%, 25%;
-  }
+    --color-accent: var(--color-slate-200);
+    --color-accent-foreground: var(--color-slate-700);
 
-  .dark {
-    --background: 243.5 30% 7.5%;
-    --foreground: 243.5 2.5% 95%;
-    --card: 243.5 25% 5%;
-    --card-foreground: 243.5 2.5% 95%;
-    --popover: 243.5 30% 5%;
-    --popover-foreground: 243.5 2.5% 95%;
-    --primary: 243.5 76.4% 60.2%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 243.5 20% 15%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 281.5 20% 20%;
-    --muted-foreground: 243.5 2.5% 62.5%;
-    --accent: 281.5 20% 20%;
-    --accent-foreground: 243.5 2.5% 92.5%;
-    --destructive: 0 75% 40%;
-    --destructive-foreground: 243.5 2.5% 95%;
-    --confirm: 130 91.5% 46.3%;
-    --confirm-foreground: 0, 0%, 0%;
-    --border: 243.5 25% 34%;
+    --color-primary: var(--color-slate-600);
+    --color-primary-foreground: var(--color-white);
 
-    --input: 243.5 25% 34%;
-    
-    --ring: 243.5 88.7% 45.3%;
-    
-    --radius: 0.5rem;
-    
-    --chart-1: 195.9 72% 53%;
-    --chart-2: 285.9 72% 53%;
-    --chart-3: 15.9 72% 53%;
-    --chart-4: 105.9 72% 53%;
-    --chart-5: 240.9 65% 58%;
-    
-    --sidebar-background: 244, 30%, 10%;
-    --sidebar-foreground: 244, 3%, 100%;
-    --sidebar-primary: 244, 76%, 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 282, 20%, 17%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 244, 25%, 32%;
-    --sidebar-ring: 234, 98%, 45%;
-  }
+    --color-secondary: var(--color-slate-300);
+    --color-secondary-foreground: var(--color-slate-800);
+
+    --color-confirm: var(--color-green-600);
+    --color-confirm-foreground: var(--color-white);
+
+    --color-destructive: var(--color-red-600);
+    --color-destructive-foreground: var(--color-white);
+
+    --color-task-base: var(--color-zinc-300);
+    --color-task-base-border: var(--color-zinc-400);
+    --color-task-base-foreground: var(--color-zinc-500);
+
+    --color-task-picked: var(--color-blue-300);
+    --color-task-picked-border: var(--color-blue-400);
+    --color-task-picked-foreground: var(--color-blue-900);
+
+    --color-task-complete: var(--color-lime-300);
+    --color-task-complete-border: var(--color-lime-400);
+    --color-task-complete-foreground: var(--color-lime-700);
+
+    --rune-size: 6em;
+    --rune-border-width: 0.25em;
+    --rune-spacing: calc(var(--rune-size) - sin(60deg) * var(--rune-size));
 }
 
 @layer base {
-  @font-face {
-    font-family: "CH Modified";
-    src: url(./founts/CHModified-Heavy.woff) format("woff"),
-      url(./founts/CHModified-Heavy.woff2) format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
+    @font-face {
+        font-family: "CH Modified";
+        src: url(./founts/CHModified-Heavy.woff) format("woff"),
+        url(./founts/CHModified-Heavy.woff2) format("woff2");
+        font-weight: normal;
+        font-style: normal;
+    }
 
-  * {
-    @apply border-border;
-  }
+    * {
+        @apply border-zinc-300 dark:border-zinc-700;
+        /* setting the default border colour. */
+    }
 
-  body {
-    @apply bg-background text-foreground;
-  }
+}
+
+@utility heading-text {
+    font-family: var(--heading-fount);
+    @apply font-normal leading-tight uppercase;
+}
+
+
+/* Rune token styling. */
+
+@utility vertical-hexagon {
+    clip-path: polygon(50% 100%, 93.3012701892% 75%, 93.3012701892% 25%, 50% 0%, 6.6987298108% 25%, 6.6987298108% 75%)
+}
+
+@layer components {
+    .rune-token {
+        @apply text-task-base-foreground transition-[filter];
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: var(--rune-size);
+        width: var(--rune-size);
+        margin: calc(var(--rune-spacing) * -1 / 2) 0;
+    }
+
+    .rune-token:focus,
+    .rune-token:hover {
+        @apply brightness-110;
+    }
+
+    .rune-token::before,
+    .rune-token::after {
+        @apply vertical-hexagon;
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .rune-token::before {
+        /* Represents the border colour. */
+        @apply bg-task-base-border;
+        z-index: 0;
+    }
+
+    .rune-token::after {
+        /* Represents the background colour. */
+        @apply bg-task-base;
+        top: var(--rune-border-width);
+        bottom: var(--rune-border-width);
+        left: var(--rune-border-width);
+        right: var(--rune-border-width);
+        z-index: 1;
+    }
+
+    .rune-token.picked {
+        @apply text-task-picked-foreground;
+    }
+
+    .rune-token.picked::before {
+        @apply bg-task-picked-border;
+    }
+
+    .rune-token.picked::after {
+        @apply bg-task-picked;
+    }
+
+    .rune-token.complete {
+        @apply text-task-complete-foreground;
+    }
+
+    .rune-token.complete::before {
+        @apply bg-task-complete-border;
+    }
+
+    .rune-token.complete::after {
+        @apply bg-task-complete;
+    }
+
+    /* This takes care of positioning the bottom row of runes to match the grid. */
+    .offset-last-row .rune-token:last-of-type {
+        margin-right: var(--rune-size);
+    }
 }
