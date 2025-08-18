@@ -20,8 +20,6 @@ export function calculateHexPositions(
 ) {
   const hexHeight = 2 * hexRadius;
   const hexWidth = Math.sqrt(3) * hexRadius;
-  const horizSpacing = 1.5 * hexRadius;
-  const vertSpacing = hexHeight;
 
   // How many items can fit horizontally?
   const maxColumnsPerRow = Math.max(
@@ -32,6 +30,7 @@ export function calculateHexPositions(
   // We're essentially going to divide all the items into groups, containing one full row and one offset row.
   const itemsInGroup = (maxColumnsPerRow * 2 - 1);
   const groupHeight = (hexHeight + hexSpacing - hexRadius / 2);
+  const rowOffset = (containerWidth - (hexWidth + hexSpacing) * maxColumnsPerRow) / 2;
 
 
   return items.map((item, i) => {
@@ -53,24 +52,8 @@ export function calculateHexPositions(
       y += groupHeight;
     }
 
-    // const row = Math.floor(i / colsPerRow);
-    // const col = i % colsPerRow;
-
-    // // Base positions
-    // let x = col * horizSpacing;
-    // let y = row * vertSpacing;
-
-    // Apply stagger: odd columns shift down half a hex
-    // if (col % 2 === 1) {
-    //   y += vertSpacing / 2;
-    // }
-
-    // Center horizontally for this row
-    // const colsInRow = Math.min(colsPerRow, items.length - row * colsPerRow);
-    // const rowWidth = (colsInRow - 1) * horizSpacing + hexWidth;
-    // const offsetX = (containerWidth - rowWidth) / 2;
-
-    // x += offsetX;
+    // Account for the width of the container, to horizontally centre the rows.
+    x += rowOffset;
 
     return { x, y, item };
   });
