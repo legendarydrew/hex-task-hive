@@ -82,10 +82,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        position: relative;
+        /* position: relative; */
         height: var(--rune-size);
         width: var(--rune-size);
-        margin: calc(var(--rune-spacing) * -1 / 2) 0;
+        /* margin: calc(var(--rune-spacing) * -1 / 2) 0; */
     }
 
     .rune-token:focus,
@@ -143,10 +143,5 @@
 
     .rune-token.complete::after {
         @apply bg-task-complete;
-    }
-
-    /* This takes care of positioning the bottom row of runes to match the grid. */
-    .offset-last-row .rune-token:last-of-type {
-        margin-right: var(--rune-size);
     }
 }
