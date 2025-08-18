@@ -1,6 +1,6 @@
 import { LayoutHeader } from "./LayoutHeader";
 import { LayoutFooter } from "./LayoutFooter";
-import TaskGrid from "./TaskGrid";
+import TokenGrid from "./TokenGrid";
 import TaskList from "./TaskList";
 import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
@@ -25,7 +25,7 @@ export const Layout: React.FC<void> = () => {
       {/* TODO why is this height bigger then intended? */}
       <main className="container mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden">
         <div className="flex-grow overflow-y-auto min-h-full">
-          <TaskGrid />
+          <TokenGrid />
         </div>
 
         {state.activeListId && (
