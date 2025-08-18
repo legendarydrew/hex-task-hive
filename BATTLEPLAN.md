@@ -1,7 +1,7 @@
 # To be implemented...
 
 ## Styling
-- [ ] Use Rubik as the body fount.
+- [x] Use Rubik as the body fount.
 - [ ] Use CH-Modified as the token fount.
 - [ ] Input and dropdown fields.
 - [ ] Buttons.
@@ -10,8 +10,10 @@
 
 ## Features
 - [ ] Display a banner ad?
-- [ ] Ability to add tasks in bulk.
+- [x] Ability to add tasks in bulk.
+- [ ] Toggle between single and bulk task creation.
 - [ ] Ability to set categories for the current list.
+- [ ] Fix the algorithm for displaying tokens in a hexagonal grid.
 
 ## Miscellaneous
 - [ ] An about page/dialogue.

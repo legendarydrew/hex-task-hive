@@ -18,7 +18,7 @@ interface AppContextType {
   ) => void;
   deleteList: (id: string) => void;
   setActiveList: (id: string) => void;
-  addTask: (description: string, category: string, dueDate?: string) => void;
+  addTask: (description: string, category?: string, dueDate?: string) => void;
   updateTask: (
     id: string,
     data: Partial<Omit<Task, "id" | "listId" | "createdAt">>

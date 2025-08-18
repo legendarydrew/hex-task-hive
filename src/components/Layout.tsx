@@ -5,6 +5,7 @@ import TaskList from "./TaskList";
 import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
+import TaskBulkAdd from "./TaskBulkAddForm";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -33,6 +34,7 @@ export const Layout: React.FC<void> = () => {
               <TaskList />
             </div>
             <TaskAddForm />
+            <TaskBulkAdd />
           </aside>
         )}
       </main>
