@@ -29,6 +29,10 @@ export function calculateHexPositions(
     Math.floor(containerWidth / (hexWidth + hexSpacing))
   );
 
+  // We're essentially going to divide all the items into groups, containing one full row and one offset row.
+  const itemsInGroup = (maxColumnsPerRow * 2 - 1);
+  const groupHeight = (hexHeight + hexSpacing - hexRadius / 2);
+
 
   return items.map((item, i) => {
     // We want to treat the items as follows:
@@ -37,17 +41,16 @@ export function calculateHexPositions(
     // Ο   Ο   Ο   Ο   Ο   Ο
     //   Ο   Ο   Ο   Ο   Ο
 
-    // Essentially divide all the items into groups containing one full row and one offset row.
-    const modulusIndex = i % (maxColumnsPerRow * 2 - 1);
+    const modulusIndex = i % itemsInGroup;
 
     let x = modulusIndex * (hexWidth + hexSpacing);
-    let y = Math.floor(modulusIndex / maxColumnsPerRow) * (hexHeight + hexSpacing);
+    let y = Math.floor(i / itemsInGroup) * 2 * groupHeight;
 
     // At this point, all of the tokens in this group are in one row.
     if (modulusIndex >= maxColumnsPerRow) {
       // We're on an offset row: move the token to the beginning of the row and offset accordingly.
       x -= (maxColumnsPerRow * (hexWidth + hexSpacing) - hexRadius);
-      y -= hexRadius / 2;
+      y += groupHeight;
     }
 
     // const row = Math.floor(i / colsPerRow);
