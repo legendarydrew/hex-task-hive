@@ -29,7 +29,7 @@ export function Toaster() {
       }) {
         return (
           <Toast key={id} variant={messageType} {...props}>
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               {messageType === toastType.SUCCESS && <CheckCircle2Icon />}
               {messageType === toastType.INFO && <InfoIcon />}
               {messageType === toastType.WARNING && <TriangleAlertIcon />}
