@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { AppState, Task, TaskList } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { toast } from "sonner";
+import { toast } from "../components/ui/use-toast";
 
 interface AppContextType {
   state: AppState;
@@ -97,7 +97,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         lists: [...prev.lists, newList],
         activeListId: prev.activeListId || newList.id,
       };
-      toast.success(`List "${name}" created`);
+      toast.success({ description: `List "${name}" created.` });
       return newState;
     });
   };
@@ -112,7 +112,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         list.id === id ? { ...list, ...data } : list
       ),
     }));
-    toast.success(`List updated`);
+    toast.success({ description: "List updated." });
   };
 
   const deleteList = (id: string) => {
@@ -130,7 +130,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           prev.activeListId === id ? nextActiveListId : prev.activeListId,
       };
     });
-    toast.success(`List deleted.`);
+    toast.success({ description: `List deleted.` });
   };
 
   const setActiveList = (id: string) => {
@@ -142,7 +142,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const addTask = (description: string, category: string, dueDate?: string) => {
     if (!state.activeListId) {
-      toast.error("No active list selected");
+      toast.error({ description: "No active list selected" });
       return;
     }
 
@@ -160,7 +160,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ...prev,
       tasks: [...prev.tasks, newTask],
     }));
-    toast.success(`Task added`);
+    toast.success({ description: `Task added` });
   };
 
   const updateTask = (
@@ -173,7 +173,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         task.id === id ? { ...task, ...data } : task
       ),
     }));
-    toast.success(`Task updated`);
+    toast.success({ description: `Task updated` });
   };
 
   /**
@@ -186,9 +186,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         ...prev,
         tasks: prev.tasks.filter((task) => task !== removedTask),
       }));
-      toast.success(`Task "${removedTask.description}" removed.`);
+      toast.success({
+        description: `Task "${removedTask.description}" removed.`,
+      });
     } else {
-      toast.error('Task does not exist!');
+      toast.error({ description: "Task does not exist!" });
     }
   };
 
@@ -213,11 +215,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
    * We want to keep any picked and complete tasks in place, so their numbers are preserved.
    */
   const shuffleTasks = () => {
-    let allTasks = state.tasks.filter((task) => task.listId === state.activeListId);
+    let allTasks = state.tasks.filter(
+      (task) => task.listId === state.activeListId
+    );
     let availableTasks = allTasks.filter(
       (task) => !(task.pickedAt || task.completedAt)
     );
-    
+
     if (availableTasks.length) {
       // Shuffle the available tasks.
       // https://stackoverflow.com/a/12646864/4073160
@@ -240,9 +244,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setState((prev) => ({ ...prev, tasks: shuffledTasks }));
-      toast.info("Tasks have been shuffled.");
+      toast.info({ description: "Tasks have been shuffled." });
     } else {
-      toast.info("No tasks to shuffle.");
+      toast.info({ description: "No tasks to shuffle." });
     }
   };
 
@@ -256,7 +260,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (listTasks.length === 0) {
-      toast.info("No incomplete tasks found in this list.");
+      toast.info({ description: "No incomplete tasks found in this list." });
       return null;
     }
 
@@ -272,7 +276,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           : task
       ),
     }));
-    toast.success(`Random task selected: ${randomTask.description}`);
+    toast.success({
+      description: `Random task selected: ${randomTask.description}`,
+    });
     return randomTask;
   };
 
@@ -290,7 +296,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           completedAt: undefined,
         })),
     }));
-    toast.info("Tasks were reset.");
+    toast.info({ description: "Tasks were reset." });
+
+    toast.info({ description: "Tasks in this list were reset. " });
   };
 
   // New functions for managing categories
@@ -307,7 +315,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return list;
       }),
     }));
-    toast.success(`Category "${category}" added`);
+    toast.success({ description: `Category "${category}" added` });
   };
 
   const removeCategory = (listId: string, category: string) => {
@@ -317,9 +325,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (tasksUsingCategory) {
-      toast.error(
-        `Cannot remove category "${category}" because tasks are using it`
-      );
+      toast.error({
+        description: `Cannot remove category "${category}" because tasks are using it.`,
+      });
       return;
     }
 
@@ -335,7 +343,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return list;
       }),
     }));
-    toast.success(`Category "${category}" removed`);
+    toast.success({ description: `Category "${category}" removed` });
   };
 
   const getListCategories = (listId: string) => {

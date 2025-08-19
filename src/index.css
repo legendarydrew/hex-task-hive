@@ -32,6 +32,22 @@
   --color-destructive: var(--color-red-600);
   --color-destructive-foreground: var(--color-white);
 
+  --color-error: var(--color-red-200);
+  --color-error-border: var(--color-red-300);
+  --color-error-foreground: var(--color-red-800);
+
+  --color-info: var(--color-blue-200);
+  --color-info-border: var(--color-blue-300);
+  --color-info-foreground: var(--color-blue-800);
+
+  --color-success: var(--color-green-200);
+  --color-success-border: var(--color-green-300);
+  --color-success-foreground: var(--color-green-800);
+
+  --color-warning: var(--color-amber-200);
+  --color-warning-border: var(--color-amber-300);
+  --color-warning-foreground: var(--color-amber-800);
+
   --color-task-base: var(--color-zinc-300);
   --color-task-base-border: var(--color-zinc-400);
   --color-task-base-foreground: var(--color-zinc-500);
