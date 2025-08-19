@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
@@ -31,6 +31,7 @@ interface AppContextType {
   addCategory: (listId: string, category: string) => void;
   removeCategory: (listId: string, category: string) => void;
   getListCategories: (listId: string) => string[];
+  toggleSidebar: () => void;
 }
 
 // Default categories to use when creating a new list
@@ -47,6 +48,7 @@ const initialState: AppState = {
   lists: [],
   tasks: [],
   activeListId: null,
+  sidebarIsOpen: true
 };
 
 const LOCAL_STORAGE_KEY = "hex-task-hive-data";
@@ -351,6 +353,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return list ? list.categories : [];
   };
 
+  /**
+   * A function developed by myself to control the "sidebar" (i.e. list of tasks).
+   */
+  const toggleSidebar = () => {
+    setState((prev) => ({
+      ...prev,
+      sidebarIsOpen: !prev.sidebarIsOpen
+    }));
+  }
+
+
   return (
     <AppContext.Provider
       value={{
@@ -369,6 +382,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addCategory,
         removeCategory,
         getListCategories,
+        toggleSidebar
       }}
     >
       {children}
