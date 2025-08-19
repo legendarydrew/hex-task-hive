@@ -6,6 +6,7 @@ import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 import TaskBulkAdd from "./TaskBulkAddForm";
+import TaskFormToggle from "./TaskFormToggle";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -33,8 +34,7 @@ export const Layout: React.FC<void> = () => {
             <div className="flex-grow overflow-y-auto h-full">
               <TaskList />
             </div>
-            <TaskAddForm />
-            <TaskBulkAdd />
+            <TaskFormToggle />
           </aside>
         )}
       </main>
