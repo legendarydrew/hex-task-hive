@@ -95,7 +95,7 @@ const TokenGrid = () => {
         <TokenGridNoTasks />
       ) : (
         <div ref={tokenGrid} className="relative h-full w-full">
-          {tokenPositions.map(({ x, y }, index: number) => (
+          {tokenPositions.map(({ x, y }, index: number) => activeTasks[index] && (
             <RuneToken
               key={activeTasks[index].id}
               taskNumber={index}

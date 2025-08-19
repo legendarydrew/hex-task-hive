@@ -176,12 +176,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     toast.success(`Task updated`);
   };
 
+  /**
+   * Immediately delete a task.
+   */
   const deleteTask = (id: string) => {
-    setState((prev) => ({
-      ...prev,
-      tasks: prev.tasks.filter((task) => task.id !== id),
-    }));
-    toast.success(`Task deleted`);
+    const removedTask = state.tasks.find((task) => task.id === id);
+    if (removedTask) {
+      setState((prev) => ({
+        ...prev,
+        tasks: prev.tasks.filter((task) => task !== removedTask),
+      }));
+      toast.success(`Task "${removedTask.description}" removed.`);
+    } else {
+      toast.error('Task does not exist!');
+    }
   };
 
   const toggleTaskCompletion = (id: string) => {
