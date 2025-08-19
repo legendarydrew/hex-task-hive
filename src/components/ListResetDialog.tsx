@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useApp } from "@/context/AppContext";
-import { toast } from "sonner";
+import { toast } from "./ui/use-toast";
 
 interface ListDialogProps {
   open: boolean;
@@ -34,7 +34,7 @@ export const ListResetDialog: React.FC<ListDialogProps> = ({
   useEffect(() => {
     // Make sure a list has been selected, or is available.
     if (!activeListId) {
-      toast.error("No task list selected.");
+      toast.error({ description: "No task list selected." });
       onOpenChange(false);
     }
   }, [activeListId, open]);

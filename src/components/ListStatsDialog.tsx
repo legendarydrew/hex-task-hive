@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { useApp } from "@/context/AppContext";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { toast } from "sonner";
+import { toast } from "./ui/use-toast";
 
 /**
  * This component is for a dialog that displays a list of Tasks in a list, with their picked and completed dates.
@@ -41,7 +41,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
   useEffect(() => {
     if (open && !activeListTasks.length) {
       onOpenChange(false);
-      toast.info("No tasks in this list.");
+      toast.info({ description: "No tasks in this list."});
     }
   }, [open]);
 
