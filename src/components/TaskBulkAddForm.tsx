@@ -34,8 +34,7 @@ const TaskBulkAddForm: React.FC = () => {
   return (
     <form onSubmit={createHandler} className="flex flex-col p-1 pb-3 gap-1">
       <Textarea
-        className="text-sm"
-        rows={4}
+        className="text-sm h-[10dvh] resize-none"
         ref={inputField}
         value={content}
         onChange={changeHandler}
