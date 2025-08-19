@@ -76,6 +76,10 @@
 }
 
 @layer components {
+    .token-grid {
+        @apply bg-[url('./img/bg.png')] flex px-3 py-6 overflow-auto w-full h-full;
+    }
+
     .rune-token {
         @apply text-task-base-foreground transition-[filter];
         border: none;

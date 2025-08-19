@@ -88,7 +88,7 @@ const TokenGrid = () => {
   }, [gridWidth, tokenRadius, activeTasks.length]);
 
   return (
-    <div className="flex px-3 py-6 overflow-auto w-full h-full">
+    <div className="token-grid">
       {!state.activeListId ? (
         <TokenGridNoList />
       ) : activeTasks.length === 0 ? (
