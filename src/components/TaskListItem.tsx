@@ -31,7 +31,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
 
     return (
         <>
-            <span className="font-bold text-right w-8">{taskNumber}</span>
+            <span className="heading-text text-right w-8">{taskNumber}</span>
             <span className="flex-grow">{task.description}</span>
             <menu className="flex gap-0.5 justify-end">
                 <Button
