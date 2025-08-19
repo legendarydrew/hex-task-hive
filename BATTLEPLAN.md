@@ -2,10 +2,10 @@
 
 ## Styling
 - [x] Use Rubik as the body fount.
-- [ ] Use CH-Modified as the token fount.
+- [x] Use CH-Modified as the token fount.
 - [ ] Input and dropdown fields.
 - [ ] Buttons.
-- [ ] Rune tokens.
+- [x] Rune tokens.
 - [ ] A background image for the tokens area.
 
 ## Features

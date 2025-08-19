@@ -35,8 +35,8 @@ export const RuneToken: React.FC<Props> = ({
   };
 
   const runeClasses = (): string => {
-    // I prefer the array method, but was told (read: beaten over the head with an AI-generated solution)
-    // that this string method was "better". Do you agree?
+    // NOTE: the positioning is controlled by the style attribute: Tailwind does not interpret the dynamic
+    // left-[...] and right-[...] on compilation.
     return cn(
       "rune-token",
       className,
@@ -57,7 +57,7 @@ export const RuneToken: React.FC<Props> = ({
         style={{ left: `${x}px`, top: `${y}px` }}
         onClick={clickHandler}
       >
-        <span className="font-display text-2xl font-bold text-center z-10">
+        <span className="token-number">
           {taskNumber}
         </span>
       </TooltipTrigger>

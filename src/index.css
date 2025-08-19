@@ -1,151 +1,141 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *), [data-mode="dark"]);
 
 @theme {
-    --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --heading-fount: 'CH Modified', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: "Rubik", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-fount: "CH Modified", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    --color-background: var(--color-white);
-    --color-foreground: var(--color-slate-800);
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-slate-800);
 
-    --color-popover: var(--color-background);
+  --color-popover: var(--color-background);
 
-    --color-muted: var(--color-indigo-200);
-    --color-muted-foreground: var(--color-slate-500);
+  --color-muted: var(--color-indigo-200);
+  --color-muted-foreground: var(--color-slate-500);
 
-    --color-accent: var(--color-slate-200);
-    --color-accent-foreground: var(--color-slate-700);
+  --color-accent: var(--color-slate-200);
+  --color-accent-foreground: var(--color-slate-700);
 
-    --color-primary: var(--color-slate-600);
-    --color-primary-foreground: var(--color-white);
+  --color-primary: var(--color-slate-600);
+  --color-primary-foreground: var(--color-white);
 
-    --color-secondary: var(--color-slate-300);
-    --color-secondary-foreground: var(--color-slate-800);
+  --color-secondary: var(--color-slate-300);
+  --color-secondary-foreground: var(--color-slate-800);
 
-    --color-confirm: var(--color-green-600);
-    --color-confirm-foreground: var(--color-white);
+  --color-confirm: var(--color-green-600);
+  --color-confirm-foreground: var(--color-white);
 
-    --color-destructive: var(--color-red-600);
-    --color-destructive-foreground: var(--color-white);
+  --color-destructive: var(--color-red-600);
+  --color-destructive-foreground: var(--color-white);
 
-    --color-task-base: var(--color-zinc-300);
-    --color-task-base-border: var(--color-zinc-400);
-    --color-task-base-foreground: var(--color-zinc-500);
+  --color-task-base: var(--color-zinc-300);
+  --color-task-base-border: var(--color-zinc-400);
+  --color-task-base-foreground: var(--color-zinc-500);
 
-    --color-task-picked: var(--color-blue-300);
-    --color-task-picked-border: var(--color-blue-400);
-    --color-task-picked-foreground: var(--color-blue-900);
+  --color-task-picked: var(--color-blue-300);
+  --color-task-picked-border: var(--color-blue-800);
+  --color-task-picked-foreground: var(--color-blue-800);
 
-    --color-task-complete: var(--color-lime-300);
-    --color-task-complete-border: var(--color-lime-400);
-    --color-task-complete-foreground: var(--color-lime-700);
+  --color-task-complete: var(--color-lime-300);
+  --color-task-complete-border: var(--color-lime-400);
+  --color-task-complete-foreground: var(--color-lime-700);
 
-    --rune-size: 6em;
-    --rune-border-width: 0.25em;
-    --rune-spacing: calc(var(--rune-size) - sin(60deg) * var(--rune-size));
+  --rune-size: 6em;
+  --rune-border-width: 0.25em;
+  --rune-spacing: calc(var(--rune-size) - sin(60deg) * var(--rune-size));
 }
 
 @layer base {
-    @font-face {
-        font-family: "CH Modified";
-        src: url(./founts/CHModified-Heavy.woff) format("woff"),
-        url(./founts/CHModified-Heavy.woff2) format("woff2");
-        font-weight: normal;
-        font-style: normal;
-    }
+  @font-face {
+    font-family: "CH Modified";
+    src: url(./founts/CHModified-Heavy.woff) format("woff"),
+      url(./founts/CHModified-Heavy.woff2) format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
 
-    * {
-        @apply border-zinc-300 dark:border-zinc-700;
-        /* setting the default border colour. */
-    }
-
+  * {
+    @apply border-zinc-300 dark:border-zinc-700;
+    /* setting the default border colour. */
+  }
 }
 
 @utility heading-text {
-    font-family: var(--heading-fount);
-    @apply font-normal leading-tight uppercase;
+  font-family: var(--heading-fount);
+  @apply font-normal leading-tight uppercase;
 }
-
 
 /* Rune token styling. */
 
 @utility vertical-hexagon {
-    clip-path: polygon(50% 100%, 93.3012701892% 75%, 93.3012701892% 25%, 50% 0%, 6.6987298108% 25%, 6.6987298108% 75%)
+  clip-path: polygon(
+    50% 100%,
+    93.3012701892% 75%,
+    93.3012701892% 25%,
+    50% 0%,
+    6.6987298108% 25%,
+    6.6987298108% 75%
+  );
 }
 
 @layer components {
-    .token-grid {
-        @apply bg-[url('./img/bg.png')] flex px-3 py-6 overflow-auto w-full h-full;
+  .token-grid {
+    @apply bg-[url('./img/bg.png')] flex px-3 py-6 overflow-auto w-full h-full;
+  }
+
+  .rune-token {
+    @apply border-none inline-flex items-center justify-center text-task-base-foreground transition-[filter] w-(--rune-size) h-(--rune-size);
+
+    &:focus,
+    &:hover {
+      @apply brightness-110;
     }
 
-    .rune-token {
-        @apply text-task-base-foreground transition-[filter];
-        border: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        /* position: relative; */
-        height: var(--rune-size);
-        width: var(--rune-size);
-        /* margin: calc(var(--rune-spacing) * -1 / 2) 0; */
+    &::before,
+    &::after {
+      @apply content-[""] vertical-hexagon block absolute inset-0;
     }
 
-    .rune-token:focus,
-    .rune-token:hover {
-        @apply brightness-110;
+    &::before {
+      /* Represents the border colour. */
+      @apply bg-task-base-border z-0;
     }
 
-    .rune-token::before,
-    .rune-token::after {
-        @apply vertical-hexagon;
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+    &::after {
+      /* Represents the background colour. */
+      @apply bg-task-base z-1 inset-(--rune-border-width);
     }
 
-    .rune-token::before {
-        /* Represents the border colour. */
-        @apply bg-task-base-border;
-        z-index: 0;
-    }
+    &.picked {
+      @apply text-task-picked-foreground;
 
-    .rune-token::after {
-        /* Represents the background colour. */
-        @apply bg-task-base;
-        top: var(--rune-border-width);
-        bottom: var(--rune-border-width);
-        left: var(--rune-border-width);
-        right: var(--rune-border-width);
-        z-index: 1;
-    }
-
-    .rune-token.picked {
-        @apply text-task-picked-foreground;
-    }
-
-    .rune-token.picked::before {
+      &::before {
         @apply bg-task-picked-border;
-    }
+      }
 
-    .rune-token.picked::after {
+      &::after {
         @apply bg-task-picked;
+      }
     }
 
-    .rune-token.complete {
-        @apply text-task-complete-foreground;
-    }
+    &.complete {
+      @apply text-task-complete-foreground;
 
-    .rune-token.complete::before {
+      &::before {
         @apply bg-task-complete-border;
+      }
+
+      &::after {
+        @apply bg-task-complete;
+      }
     }
 
-    .rune-token.complete::after {
-        @apply bg-task-complete;
+    .token-number {
+        @apply heading-text text-3xl font-bold text-center z-10;
     }
+  }
 }
