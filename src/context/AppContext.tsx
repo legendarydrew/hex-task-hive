@@ -8,6 +8,7 @@ import React, {
 import { AppState, Task, TaskList } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
+import { toast as uiToast } from '../components/ui/use-toast';
 
 interface AppContextType {
   state: AppState;
@@ -291,6 +292,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         })),
     }));
     toast.info("Tasks were reset.");
+
+
+    uiToast.info({ description: "Tasks in this list were reset. "});
   };
 
   // New functions for managing categories

@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/use-toast"
+import { toastType, useToast } from "@/hooks/use-toast";
 import {
   Toast,
   ToastClose,
@@ -6,28 +6,48 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
+} from "@/components/ui/toast";
+import {
+  CheckCircle2Icon,
+  CircleAlertIcon,
+  InfoIcon,
+  TriangleAlertIcon,
+} from "lucide-react";
 
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(function ({
+        id,
+        messageType,
+        title,
+        description,
+        action,
+        ...props
+      }) {
         return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
+          <Toast key={id} variant={messageType} {...props}>
+            <div className="flex gap-3">
+              {messageType === toastType.SUCCESS && <CheckCircle2Icon />}
+              {messageType === toastType.INFO && <InfoIcon />}
+              {messageType === toastType.WARNING && <TriangleAlertIcon />}
+              {messageType === toastType.ERROR && <CircleAlertIcon />}
+              {/* For some reason, trying to use an Icon component causes problems. */}
+              <div className="grid gap-1">
+                {title && <ToastTitle>{title}</ToastTitle>}
+                {description && (
+                  <ToastDescription>{description}</ToastDescription>
+                )}
+              </div>
+              {action}
             </div>
-            {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }
