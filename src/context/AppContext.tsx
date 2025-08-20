@@ -8,6 +8,7 @@ import {
 import { AppState, Task, TaskList } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "../components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 interface AppContextType {
   state: AppState;
@@ -24,6 +25,7 @@ interface AppContextType {
     data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
   ) => void;
   deleteTask: (id: string) => void;
+  undoDeleteTask: () => void;
   shuffleTasks: () => void;
   resetTasks: (listId: string) => void;
   toggleTaskCompletion: (id: string) => void;
@@ -47,6 +49,7 @@ const DEFAULT_CATEGORIES = [
 const initialState: AppState = {
   lists: [],
   tasks: [],
+  deletedTasks: [],
   activeListId: null,
   sidebarIsOpen: true
 };
@@ -179,17 +182,33 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   /**
+   * Reinsert the specified task.
+   */
+  const undoDeleteTask = () => {
+      // setState((prev) => ({
+      //   ...prev,
+      //   tasks: prev.tasks.slice(0, index).concat(task).concat(prev.tasks.slice(index)),
+      // }));
+      // toast.info({ description: `Task "${task.description}" was restored.` });
+      toast.info({ description: 'Undo was called.'});
+  };
+
+  /**
    * Immediately delete a task.
    */
   const deleteTask = (id: string) => {
     const removedTask = state.tasks.find((task) => task.id === id);
     if (removedTask) {
+      const removedTaskIndex = state.tasks.indexOf(removedTask);
       setState((prev) => ({
         ...prev,
         tasks: prev.tasks.filter((task) => task !== removedTask),
       }));
       toast.success({
         description: `Task "${removedTask.description}" removed.`,
+        action: <ToastAction type="button" onInput={() => undoDeleteTask(removedTaskIndex, removedTask)} altText={"Undo (Alt+U)"}>
+          Undo <kbd>Alt</kbd>+<kbd>U</kbd>
+          </ToastAction>
       });
     } else {
       toast.error({ description: "Task does not exist!" });
@@ -375,6 +394,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addTask,
         updateTask,
         deleteTask,
+        undoDeleteTask,
         toggleTaskCompletion,
         shuffleTasks,
         resetTasks,

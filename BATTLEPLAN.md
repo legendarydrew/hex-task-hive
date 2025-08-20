@@ -17,6 +17,6 @@
 - [ ] Confetti on completion!
 
 ## Miscellaneous
-- [ ] An about page/dialogue.
+- [ ] An about page/dialogue.   
 - [ ] Link to Perfect Zero Labs.
 - [ ] Link to Github.

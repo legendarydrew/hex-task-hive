@@ -26,6 +26,7 @@ export interface TaskList {
 export interface AppState {
   lists: TaskList[];
   tasks: Task[];
+  deletedTasks: { index: number; task: Task }[];
   activeListId: string | null;
   sidebarIsOpen: boolean;
 }

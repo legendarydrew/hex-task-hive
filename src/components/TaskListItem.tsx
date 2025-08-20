@@ -22,6 +22,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
 
   const removeTaskHandler = (task: Task) => {
     // Purely for convenience, we won't bother confirming the removal of the task.
+    // However, we want the ability to undo the most recent deletion, in case it was by accident.
     deleteTask(task.id);
   };
 
