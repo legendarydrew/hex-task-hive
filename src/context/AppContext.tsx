@@ -8,6 +8,8 @@ import {
 import { AppState, Task, TaskList } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "../components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import { Button } from "@/components/ui/button";
 
 interface AppContextType {
   state: AppState;
@@ -24,6 +26,7 @@ interface AppContextType {
     data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
   ) => void;
   deleteTask: (id: string) => void;
+  undoDeleteTask: () => void;
   shuffleTasks: () => void;
   resetTasks: (listId: string) => void;
   toggleTaskCompletion: (id: string) => void;
@@ -47,8 +50,9 @@ const DEFAULT_CATEGORIES = [
 const initialState: AppState = {
   lists: [],
   tasks: [],
+  deletedTasks: [],
   activeListId: null,
-  sidebarIsOpen: true
+  sidebarIsOpen: true,
 };
 
 const LOCAL_STORAGE_KEY = "hex-task-hive-data";
@@ -61,17 +65,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
       try {
-        const parsedData = JSON.parse(savedData);
-
-        // Handle migration for existing lists without categories
-        if (parsedData.lists && parsedData.lists.length > 0) {
-          parsedData.lists = parsedData.lists.map((list: any) => ({
-            ...list,
-            categories: list.categories || [...DEFAULT_CATEGORIES],
-          }));
-        }
-
-        return parsedData;
+        return JSON.parse(savedData);
       } catch (error) {
         console.error("Failed to parse saved data:", error);
         return initialState;
@@ -80,7 +74,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return initialState;
   });
 
-  // Save to localStorage whenever state changes
+  // Save to localStorage whenever state changes.
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
   }, [state]);
@@ -179,17 +173,63 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   /**
+   * Undo the deletion of the last task, if present.
+   * Tasks are taken from the deleted tasks, then inserted into their original position.
+   */
+  const undoDeleteTask = () => {
+    const deletedListTasks = state.deletedTasks.filter(
+      (item) => item.listId === state.activeListId
+    );
+    const [restoreItem] = deletedListTasks.slice(-1);
+    if (restoreItem) {
+      setState((prev) => ({
+        ...prev,
+        tasks: prev.tasks
+          .slice(0, restoreItem.index)
+          .concat(restoreItem.task)
+          .concat(prev.tasks.slice(restoreItem.index)),
+        deletedTasks: prev.deletedTasks.filter(
+          (item) => JSON.stringify(item) !== JSON.stringify(restoreItem)
+        ),
+      }));
+      toast.info({ description: `Task "${restoreItem.task.description}" was restored.` });
+    }
+  };
+
+  /**
    * Immediately delete a task.
+   * Instead of permanently removing it, the task is added to a list of deleted tasks, that can be "undone"
+   * with a keypress (or by clicking on the undo button).
    */
   const deleteTask = (id: string) => {
     const removedTask = state.tasks.find((task) => task.id === id);
     if (removedTask) {
+      const removedTaskIndex = state.tasks.indexOf(removedTask);
       setState((prev) => ({
         ...prev,
         tasks: prev.tasks.filter((task) => task !== removedTask),
+        deletedTasks: [
+          ...prev.deletedTasks,
+          {
+            listId: prev.activeListId,
+            index: removedTaskIndex,
+            task: removedTask,
+          },
+        ],
       }));
       toast.success({
         description: `Task "${removedTask.description}" removed.`,
+        action: (
+          <ToastAction
+            asChild
+            onClick={undoDeleteTask}
+            altText={"Undo (Alt+U)"}
+          >
+            <Button type="button" variant="secondary" size="toast">
+              Undo (<kbd>Alt</kbd>+<kbd>U</kbd>)
+            </Button>
+          </ToastAction>
+        ),
       });
     } else {
       toast.error({ description: "Task does not exist!" });
@@ -359,10 +399,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const toggleSidebar = () => {
     setState((prev) => ({
       ...prev,
-      sidebarIsOpen: !prev.sidebarIsOpen
+      sidebarIsOpen: !prev.sidebarIsOpen,
     }));
-  }
-
+  };
 
   return (
     <AppContext.Provider
@@ -375,6 +414,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addTask,
         updateTask,
         deleteTask,
+        undoDeleteTask,
         toggleTaskCompletion,
         shuffleTasks,
         resetTasks,
@@ -382,7 +422,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addCategory,
         removeCategory,
         getListCategories,
-        toggleSidebar
+        toggleSidebar,
       }}
     >
       {children}
@@ -393,7 +433,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 export const useApp = () => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error("useApp must be used within an AppProvider");
+    throw new Error("useApp must be used within an AppProvider.");
   }
   return context;
 };

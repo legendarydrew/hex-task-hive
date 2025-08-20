@@ -1,13 +1,10 @@
 import { LayoutHeader } from "./LayoutHeader";
 import { LayoutFooter } from "./LayoutFooter";
 import TokenGrid from "./TokenGrid";
-import TaskList from "./TaskList";
-import TaskAddForm from "./TaskAddForm";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
-import TaskBulkAdd from "./TaskBulkAddForm";
-import TaskFormToggle from "./TaskFormToggle";
 import { TaskSidebar } from "./TaskSidebar";
+import { useEffect } from "react";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -16,7 +13,25 @@ import { TaskSidebar } from "./TaskSidebar";
  * a dropdown list in the header.
  */
 export const Layout: React.FC<void> = () => {
-  const { state } = useApp();
+  const { state, undoDeleteTask } = useApp();
+  /**
+   * Listen for keypresses while this page is open, looking specifically for an undo command.
+   * https://stackoverflow.com/a/61740188/4073160
+   * https://github.com/facebook/react/issues/14699#issuecomment-457653146
+   * The last link addressed a major issue with using old state values, as well as running more than once. 
+   */
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.altKey && e.key.toLowerCase() === "u") {
+      undoDeleteTask(); // Alt + U
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className="h-screen flex flex-col bg-background">
