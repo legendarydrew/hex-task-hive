@@ -1,5 +1,10 @@
-
-export type Category = 'work' | 'personal' | 'health' | 'finance' | 'education' | 'other';
+export type Category =
+  | "work"
+  | "personal"
+  | "health"
+  | "finance"
+  | "education"
+  | "other";
 
 export interface Task {
   id: string;
@@ -22,4 +27,5 @@ export interface AppState {
   lists: TaskList[];
   tasks: Task[];
   activeListId: string | null;
+  sidebarIsOpen: boolean;
 }

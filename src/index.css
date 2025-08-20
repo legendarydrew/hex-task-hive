@@ -104,7 +104,7 @@
   }
 
   .rune-token {
-    @apply border-none inline-flex items-center justify-center text-task-base-foreground transition-[filter] w-(--rune-size) h-(--rune-size);
+    @apply border-none cursor-pointer inline-flex items-center justify-center text-task-base-foreground transition-[filter] w-(--rune-size) h-(--rune-size);
 
     &:focus,
     &:hover {

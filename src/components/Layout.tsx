@@ -7,6 +7,7 @@ import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 import TaskBulkAdd from "./TaskBulkAddForm";
 import TaskFormToggle from "./TaskFormToggle";
+import { TaskSidebar } from "./TaskSidebar";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -29,14 +30,7 @@ export const Layout: React.FC<void> = () => {
           <TokenGrid />
         </div>
 
-        {state.activeListId && (
-          <aside className="bg-white sm:w-1/3 flex-shrink-0 flex flex-col">
-            <div className="flex-grow overflow-y-auto h-full">
-              <TaskList />
-            </div>
-            <TaskFormToggle />
-          </aside>
-        )}
+        <TaskSidebar />
       </main>
 
       <LayoutFooter />
