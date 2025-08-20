@@ -3,6 +3,7 @@ import TaskFormToggle from "./TaskFormToggle";
 import TaskList from "./TaskList";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Button } from "./ui/button";
 
 export const TaskSidebar = () => {
@@ -16,14 +17,19 @@ export const TaskSidebar = () => {
           state.sidebarIsOpen ? "left-0 ml-0" : "left-1/3 ml-[-33%]"
         )}
       >
-        <Button
-          variant="ghost"
-          className="absolute right-[100%] p-2"
-          onClick={toggleSidebar}
-          title="Toggle task list"
-        >
-          {state.sidebarIsOpen ? <ChevronRight /> : <ChevronLeft />}
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild
+            className="absolute right-[100%]"
+            onClick={toggleSidebar}
+          >
+            <Button variant="ghost" className="py-2 px-3 rounded-r-none">
+            {state.sidebarIsOpen ? <ChevronRight /> : <ChevronLeft />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={1}>
+            Toggle task list
+          </TooltipContent>
+        </Tooltip>
         <aside className="bg-white h-full ease-linear flex-shrink-0 flex flex-col overflow-x-hidden">
           <div className="flex-grow overflow-y-auto h-full">
             <TaskList />
