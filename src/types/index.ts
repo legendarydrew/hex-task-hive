@@ -26,7 +26,13 @@ export interface TaskList {
 export interface AppState {
   lists: TaskList[];
   tasks: Task[];
-  deletedTasks: { index: number; task: Task }[];
+  deletedTasks: DeletedTaskItem[];
   activeListId: string | null;
   sidebarIsOpen: boolean;
+}
+
+export interface DeletedTaskItem {
+  listId: string;
+  index: number;
+  task: Task
 }

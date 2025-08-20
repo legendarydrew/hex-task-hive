@@ -13,24 +13,25 @@ import { useEffect } from "react";
  * a dropdown list in the header.
  */
 export const Layout: React.FC<void> = () => {
-  const { undoDeleteTask } = useApp();
+  const { state, undoDeleteTask } = useApp();
   /**
    * Listen for keypresses while this page is open, looking specifically for an undo command.
    * https://stackoverflow.com/a/61740188/4073160
+   * https://github.com/facebook/react/issues/14699#issuecomment-457653146
+   * The last link addressed a major issue with using old state values, as well as running more than once. 
    */
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.altKey && e.key.toLowerCase() === "u") {
-        undoDeleteTask();  // Alt + U
-      }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.altKey && e.key.toLowerCase() === "u") {
+      undoDeleteTask(); // Alt + U
     }
-
+  };
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]);
 
   return (
     <div className="h-screen flex flex-col bg-background">
