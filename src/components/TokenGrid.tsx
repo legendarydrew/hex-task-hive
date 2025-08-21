@@ -98,7 +98,7 @@ const TokenGrid = () => {
           {tokenPositions.map(({ x, y }, index: number) => activeTasks[index] && (
             <RuneToken
               key={activeTasks[index].id}
-              taskNumber={index}
+              taskNumber={index + 1}
               task={activeTasks[index]}
               className="absolute origin-center"
               x={x}

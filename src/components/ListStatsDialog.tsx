@@ -126,7 +126,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
               {activeListTasks.map((task, index) => (
                 <tr className="hover:bg-gray-200" key={index}>
                   <th className="text-right font-bold px-1 w-4" scope="row">
-                    {index}
+                    {index + 1}
                   </th>
                   <th className="text-left font-bold px-1" scope="row">
                     {task.description}
