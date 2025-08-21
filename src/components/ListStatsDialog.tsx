@@ -60,6 +60,15 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
       Object.keys(chartData).forEach((date) => {
         chartData.push({ date, count: chartData[date] });
       });
+
+      if ( chartData.length === 1) {
+        // In order to display a line on the chart: if we only have results for one day,
+        // add yesterday with a count of 0.
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        chartData.unshift({ date: dateValue(yesterday.toString()), count: 0});
+      }
+
       setChartData(chartData);
       setChartLimits({
         min: dateValue(activeList.createdAt),
@@ -85,6 +94,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           >
             <LineChart
               data={chartData}
+              margin={{ top: 0,bottom: 0, left: 0, right: 0 }}
             >
               {chartLimits && (
                 <XAxis
