@@ -34,8 +34,8 @@ export const LayoutHeader: React.FC = () => {
         <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
           <Button
             variant="destructive"
-            disabled={!state.activeListId}
             onClick={() => setIsListResetDialogOpen(true)}
+            disabled={!state.activeListId}
             title="Reset Tasks"
           >
             <UndoDot className="h-4 w-4" />
