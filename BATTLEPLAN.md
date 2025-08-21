@@ -18,7 +18,7 @@
 - [x] Fix the algorithm for displaying tokens in a hexagonal grid.
 - [ ] Confetti on completion!
 - [x] Remove category support.
-- [ ] Keypress for picking a random task.
+- [x] Keypress for picking a random task.
 - [ ] Rename the current list.
 - [ ] Stats button outside of the dropdown menu.
 

@@ -1,21 +1,16 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
 import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
-import React from 'react';
+import { Tooltip, TooltipContent } from "./ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 export const LayoutHeader: React.FC = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
-  const [isListResetDialogOpen, setIsListResetDialogOpen] = React.useState(false);
-  const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
-
-  const handleRandomTask = () => {
-    const task = selectRandomTask();
-    if (task) {
-      setSelectedTask(task.id);
-    }
-  };
+  const [isListResetDialogOpen, setIsListResetDialogOpen] =
+    React.useState(false);
 
   return (
     <header className="w-full bg-white shadow-sm p-3">
@@ -41,29 +36,40 @@ export const LayoutHeader: React.FC = () => {
             <UndoDot className="h-4 w-4" />
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={shuffleTasks}
-            disabled={!state.activeListId}
-            className="flex items-center gap-1"
-          >
-            <Shuffle className="h-4 w-4" />
-            <span>Shuffle Tasks</span>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild onClick={shuffleTasks}>
+              <Button
+                variant="secondary"
+                disabled={!state.activeListId}
+                className="flex items-center gap-1"
+              >
+                <Shuffle className="h-4 w-4" />
+                <span>Shuffle Tasks</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={1}>Ctrl + #</TooltipContent>
+          </Tooltip>
 
-          <Button
-            variant="default"
-            onClick={handleRandomTask}
-            disabled={!state.activeListId}
-            className="flex items-center gap-1"
-          >
-            <StickyNote className="h-4 w-4" />
-            <span>Random Task</span>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild onClick={selectRandomTask}>
+              <Button
+                variant="default"
+                disabled={!state.activeListId}
+                className="flex items-center gap-1"
+              >
+                <StickyNote className="h-4 w-4" />
+                <span>Random Task</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={1}>Ctrl + Enter</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
-      <ListResetDialog open={isListResetDialogOpen} onOpenChange={setIsListResetDialogOpen} />
+      <ListResetDialog
+        open={isListResetDialogOpen}
+        onOpenChange={setIsListResetDialogOpen}
+      />
     </header>
   );
 };
