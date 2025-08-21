@@ -4,7 +4,8 @@ import TokenGrid from "./TokenGrid";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 import { TaskSidebar } from "./TaskSidebar";
-import { useEffect } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import Confetti from "react-confetti";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -13,7 +14,8 @@ import { useEffect } from "react";
  * a dropdown list in the header.
  */
 export const Layout: React.FC<void> = () => {
-  const { selectRandomTask, shuffleTasks, undoDeleteTask } = useApp();
+  const { isListComplete, selectRandomTask, shuffleTasks, undoDeleteTask } =
+    useApp();
   /**
    * Listen for keypresses while this page is open, looking specifically for an undo command.
    * https://stackoverflow.com/a/61740188/4073160
@@ -37,14 +39,66 @@ export const Layout: React.FC<void> = () => {
     };
   }, [handleKeyDown]);
 
+  // Display confetti if we've completed the list.
+  const mainRef: RefObject<HTMLElement> = useRef();
+
+  let styles = getComputedStyle(document.documentElement);
+  const confettiColours = [
+    styles.getPropertyValue("--color-task-complete"),
+    styles.getPropertyValue("--color-green-100"),
+    styles.getPropertyValue("--color-green-200"),
+    styles.getPropertyValue("--color-green-300"),
+    styles.getPropertyValue("--color-green-400"),
+    styles.getPropertyValue("--color-green-500"),
+    styles.getPropertyValue("--color-lime-100"),
+    styles.getPropertyValue("--color-lime-200"),
+    styles.getPropertyValue("--color-lime-300"),
+    styles.getPropertyValue("--color-lime-400"),
+    styles.getPropertyValue("--color-lime-500")
+  ];
+
+
+  const confettiShape = (ctx: CanvasRenderingContext2D) => {
+    // Draw a hexagon!
+    // Remember that JS/TS uses radians for maths functions.
+    const hexRadius = 10;
+    ctx.beginPath();
+    for(let angle = 0; angle <= 360; angle += 60) {
+      const radians = angle * Math.PI / 180;
+      const x = hexRadius * Math.cos(radians);
+      const y = hexRadius * Math.sin(radians);
+      ctx.lineTo(x, y);
+    }
+    ctx.fill();
+    ctx.closePath()
+  };
+
+  useEffect(() => {
+    console.log("complete?", isListComplete);
+  }, [isListComplete]);
+
   return (
     <div className="h-screen flex flex-col bg-background">
       <LayoutHeader />
 
       <TaskListProgressBar />
 
-      {/* TODO why is this height bigger then intended? */}
-      <main className="container mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden">
+      <main
+        ref={mainRef}
+        className="container relative mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden"
+      >
+        { isListComplete && (<Confetti
+          width={mainRef.current?.clientWidth}
+          height={mainRef.current?.clientHeight}
+          drawShape={confettiShape}
+          colors={confettiColours}
+          numberOfPieces={300}
+          confettiSource={{x:0, y: 0, w: mainRef.current.clientWidth, h: mainRef.current.clientHeight / 3}}
+          gravity={0.2}
+          wind={0}
+          friction={1}
+          recycle={false}
+        />) }
         <div className="flex-grow overflow-y-auto min-h-full">
           <TokenGrid />
         </div>

@@ -15,7 +15,7 @@
 - [x] Ability to add tasks in bulk.
 - [x] Toggle between single and bulk task creation.
 - [x] Fix the algorithm for displaying tokens in a hexagonal grid.
-- [ ] Confetti on completion!
+- [x] Confetti on completion!
 - [x] Remove category support.
 - [x] Keypress for picking a random task.
 - [ ] Rename the current list.
