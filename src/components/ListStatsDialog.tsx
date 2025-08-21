@@ -77,22 +77,20 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           <DialogTitle>Statistics for {activeList?.name}</DialogTitle>
         </DialogHeader>
 
-        <div className="h-[15vh]">
+        <div className="h-[20vh]">
           <ResponsiveContainer
             className="bg-white mx-auto border-gray-500 border-l-[1px] border-b-[1px]"
-            width={300}
+            width="100%"
             height="100%"
           >
             <LineChart
               data={chartData}
-              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
             >
               {chartLimits && (
                 <XAxis
                   hide={true}
                   dataKey="date"
                   interval={"preserveStartEnd"}
-                  tick={false}
                   scale="utc"
                   type="number"
                   domain={[chartLimits.min, chartLimits.max]}
@@ -108,7 +106,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           <table className="table w-full">
             <thead>
               <tr className="text-xs sticky top-0 bg-background border-b-2">
-                <th className="text-right px-1 w-4" scope="col">
+                <th className="text-right heading-text px-1 w-4" scope="col">
                   #
                 </th>
                 <th className="text-left px-1" scope="col">
@@ -125,16 +123,16 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
             <tbody className="text-sm">
               {activeListTasks.map((task, index) => (
                 <tr className="hover:bg-gray-200" key={index}>
-                  <th className="text-right font-bold px-1 w-4" scope="row">
+                  <th className="text-right heading-text px-1 w-4" scope="row">
                     {index + 1}
                   </th>
-                  <th className="text-left font-bold px-1" scope="row">
+                  <th className="text-left font-normal px-1" scope="row">
                     {task.description}
                   </th>
-                  <td className="text-center">
+                  <td className="text-center text-xs">
                     {task.pickedAt ? formatDate(task.pickedAt) : "-"}
                   </td>
-                  <td className="text-center">
+                  <td className="text-center text-xs">
                     {task.completedAt ? formatDate(task.completedAt) : "-"}
                   </td>
                 </tr>
