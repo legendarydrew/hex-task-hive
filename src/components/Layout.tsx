@@ -93,7 +93,7 @@ export const Layout: React.FC<void> = () => {
           drawShape={confettiShape}
           colors={confettiColours}
           numberOfPieces={300}
-          confettiSource={{x:0, y: 0, w: mainRef.current.clientWidth, h: mainRef.current.clientHeight / 3}}
+          confettiSource={{x:0, y: 0, w: mainRef.current?.clientWidth, h: mainRef.current?.clientHeight / 3}}
           gravity={0.2}
           wind={0}
           friction={1}
