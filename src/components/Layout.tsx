@@ -4,7 +4,8 @@ import TokenGrid from "./TokenGrid";
 import TaskListProgressBar from "./TaskListProgressBar";
 import { useApp } from "@/context/AppContext";
 import { TaskSidebar } from "./TaskSidebar";
-import { useEffect } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import Confetti from "react-confetti";
 
 /**
  * A relatively simple layout: header, contents and footer.
@@ -38,6 +39,24 @@ export const Layout: React.FC<void> = () => {
     };
   }, [handleKeyDown]);
 
+  // Display confetti if we've completed the list.
+  const mainRef: RefObject<HTMLElement> = useRef();
+
+  const confettiShape = (ctx: CanvasRenderingContext2D) => {
+    // Draw a hexagon!
+    // Remember that JS/TS uses radians for maths functions.
+    const hexRadius = 10;
+    ctx.beginPath();
+    for(let angle = 0; angle <= 360; angle += 60) {
+      const radians = angle * Math.PI / 180;
+      const x = hexRadius * Math.cos(radians);
+      const y = hexRadius * Math.sin(radians);
+      ctx.lineTo(x, y);
+    }
+    ctx.fill();
+    ctx.closePath()
+  };
+
   useEffect(() => {
     console.log("complete?", isListComplete);
   }, [isListComplete]);
@@ -48,7 +67,21 @@ export const Layout: React.FC<void> = () => {
 
       <TaskListProgressBar />
 
-      <main className="container mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden">
+      <main
+        ref={mainRef}
+        className="container relative mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden"
+      >
+        { isListComplete && (<Confetti
+          width={mainRef.current?.clientWidth}
+          height={mainRef.current?.clientHeight}
+          drawShape={confettiShape}
+          numberOfPieces={300}
+          confettiSource={{x:0, y: 0, w: mainRef.current.clientWidth, h: mainRef.current.clientHeight / 5}}
+          gravity={0.2}
+          wind={0}
+          friction={1}
+          recycle={false}
+        />) }
         <div className="flex-grow overflow-y-auto min-h-full">
           <TokenGrid />
         </div>
