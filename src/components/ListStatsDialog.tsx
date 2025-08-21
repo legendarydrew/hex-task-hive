@@ -24,9 +24,10 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
   listId,
 }) => {
   const { state } = useApp();
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState<{date: number, picked: number, completed: number}[]>([]);
   const [chartLimits, setChartLimits] = useState(null);
-  const [chartLineColour, setChartLineColour] = useState("green");
+  const [chartPickedLineColour, setChartPickedLineColour] = useState("blue");
+  const [chartCompletedLineColour, setChartCompletedLineColour] = useState("green");
 
   const activeList = state.lists.find((list) => list.id === listId);
   const activeListTasks = state.tasks.filter((task) => task.listId === listId);
@@ -35,42 +36,58 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
     return new Date(timestamp).toLocaleDateString("en-GB");
   };
 
-  const dateValue = (timestamp?: string) => {
+  const dateValue = (timestamp?: string): number => {
     return new Date(timestamp?.slice(0, 10)).valueOf();
   };
 
   useEffect(() => {
     if (open && !activeListTasks.length) {
       onOpenChange(false);
-      toast.info({ description: "No tasks in this list."});
+      toast.info({ description: "No tasks in this list." });
     }
 
     let styles = getComputedStyle(document.documentElement);
-    setChartLineColour(styles.getPropertyValue("--color-task-complete-border"));
+    setChartPickedLineColour(styles.getPropertyValue("--color-task-picked"));
+    setChartCompletedLineColour(styles.getPropertyValue("--color-task-complete-border"));
   }, [open]);
 
   useEffect(() => {
     if (activeList) {
-
       // Build chart data from the list of tasks.
-      const chartData = [];
-      const completedTasks = activeListTasks
+      const picked: {[key: string]: number} = {};
+      const completed: {[key: string]: number} = {}
+
+      // Number of tasks picked.
+      activeListTasks
+        .filter((task) => task.pickedAt)
+        .sort((a, b) => (a.pickedAt > b.pickedAt ? 1 : -1))
+        .forEach((task) => {
+          const taskDate = dateValue(task.pickedAt);
+          picked[taskDate] = picked[taskDate] ? picked[taskDate] + 1 : 1;
+        });
+
+      // Number of tasks completed.
+      activeListTasks
         .filter((task) => task.completedAt)
-        .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1));
-      completedTasks.forEach((task) => {
+        .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1))
+      .forEach((task) => {
         const taskDate = dateValue(task.completedAt);
-        chartData[taskDate] = chartData[taskDate] ? chartData[taskDate] + 1 : 1;
-      });
-      Object.keys(chartData).forEach((date) => {
-        chartData.push({ date, count: chartData[date] });
+        completed[taskDate] = completed[taskDate] ? completed[taskDate] + 1 : 1;
       });
 
-      if ( chartData.length === 1) {
-        // In order to display a line on the chart: if we only have results for one day,
-        // add yesterday with a count of 0.
+      const dates = [...new Set([...Object.keys(picked), ...Object.keys(completed)])].sort();
+      const chartData: {date: number, picked: number, completed: number}[] = dates.map((date) => ({
+        date: parseInt(date),
+        picked: picked[date] ?? 0,
+        completed: completed[date] ?? 0
+      }));
+
+      // In order to display a line on the chart: if we only have results for one day,
+      // add yesterday with a count of 0.
+      if (chartData.length === 1) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        chartData.unshift({ date: dateValue(yesterday.toString()), count: 0});
+        chartData.unshift({ date: dateValue(yesterday.toString()), picked: 0, completed: 0 });
       }
 
       setChartData(chartData);
@@ -98,7 +115,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           >
             <LineChart
               data={chartData}
-              margin={{ top: 0,bottom: 0, left: 0, right: 0 }}
+              margin={{ top: 0, bottom: 0, left: 0, right: 0 }}
             >
               {chartLimits && (
                 <XAxis
@@ -111,7 +128,8 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
                 />
               )}
               <YAxis hide={true} tick={false}></YAxis>
-              <Line dataKey="count" stroke={chartLineColour} dot={false} />
+              <Line dataKey="picked" stroke={chartPickedLineColour} dot={false} />
+              <Line dataKey="completed" stroke={chartCompletedLineColour} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
