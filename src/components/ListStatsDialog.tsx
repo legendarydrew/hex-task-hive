@@ -26,6 +26,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
   const { state } = useApp();
   const [chartData, setChartData] = useState([]);
   const [chartLimits, setChartLimits] = useState(null);
+  const [chartLineColour, setChartLineColour] = useState("green");
 
   const activeList = state.lists.find((list) => list.id === listId);
   const activeListTasks = state.tasks.filter((task) => task.listId === listId);
@@ -43,6 +44,9 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
       onOpenChange(false);
       toast.info({ description: "No tasks in this list."});
     }
+
+    let styles = getComputedStyle(document.documentElement);
+    setChartLineColour(styles.getPropertyValue("--color-task-complete-border"));
   }, [open]);
 
   useEffect(() => {
@@ -107,7 +111,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
                 />
               )}
               <YAxis hide={true} tick={false}></YAxis>
-              <Line dataKey="count" stroke="green" dot={false} />
+              <Line dataKey="count" stroke={chartLineColour} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
