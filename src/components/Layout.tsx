@@ -42,6 +42,22 @@ export const Layout: React.FC<void> = () => {
   // Display confetti if we've completed the list.
   const mainRef: RefObject<HTMLElement> = useRef();
 
+  let styles = getComputedStyle(document.documentElement);
+  const confettiColours = [
+    styles.getPropertyValue("--color-task-complete"),
+    styles.getPropertyValue("--color-green-100"),
+    styles.getPropertyValue("--color-green-200"),
+    styles.getPropertyValue("--color-green-300"),
+    styles.getPropertyValue("--color-green-400"),
+    styles.getPropertyValue("--color-green-500"),
+    styles.getPropertyValue("--color-lime-100"),
+    styles.getPropertyValue("--color-lime-200"),
+    styles.getPropertyValue("--color-lime-300"),
+    styles.getPropertyValue("--color-lime-400"),
+    styles.getPropertyValue("--color-lime-500")
+  ];
+
+
   const confettiShape = (ctx: CanvasRenderingContext2D) => {
     // Draw a hexagon!
     // Remember that JS/TS uses radians for maths functions.
@@ -75,8 +91,9 @@ export const Layout: React.FC<void> = () => {
           width={mainRef.current?.clientWidth}
           height={mainRef.current?.clientHeight}
           drawShape={confettiShape}
+          colors={confettiColours}
           numberOfPieces={300}
-          confettiSource={{x:0, y: 0, w: mainRef.current.clientWidth, h: mainRef.current.clientHeight / 5}}
+          confettiSource={{x:0, y: 0, w: mainRef.current.clientWidth, h: mainRef.current.clientHeight / 3}}
           gravity={0.2}
           wind={0}
           friction={1}
