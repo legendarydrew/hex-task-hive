@@ -20,7 +20,7 @@ interface AppContextType {
   ) => void;
   deleteList: (id: string) => void;
   setActiveList: (id: string) => void;
-  addTask: (description: string, category?: string, dueDate?: string) => void;
+  addTask: (description: string, dueDate?: string) => void;
   updateTask: (
     id: string,
     data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
@@ -31,9 +31,6 @@ interface AppContextType {
   resetTasks: (listId: string) => void;
   toggleTaskCompletion: (id: string) => void;
   selectRandomTask: () => Task | null;
-  addCategory: (listId: string, category: string) => void;
-  removeCategory: (listId: string, category: string) => void;
-  getListCategories: (listId: string) => string[];
   toggleSidebar: () => void;
 }
 
@@ -136,7 +133,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const addTask = (description: string, category: string, dueDate?: string) => {
+  const addTask = (description: string, dueDate?: string) => {
     if (!state.activeListId) {
       toast.error({ description: "No active list selected" });
       return;
@@ -146,7 +143,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       id: uuidv4(),
       listId: state.activeListId,
       description,
-      category,
       completedAt: undefined,
       pickedAt: undefined,
       createdAt: new Date().toISOString(),
@@ -343,56 +339,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     toast.info({ description: "Tasks in this list were reset. " });
   };
 
-  // New functions for managing categories
-  const addCategory = (listId: string, category: string) => {
-    setState((prev) => ({
-      ...prev,
-      lists: prev.lists.map((list) => {
-        if (list.id === listId && !list.categories.includes(category)) {
-          return {
-            ...list,
-            categories: [...list.categories, category],
-          };
-        }
-        return list;
-      }),
-    }));
-    toast.success({ description: `Category "${category}" added` });
-  };
-
-  const removeCategory = (listId: string, category: string) => {
-    // First check if any tasks are using this category
-    const tasksUsingCategory = state.tasks.some(
-      (task) => task.listId === listId && task.category === category
-    );
-
-    if (tasksUsingCategory) {
-      toast.error({
-        description: `Cannot remove category "${category}" because tasks are using it.`,
-      });
-      return;
-    }
-
-    setState((prev) => ({
-      ...prev,
-      lists: prev.lists.map((list) => {
-        if (list.id === listId) {
-          return {
-            ...list,
-            categories: list.categories.filter((cat) => cat !== category),
-          };
-        }
-        return list;
-      }),
-    }));
-    toast.success({ description: `Category "${category}" removed` });
-  };
-
-  const getListCategories = (listId: string) => {
-    const list = state.lists.find((list) => list.id === listId);
-    return list ? list.categories : [];
-  };
-
   /**
    * A function developed by myself to control the "sidebar" (i.e. list of tasks).
    */
@@ -419,9 +365,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         shuffleTasks,
         resetTasks,
         selectRandomTask,
-        addCategory,
-        removeCategory,
-        getListCategories,
         toggleSidebar,
       }}
     >

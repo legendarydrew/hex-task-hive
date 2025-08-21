@@ -9,7 +9,7 @@ import { Textarea } from "./ui/textarea";
 const TaskBulkAddForm: React.FC = () => {
   const inputField = useRef<HTMLTextAreaElement>();
   const { addTask } = useApp();
-  const [content, setContent] = useState<string>('');
+  const [content, setContent] = useState<string>("");
 
   const changeHandler = (e) => {
     setContent(e.target.value);
@@ -19,15 +19,8 @@ const TaskBulkAddForm: React.FC = () => {
     e.preventDefault();
 
     const rows = content.split("\n");
-    rows.forEach((row) => {
-        const parts = row.split("|", 2);
-        if (parts.length == 2) {
-            addTask(parts[1], parts[0]);
-        } else {
-            addTask(row);
-        }
-    });
-    setContent('');
+    rows.forEach((row) => addTask(row));
+    setContent("");
     inputField.current.focus();
   };
 
@@ -38,7 +31,7 @@ const TaskBulkAddForm: React.FC = () => {
         ref={inputField}
         value={content}
         onChange={changeHandler}
-        placeholder="One task per line"
+        placeholder="One task per line..."
         required
       />
 
