@@ -4,8 +4,8 @@
 - [x] Use Rubik as the body fount.
 - [x] Use CH-Modified as the token fount.
 - [x] Input and dropdown fields.
-- [ ] Remove the extra space between textarea fields and their outline.
-- [ ] Buttons.
+- [x] Remove the extra space between textarea fields and their outline.
+- [x] Buttons.
 - [x] Rune tokens.
 - [x] A background image for the tokens area.
 - [ ] Add a favicon!
