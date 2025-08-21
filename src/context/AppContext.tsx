@@ -20,7 +20,7 @@ interface AppContextType {
   ) => void;
   deleteList: (id: string) => void;
   setActiveList: (id: string) => void;
-  addTask: (description: string, dueDate?: string) => void;
+  addTask: (description: string) => void;
   updateTask: (
     id: string,
     data: Partial<Omit<Task, "id" | "listId" | "createdAt">>
@@ -34,16 +34,6 @@ interface AppContextType {
   toggleSidebar: () => void;
   isListComplete: boolean;
 }
-
-// Default categories to use when creating a new list
-const DEFAULT_CATEGORIES = [
-  "work",
-  "personal",
-  "health",
-  "finance",
-  "education",
-  "other",
-];
 
 const initialState: AppState = {
   lists: [],
@@ -133,7 +123,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const addTask = (description: string, dueDate?: string) => {
+  const addTask = (description: string) => {
     if (!state.activeListId) {
       toast.error({ description: "No active list selected" });
       return;
@@ -152,7 +142,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ...prev,
       tasks: [...prev.tasks, newTask],
     }));
-    toast.success({ description: `Task added` });
   };
 
   const updateTask = (
@@ -346,7 +335,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const activeListTasks = state.tasks.filter(
       (task) => task.listId === state.activeListId
     );
-    setIsListComplete(activeListTasks.every((task) => !!task.completedAt));
+    setIsListComplete(activeListTasks.length > 0 && activeListTasks.every((task) => !!task.completedAt));
   }, [state.activeListId, state.tasks]);
 
   /**

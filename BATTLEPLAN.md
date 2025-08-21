@@ -18,7 +18,7 @@
 - [x] Confetti on completion!
 - [x] Remove category support.
 - [x] Keypress for picking a random task.
-- [ ] Rename the current list.
+- [x] Rename the current list.
 - [ ] Stats button outside of the dropdown menu.
 
 ## Miscellaneous

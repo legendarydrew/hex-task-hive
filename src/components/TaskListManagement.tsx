@@ -15,7 +15,13 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { List, ListCheckIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  Edit,
+  List,
+  ListCheckIcon,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { ListDialog } from "./ListDialog";
 import { ListDeleteDialog } from "./ListDeleteDialog";
@@ -38,10 +44,25 @@ export default function TaskListManagement() {
     (task) => task.listId === state.activeListId
   );
 
+  /**
+   * Open the dialog for creating a new task list.
+   */
   const newListHandler = () => {
+    setListIdToUse('');
     setIsListDialogOpen(true);
   };
 
+  /**
+   * Open the dialog for renaming an existing task list.
+   */
+  const renameListHandler = () => {
+    setListIdToUse(state.activeListId);
+    setIsListDialogOpen(true);
+  };
+
+  /**
+   * Open the dialog for displaying task list stats.
+   */
   const listStatsHandler = () => {
     if (hasTasks) {
       setListIdToUse(state.activeListId);
@@ -49,6 +70,9 @@ export default function TaskListManagement() {
     }
   };
 
+  /**
+   * Open the dialog for confirming the deletion of a task list.
+   */
   const deleteListHandler = () => {
     setListIdToUse(state.activeListId);
     setIsListDeleteDialogOpen(true);
@@ -78,10 +102,10 @@ export default function TaskListManagement() {
         <DropdownMenuContent align="end">
           {state.activeListId && (
             <>
-              {/* <DropdownMenuItem onClick={() => setListToEdit(state.activeListId)}>
+              <DropdownMenuItem onClick={renameListHandler}>
                 <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </DropdownMenuItem> */}
+                Rename
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={listStatsHandler} disabled={!hasTasks}>
                 <ListCheckIcon className="h-4 w-4 mr-2" />
                 Display Stats
@@ -101,7 +125,7 @@ export default function TaskListManagement() {
       </DropdownMenu>
 
       {/* Dialogs. */}
-      <ListDialog open={isListDialogOpen} onOpenChange={setIsListDialogOpen} />
+      <ListDialog open={isListDialogOpen} listId={listIdToUse} onOpenChange={setIsListDialogOpen} />
       <ListStatsDialog
         listId={listIdToUse}
         open={isListStatsDialogOpen}
