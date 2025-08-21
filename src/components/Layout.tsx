@@ -13,7 +13,7 @@ import { useEffect } from "react";
  * a dropdown list in the header.
  */
 export const Layout: React.FC<void> = () => {
-  const { state, undoDeleteTask } = useApp();
+  const { selectRandomTask, undoDeleteTask } = useApp();
   /**
    * Listen for keypresses while this page is open, looking specifically for an undo command.
    * https://stackoverflow.com/a/61740188/4073160
@@ -22,7 +22,9 @@ export const Layout: React.FC<void> = () => {
    */
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.altKey && e.key.toLowerCase() === "u") {
-      undoDeleteTask(); // Alt + U
+      undoDeleteTask(); // Undo (Alt + U)
+    } else if (e.ctrlKey && e.key.toLowerCase() === "enter") {
+      selectRandomTask(); // Random Task (Ctrl + Enter)
     }
   };
   useEffect(() => {

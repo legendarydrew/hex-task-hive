@@ -3,11 +3,14 @@ import { useApp } from "@/context/AppContext";
 import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
-import React from 'react';
+import React from "react";
+import { Tooltip, TooltipContent } from "./ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 export const LayoutHeader: React.FC = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
-  const [isListResetDialogOpen, setIsListResetDialogOpen] = React.useState(false);
+  const [isListResetDialogOpen, setIsListResetDialogOpen] =
+    React.useState(false);
   const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
 
   const handleRandomTask = () => {
@@ -51,19 +54,26 @@ export const LayoutHeader: React.FC = () => {
             <span>Shuffle Tasks</span>
           </Button>
 
-          <Button
-            variant="default"
-            onClick={handleRandomTask}
-            disabled={!state.activeListId}
-            className="flex items-center gap-1"
-          >
-            <StickyNote className="h-4 w-4" />
-            <span>Random Task</span>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild onClick={handleRandomTask}>
+              <Button
+                variant="default"
+                disabled={!state.activeListId}
+                className="flex items-center gap-1"
+              >
+                <StickyNote className="h-4 w-4" />
+                <span>Random Task</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={1}>Ctrl + Enter</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
-      <ListResetDialog open={isListResetDialogOpen} onOpenChange={setIsListResetDialogOpen} />
+      <ListResetDialog
+        open={isListResetDialogOpen}
+        onOpenChange={setIsListResetDialogOpen}
+      />
     </header>
   );
 };
