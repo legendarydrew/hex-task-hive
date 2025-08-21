@@ -23,6 +23,6 @@
 
 ## Miscellaneous
 - [ ] An about page/dialogue.   
-- [ ] Link to Perfect Zero Labs.
+- [x] Link to Perfect Zero Labs.
 - [x] Link to Github.
 - [ ] Explore unit testing.
