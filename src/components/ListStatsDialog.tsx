@@ -24,8 +24,10 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
   listId,
 }) => {
   const { state } = useApp();
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState<{date: number, picked: number, completed: number}[]>([]);
   const [chartLimits, setChartLimits] = useState(null);
+  const [chartPickedLineColour, setChartPickedLineColour] = useState("blue");
+  const [chartCompletedLineColour, setChartCompletedLineColour] = useState("green");
 
   const activeList = state.lists.find((list) => list.id === listId);
   const activeListTasks = state.tasks.filter((task) => task.listId === listId);
@@ -34,32 +36,60 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
     return new Date(timestamp).toLocaleDateString("en-GB");
   };
 
-  const dateValue = (timestamp?: string) => {
+  const dateValue = (timestamp?: string): number => {
     return new Date(timestamp?.slice(0, 10)).valueOf();
   };
 
   useEffect(() => {
     if (open && !activeListTasks.length) {
       onOpenChange(false);
-      toast.info({ description: "No tasks in this list."});
+      toast.info({ description: "No tasks in this list." });
     }
+
+    let styles = getComputedStyle(document.documentElement);
+    setChartPickedLineColour(styles.getPropertyValue("--color-task-picked"));
+    setChartCompletedLineColour(styles.getPropertyValue("--color-task-complete-border"));
   }, [open]);
 
   useEffect(() => {
     if (activeList) {
-
       // Build chart data from the list of tasks.
-      const chartData = [];
-      const completedTasks = activeListTasks
+      const picked: {[key: string]: number} = {};
+      const completed: {[key: string]: number} = {}
+
+      // Number of tasks picked.
+      activeListTasks
+        .filter((task) => task.pickedAt)
+        .sort((a, b) => (a.pickedAt > b.pickedAt ? 1 : -1))
+        .forEach((task) => {
+          const taskDate = dateValue(task.pickedAt);
+          picked[taskDate] = picked[taskDate] ? picked[taskDate] + 1 : 1;
+        });
+
+      // Number of tasks completed.
+      activeListTasks
         .filter((task) => task.completedAt)
-        .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1));
-      completedTasks.forEach((task) => {
+        .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1))
+      .forEach((task) => {
         const taskDate = dateValue(task.completedAt);
-        chartData[taskDate] = chartData[taskDate] ? chartData[taskDate] + 1 : 1;
+        completed[taskDate] = completed[taskDate] ? completed[taskDate] + 1 : 1;
       });
-      Object.keys(chartData).forEach((date) => {
-        chartData.push({ date, count: chartData[date] });
-      });
+
+      const dates = [...new Set([...Object.keys(picked), ...Object.keys(completed)])].sort();
+      const chartData: {date: number, picked: number, completed: number}[] = dates.map((date) => ({
+        date: parseInt(date),
+        picked: picked[date] ?? 0,
+        completed: completed[date] ?? 0
+      }));
+
+      // In order to display a line on the chart: if we only have results for one day,
+      // add yesterday with a count of 0.
+      if (chartData.length === 1) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        chartData.unshift({ date: dateValue(yesterday.toString()), picked: 0, completed: 0 });
+      }
+
       setChartData(chartData);
       setChartLimits({
         min: dateValue(activeList.createdAt),
@@ -68,7 +98,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
     } else {
       setChartData([]);
     }
-  }, [activeList]);
+  }, [open, activeList]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -77,29 +107,29 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           <DialogTitle>Statistics for {activeList?.name}</DialogTitle>
         </DialogHeader>
 
-        <div className="h-[15vh]">
+        <div className="h-[20vh]">
           <ResponsiveContainer
             className="bg-white mx-auto border-gray-500 border-l-[1px] border-b-[1px]"
-            width={300}
+            width="100%"
             height="100%"
           >
             <LineChart
               data={chartData}
-              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+              margin={{ top: 0, bottom: 0, left: 0, right: 0 }}
             >
               {chartLimits && (
                 <XAxis
                   hide={true}
                   dataKey="date"
                   interval={"preserveStartEnd"}
-                  tick={false}
                   scale="utc"
                   type="number"
                   domain={[chartLimits.min, chartLimits.max]}
                 />
               )}
               <YAxis hide={true} tick={false}></YAxis>
-              <Line dataKey="count" stroke="green" dot={false} />
+              <Line dataKey="picked" stroke={chartPickedLineColour} dot={false} />
+              <Line dataKey="completed" stroke={chartCompletedLineColour} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -108,7 +138,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
           <table className="table w-full">
             <thead>
               <tr className="text-xs sticky top-0 bg-background border-b-2">
-                <th className="text-right px-1 w-4" scope="col">
+                <th className="text-right heading-text px-1 w-4" scope="col">
                   #
                 </th>
                 <th className="text-left px-1" scope="col">
@@ -125,16 +155,16 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
             <tbody className="text-sm">
               {activeListTasks.map((task, index) => (
                 <tr className="hover:bg-gray-200" key={index}>
-                  <th className="text-right font-bold px-1 w-4" scope="row">
+                  <th className="text-right heading-text px-1 w-4" scope="row">
                     {index + 1}
                   </th>
-                  <th className="text-left font-bold px-1" scope="row">
+                  <th className="text-left font-normal px-1" scope="row">
                     {task.description}
                   </th>
-                  <td className="text-center">
+                  <td className="text-center text-xs">
                     {task.pickedAt ? formatDate(task.pickedAt) : "-"}
                   </td>
-                  <td className="text-center">
+                  <td className="text-center text-xs">
                     {task.completedAt ? formatDate(task.completedAt) : "-"}
                   </td>
                 </tr>
