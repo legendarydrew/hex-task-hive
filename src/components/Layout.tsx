@@ -13,7 +13,8 @@ import { useEffect } from "react";
  * a dropdown list in the header.
  */
 export const Layout: React.FC<void> = () => {
-  const { selectRandomTask, shuffleTasks, undoDeleteTask } = useApp();
+  const { isListComplete, selectRandomTask, shuffleTasks, undoDeleteTask } =
+    useApp();
   /**
    * Listen for keypresses while this page is open, looking specifically for an undo command.
    * https://stackoverflow.com/a/61740188/4073160
@@ -37,13 +38,16 @@ export const Layout: React.FC<void> = () => {
     };
   }, [handleKeyDown]);
 
+  useEffect(() => {
+    console.log("complete?", isListComplete);
+  }, [isListComplete]);
+
   return (
     <div className="h-screen flex flex-col bg-background">
       <LayoutHeader />
 
       <TaskListProgressBar />
 
-      {/* TODO why is this height bigger then intended? */}
       <main className="container mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden">
         <div className="flex-grow overflow-y-auto min-h-full">
           <TokenGrid />

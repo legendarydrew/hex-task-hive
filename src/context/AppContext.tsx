@@ -32,6 +32,7 @@ interface AppContextType {
   toggleTaskCompletion: (id: string) => void;
   selectRandomTask: () => Task | null;
   toggleSidebar: () => void;
+  isListComplete: boolean;
 }
 
 // Default categories to use when creating a new list
@@ -80,7 +81,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const newList: TaskList = {
       id: uuidv4(),
       name,
-      categories: [...DEFAULT_CATEGORIES], // Initialize with default categories
       createdAt: new Date().toISOString(),
     };
 
@@ -188,7 +188,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           (item) => JSON.stringify(item) !== JSON.stringify(restoreItem)
         ),
       }));
-      toast.info({ description: `Task "${restoreItem.task.description}" was restored.` });
+      toast.info({
+        description: `Task "${restoreItem.task.description}" was restored.`,
+      });
     }
   };
 
@@ -339,6 +341,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     toast.info({ description: "Tasks in this list were reset. " });
   };
 
+  const [isListComplete, setIsListComplete] = useState<boolean>(false);
+  useEffect(() => {
+    const activeListTasks = state.tasks.filter(
+      (task) => task.listId === state.activeListId
+    );
+    setIsListComplete(activeListTasks.every((task) => !!task.completedAt));
+  }, [state.activeListId, state.tasks]);
+
   /**
    * A function developed by myself to control the "sidebar" (i.e. list of tasks).
    */
@@ -366,6 +376,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         resetTasks,
         selectRandomTask,
         toggleSidebar,
+        isListComplete,
       }}
     >
       {children}
