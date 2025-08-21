@@ -98,7 +98,7 @@ export const ListStatsDialog: React.FC<ListStatsDialogProps> = ({
     } else {
       setChartData([]);
     }
-  }, [activeList]);
+  }, [open, activeList]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
