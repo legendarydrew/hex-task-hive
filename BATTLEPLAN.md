@@ -14,7 +14,6 @@
 - [ ] Display a banner ad?
 - [x] Ability to add tasks in bulk.
 - [x] Toggle between single and bulk task creation.
-- [ ] Ability to set categories for the current list.
 - [x] Fix the algorithm for displaying tokens in a hexagonal grid.
 - [ ] Confetti on completion!
 - [x] Remove category support.
@@ -25,5 +24,5 @@
 ## Miscellaneous
 - [ ] An about page/dialogue.   
 - [ ] Link to Perfect Zero Labs.
-- [ ] Link to Github.
+- [x] Link to Github.
 - [ ] Explore unit testing.
