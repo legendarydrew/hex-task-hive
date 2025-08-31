@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
-  "private": true,
-  "version": "0.0.0",
+  "name": "hex-task-hive",
+  "description": "A task management app using numbered hexagonal tokens.",
+  "keywords": ["vibe-coding", "react", "tailwind", "lovable", "todo-list", "task-management"],
+  "version": "2025.08.31",
   "type": "module",
   "scripts": {
     "dev": "vite",
