@@ -56,17 +56,12 @@ export const ListDialog: React.FC<ListDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit List' : 'Create New List'}</DialogTitle>
-          <DialogDescription>
-            {isEditing 
-              ? 'Change the name of your list.' 
-              : 'Give your new list a descriptive name.'}
-          </DialogDescription>
+          <DialogTitle>{isEditing ? 'Rename List' : 'Create New List'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-2">
             <div className="grid gap-2">
               <Label htmlFor="name">List Name</Label>
               <Input

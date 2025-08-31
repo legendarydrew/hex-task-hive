@@ -1,73 +1,52 @@
-# Welcome to your Lovable project
+# hex-task-hive
 
-## Project info
+![experience with React](https://img.shields.io/badge/experience-react-blue.svg?style=flat)
+![experience with Tailwind](https://img.shields.io/badge/experience-tailwind-cyan.svg?style=flat)
+![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
-**URL**: https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3
+![Screenshot of project](./screenshot.png)
 
-## How can I edit this code?
+A to-do list with a difference, inspired by my "99 Projects" campaign for 2025.
 
-There are several ways of editing your application.
+Instead of the traditional vertical list, tasks are represented by numeric "rune tokens" in the shape of vertical hexagons. Tasks can be picked at random, and manually marked as complete as progress is made. 
 
-**Use Lovable**
+The purpose behind this project was to be able to tackle lists of tasks by picking them at random, which would alleviate the "paralysis of analysis". Of course, if there's a specific task I want to complete, I can focus on that one instead.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3) and start prompting.
+## Technologies used in this project
 
-Changes made via Lovable will be committed automatically to this repo.
+This project was originally "vibe-coded" using [Lovable](https://lovable.dev), but *refined by me* - because **AI should be used as a tool, not a weapon**.
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
+Lovable scaffolded this project with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
-- Tailwind CSS
+- Tailwind CSS (although I asked for Bootstrap!).
 
-## How can I deploy this project?
+## Objectives of the project
 
-Simply open [Lovable](https://lovable.dev/projects/49775b51-17b1-4db5-bdf3-c6e040d6cbf3) and click on Share -> Publish.
+- Building a useful tool for motivation to complete smaller tasks/projects.
+- An adventure in "vibe coding": demonstrating the ability to use Lovable for creating an app.
+- Demonstrating the ability to modify an AI-generated app, instead of using it as-is (and pretending I did the work).
+- Proof that I can work with a React project.
+- Working with Tailwind CSS.
+  At the time, and as with other trending technologies, I *really* didn't understand why it became so popular. It was only after starting to use it myself that it demonstrated its usefulness.
+- Hopefully useful toward overcoming the age-old, artificially-generated hurdle of not having enough "experience" to gain "experience".
 
-## Can I connect a custom domain to my Lovable project?
+## Features
 
-Yes it is!
+- Ability to manage multiple lists of tasks (e.g. for different projects).
+- Tasks are represented as a hexagonal grid, with each task represented by a hexagonal token.
+- Tasks can be easily created, updated and removed.
+- The list of tasks can be shuffled, *provided* the tasks have not been completed or picked yet.
+- An incomplete task can be picked at random.
+- Tasks can be marked as complete, with the date of completion.
+- A progress bar displays the ratio of completed tasks.
+- If all tasks are complete, confetti is displayed.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contributions welcome.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+What features would you add to this project? How would you improve upon the existing functionality?
+
+You're more than welcome to open a pull request, whether to pass the time or demonstrate that you yourself can code (and contribute to open-source projects). 

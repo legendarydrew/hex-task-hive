@@ -1,6 +1,5 @@
-
-import { Layout } from '@/components/Layout';
-import { AppProvider } from '@/context/AppContext';
+import { Layout } from "@/components/Layout";
+import { AppProvider } from "@/context/AppContext";
 
 const Index = () => {
   return (
