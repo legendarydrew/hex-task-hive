@@ -30,6 +30,7 @@ interface AppContextType {
   shuffleTasks: () => void;
   resetTasks: (listId: string) => void;
   toggleTaskCompletion: (id: string) => void;
+  toggleTaskPicked: (id: string) => void;
   selectRandomTask: () => Task | null;
   toggleSidebar: () => void;
   isListComplete: boolean;
@@ -78,7 +79,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const newState = {
         ...prev,
         lists: [...prev.lists, newList],
-        activeListId: prev.activeListId || newList.id,
+        activeListId: newList.id,
       };
       toast.success({ description: `List "${name}" created.` });
       return newState;
@@ -223,6 +224,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  /* Switch a task's completed status. */
   const toggleTaskCompletion = (id: string) => {
     setState((prev) => ({
       ...prev,
@@ -231,6 +233,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           ? {
               ...task,
               completedAt: task.completedAt
+                ? undefined
+                : new Date().toISOString(),
+            }
+          : task
+      ),
+    }));
+  };
+
+  /* Switch a task's picked status. */
+  const toggleTaskPicked = (id: string) => {
+    setState((prev) => ({
+      ...prev,
+      tasks: prev.tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              pickedAt: task.pickedAt
                 ? undefined
                 : new Date().toISOString(),
             }
@@ -361,6 +380,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         deleteTask,
         undoDeleteTask,
         toggleTaskCompletion,
+        toggleTaskPicked,
         shuffleTasks,
         resetTasks,
         selectRandomTask,

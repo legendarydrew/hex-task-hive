@@ -36,7 +36,6 @@ export default function TaskListManagement() {
 
   const [isListDialogOpen, setIsListDialogOpen] = useState(false);
   const [isListDeleteDialogOpen, setIsListDeleteDialogOpen] = useState(false);
-  const [isListStatsDialogOpen, setIsListStatsDialogOpen] = useState(false);
   const [listIdToUse, setListIdToUse] = useState<string | null>(null);
 
   const taskLists = state.lists;
@@ -58,16 +57,6 @@ export default function TaskListManagement() {
   const renameListHandler = () => {
     setListIdToUse(state.activeListId);
     setIsListDialogOpen(true);
-  };
-
-  /**
-   * Open the dialog for displaying task list stats.
-   */
-  const listStatsHandler = () => {
-    if (hasTasks) {
-      setListIdToUse(state.activeListId);
-      setIsListStatsDialogOpen(true);
-    }
   };
 
   /**
@@ -106,10 +95,6 @@ export default function TaskListManagement() {
                 <Edit className="h-4 w-4 mr-2" />
                 Rename
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={listStatsHandler} disabled={!hasTasks}>
-                <ListCheckIcon className="h-4 w-4 mr-2" />
-                Display Stats
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={deleteListHandler}>
                 <Trash2 className="h-4 w-4 mr-2" />
                 Delete
@@ -126,11 +111,6 @@ export default function TaskListManagement() {
 
       {/* Dialogs. */}
       <ListDialog open={isListDialogOpen} listId={listIdToUse} onOpenChange={setIsListDialogOpen} />
-      <ListStatsDialog
-        listId={listIdToUse}
-        open={isListStatsDialogOpen}
-        onOpenChange={setIsListStatsDialogOpen}
-      />
       <ListDeleteDialog
         listId={listIdToUse}
         open={isListDeleteDialogOpen}

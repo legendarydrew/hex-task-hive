@@ -13,7 +13,7 @@ export const TaskSidebar = () => {
     state.activeListId && (
       <div
         className={cn(
-          "relative h-full transition-[left,margin-left] duration-400 sm:w-1/3",
+          "relative h-full transition-[left,margin-left] duration-400 w-1/3 max-w-[40em]",
           state.sidebarIsOpen ? "left-0 ml-0" : "left-1/3 ml-[-33%]"
         )}
       >

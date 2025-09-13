@@ -73,10 +73,6 @@ export const Layout: React.FC<void> = () => {
     ctx.closePath()
   };
 
-  useEffect(() => {
-    console.log("complete?", isListComplete);
-  }, [isListComplete]);
-
   return (
     <div className="h-screen flex flex-col bg-background">
       <LayoutHeader />
@@ -85,7 +81,7 @@ export const Layout: React.FC<void> = () => {
 
       <main
         ref={mainRef}
-        className="container relative mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden"
+        className="w-full relative mx-auto flex flex-col sm:flex-row h-full items-stretch overflow-hidden"
       >
         { isListComplete && (<Confetti
           width={mainRef.current?.clientWidth}

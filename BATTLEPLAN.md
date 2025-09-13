@@ -8,7 +8,7 @@
 - [x] Buttons.
 - [x] Rune tokens.
 - [x] A background image for the tokens area.
-- [ ] Add a favicon!
+- [x] Add a favicon!
 
 ## Features
 - [ ] Display a banner ad?
@@ -19,7 +19,7 @@
 - [x] Remove category support.
 - [x] Keypress for picking a random task.
 - [x] Rename the current list.
-- [ ] Stats button outside of the dropdown menu.
+- [x] Stats button outside of the dropdown menu.
 
 ## Miscellaneous
 - [ ] An about page/dialogue.   
