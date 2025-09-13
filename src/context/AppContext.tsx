@@ -79,7 +79,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const newState = {
         ...prev,
         lists: [...prev.lists, newList],
-        activeListId: prev.activeListId || newList.id,
+        activeListId: newList.id,
       };
       toast.success({ description: `List "${name}" created.` });
       return newState;
