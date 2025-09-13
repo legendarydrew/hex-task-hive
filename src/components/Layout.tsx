@@ -73,10 +73,6 @@ export const Layout: React.FC<void> = () => {
     ctx.closePath()
   };
 
-  useEffect(() => {
-    console.log("complete?", isListComplete);
-  }, [isListComplete]);
-
   return (
     <div className="h-screen flex flex-col bg-background">
       <LayoutHeader />

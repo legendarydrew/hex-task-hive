@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 interface Props {
-    taskList: TaskList;
+  taskList: TaskList;
 }
 
 export const ListStatsChart: React.FC<Props> = ({ taskList }) => {
@@ -25,17 +25,18 @@ export const ListStatsChart: React.FC<Props> = ({ taskList }) => {
     );
   }, []);
 
-    const dateValue = (timestamp?: string): number => {
-      return new Date(timestamp?.slice(0, 10)).valueOf();
-    };
-  
-  
+  const dateValue = (timestamp?: string): number => {
+    return new Date(timestamp?.slice(0, 10)).valueOf();
+  };
+
   const buildChartData = () => {
-        if (taskList) {
+    if (taskList) {
       // Build chart data from the list of tasks.
-      const picked: {[key: string]: number} = {};
-      const completed: {[key: string]: number} = {}
-      const activeListTasks = state.tasks.filter((task) => task.listId === taskList.id);
+      const picked: { [key: string]: number } = {};
+      const completed: { [key: string]: number } = {};
+      const activeListTasks = state.tasks.filter(
+        (task) => task.listId === taskList.id
+      );
 
       // Number of tasks picked.
       activeListTasks
@@ -50,24 +51,37 @@ export const ListStatsChart: React.FC<Props> = ({ taskList }) => {
       activeListTasks
         .filter((task) => task.completedAt)
         .sort((a, b) => (a.completedAt > b.completedAt ? 1 : -1))
-      .forEach((task) => {
-        const taskDate = dateValue(task.completedAt);
-        completed[taskDate] = completed[taskDate] ? completed[taskDate] + 1 : 1;
-      });
+        .forEach((task) => {
+          const taskDate = dateValue(task.completedAt);
+          completed[taskDate] = completed[taskDate]
+            ? completed[taskDate] + 1
+            : 1;
+        });
 
-      const dates = [...new Set([...Object.keys(picked), ...Object.keys(completed)])].sort();
-      const chartData: {date: number, picked: number, completed: number}[] = dates.map((date) => ({
-        date: parseInt(date),
-        picked: picked[date] ?? 0,
-        completed: completed[date] ?? 0
-      }));
+      const dates = [
+        ...new Set([
+          dateValue(taskList.createdAt).toString(),
+          ...Object.keys(picked),
+          ...Object.keys(completed),
+        ]),
+      ].sort();
+      const chartData: { date: number; picked: number; completed: number }[] =
+        dates.map((date) => ({
+          date: parseInt(date),
+          picked: picked[date] ?? 0,
+          completed: completed[date] ?? 0,
+        }));
 
       // In order to display a line on the chart: if we only have results for one day,
       // add yesterday with a count of 0.
       if (chartData.length === 1) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        chartData.unshift({ date: dateValue(yesterday.toString()), picked: 0, completed: 0 });
+        chartData.unshift({
+          date: dateValue(yesterday.toString()),
+          picked: 0,
+          completed: 0,
+        });
       }
 
       setChartData(chartData);
