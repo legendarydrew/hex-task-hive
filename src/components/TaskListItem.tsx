@@ -1,7 +1,9 @@
 import { useApp } from "@/context/AppContext";
 import { Task } from "@/types";
-import { Check, Edit, Trash, Undo } from "lucide-react";
+import { Check, Edit, Icon, Trash, Undo } from "lucide-react";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 interface TaskListItemProps {
   taskNumber: number;
@@ -14,33 +16,53 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
   task,
   onEdit,
 }) => {
-  const { deleteTask, toggleTaskCompletion } = useApp();
+  const { deleteTask, toggleTaskCompletion, toggleTaskPicked } = useApp();
 
-  const beginTaskUpdateHandler = (task: Task) => {
+  const beginTaskUpdateHandler = (): void => {
     onEdit(task);
   };
 
-  const removeTaskHandler = (task: Task) => {
+  const removeTaskHandler = (): void => {
     // Purely for convenience, we won't bother confirming the removal of the task.
     // However, we want the ability to undo the most recent deletion, in case it was by accident.
     deleteTask(task.id);
   };
 
-  const toggleCompleteHandler = (task: Task) => {
+  const toggleCompleteHandler = (): void => {
     toggleTaskCompletion(task.id);
+  };
+
+  const togglePickedHandler = (): void => {
+    if (!task.completedAt) {
+      toggleTaskPicked(task.id);
+      toast.info({ title: task.pickedAt ? 'Unpicked' :'Picked', description: task.description });
+    }
   };
 
   return (
     <>
-      <span className="heading-text text-right w-6 flex-shrink-0">{taskNumber + 1}</span>
-      <span className="flex-grow">{task.description}</span>
+      <span
+        className={cn(
+          "heading-text text-right w-6 flex-shrink-0",
+          !task.completedAt && "cursor-pointer"
+        )}
+        onClick={togglePickedHandler}
+      >
+        {taskNumber + 1}
+      </span>
+      <span
+        className={cn("flex-grow", !task.completedAt && "cursor-pointer")}
+        onClick={togglePickedHandler}
+      >
+        {task.description}
+      </span>
       <menu className="flex gap-0.5 justify-end">
         <Button
           type="button"
           className="rounded-none"
           variant="secondary"
           size="icon"
-          onClick={() => beginTaskUpdateHandler(task)}
+          onClick={beginTaskUpdateHandler}
           title="Change description"
         >
           <Edit className="h-3 w-3" />
@@ -50,7 +72,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
           className="rounded-none"
           variant={task.completedAt ? "outline" : "confirm"}
           size="icon"
-          onClick={() => toggleCompleteHandler(task)}
+          onClick={toggleCompleteHandler}
           title={task.completedAt ? "Unmark as complete" : "Mark as complete"}
         >
           {task.completedAt ? (
@@ -64,7 +86,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
           className="rounded-r rounded-l-none"
           variant="destructive"
           size="icon"
-          onClick={() => removeTaskHandler(task)}
+          onClick={removeTaskHandler}
           title="Remove"
         >
           <Trash className="h-3 w-3" />

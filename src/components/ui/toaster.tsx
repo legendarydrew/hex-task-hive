@@ -35,7 +35,7 @@ export function Toaster() {
               {messageType === toastType.WARNING && <TriangleAlertIcon />}
               {messageType === toastType.ERROR && <CircleAlertIcon />}
               {/* For some reason, trying to use an Icon component causes problems. */}
-              <div className="grid gap-1">
+              <div className="grid gap-0">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (
                   <ToastDescription>{description}</ToastDescription>
