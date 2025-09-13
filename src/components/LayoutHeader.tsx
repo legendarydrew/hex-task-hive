@@ -1,22 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
-import { Hexagon, Shuffle, StickyNote, UndoDot } from "lucide-react";
+import { Hexagon, ListCheckIcon, Shuffle, StickyNote, UndoDot } from "lucide-react";
 import { ListResetDialog } from "./ListResetDialog";
 import TaskListManagement from "./TaskListManagement";
 import { Tooltip, TooltipContent } from "./ui/tooltip";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
+import { ListStatsDialog } from "./ListStatsDialog";
 
 export const LayoutHeader: React.FC = () => {
   const { state, selectRandomTask, shuffleTasks } = useApp();
-  const [isListResetDialogOpen, setIsListResetDialogOpen] =
-    React.useState(false);
+  const [isListResetDialogOpen, setIsListResetDialogOpen] = useState(false);
+  const [isListStatsDialogOpen, setIsListStatsDialogOpen] = useState(false);
 
   return (
     <header className="w-full bg-white shadow-sm p-3">
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex sm:w-2/3 items-center justify-between">
-          <h1 className="heading-text flex gap-2 items-center text-xl text-primary w-2/5 select-none">
+          <h1 className="heading-text flex gap-2 items-center text-xl text-primary w-1/4 select-none">
             <Hexagon />
             Task Hive
           </h1>
@@ -27,14 +28,30 @@ export const LayoutHeader: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
-          <Button
-            variant="destructive"
-            onClick={() => setIsListResetDialogOpen(true)}
-            disabled={!state.activeListId}
-            title="Reset Tasks"
-          >
-            <UndoDot className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild onClick={() => setIsListStatsDialogOpen(true)}>
+              <Button
+                variant="secondary"
+                disabled={!state.activeListId}
+                className="flex items-center gap-1"
+              >
+                <ListCheckIcon className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={1}>Task List Statistics</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild onClick={() => setIsListResetDialogOpen(true)}>
+              <Button
+                variant="destructive"
+                disabled={!state.activeListId}
+              >
+                <UndoDot className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={1}>Reset Task List</TooltipContent>
+          </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild onClick={shuffleTasks}>
@@ -70,6 +87,13 @@ export const LayoutHeader: React.FC = () => {
         open={isListResetDialogOpen}
         onOpenChange={setIsListResetDialogOpen}
       />
+
+      <ListStatsDialog
+        listId={state.activeListId}
+        open={isListStatsDialogOpen}
+        onOpenChange={setIsListStatsDialogOpen}
+      />
+
     </header>
   );
 };
